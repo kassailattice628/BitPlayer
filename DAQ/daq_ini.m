@@ -1,3 +1,5 @@
+
+
 function [varargout] = daq_ini(Recmode)
 % initialize daq device configurations
 % set daq sessions

@@ -1,5 +1,7 @@
 # BitPlayer
-Update fron None But Aie Rec12
+Test Update 2022/01/01
+
+Update from None But Aie Rec12
 
 Recording (DAQ + IMAQ) and Stimulation (PTB) is running on different PC.
 Recording with DAQ and IMAQ toolbox is running in Windows 10(maybe).

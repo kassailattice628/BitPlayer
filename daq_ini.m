@@ -1,7 +1,7 @@
 function [varargout] = daq_ini(Recmode)
 % initialize daq device configurations
 % set daq sessions
-%global recobj
+% global recobj
 
 %%
 dev = daq.getDevices;
@@ -13,7 +13,8 @@ if flag_test == 0
     
     s = daq.createSession(dev.Vendor.ID);
     s.Rate = recobj.sampf;
-    s.DurationInSeconds = recobj.rect/1000; %when AO channel is set, s.DurationInSeconds is replaced with 's.scansqued/s.rate'.
+    s.DurationInSeconds = recobj.rect/1000;
+    %when AO channel is set, s.DurationInSeconds is replaced with 's.scansqued/s.rate'.
     %s.NotifyWhenDataAvailableExceeds = %10 times/sec in default
     s.IsContinuous = true;
     
@@ -103,15 +104,11 @@ else
     % Test without Analog Input Output, Timer, Capture
     s = daq.createSession(dev.Vendor.ID);
     
-    %% Analog Input (Set but not use)
-    % for iRecHS2
+    % Analog Input (Set but not use)
     InCh = addAnalogInputChannel(s, dev.ID, 0, 'Voltage');
-    
-    % default SingleEnded, -> Differential (default)
     InCh(1).TerminalConfig = 'Differential';
-    %% Analog Output
     
-    %% Digital Output (for TTL trigers)
+    % Digital Output (for TTL trigers)
     %P0.1:Start FV or Digidata
     dio.TrigAIFV = daq.createSession(dev.Vendor.ID);
     addDigitalChannel(dio.TrigAIFV, dev.ID, 'port0/line0:1', 'OutputOnly');
@@ -124,8 +121,9 @@ else
     
     %if other digital outputs will be needed, the code is here.
     
-    %% for Rotary Encoder
-    %% DAQ capture settings
+    % No Analog Output
+    % No Rotary Encoder
+    % No DAQ capture settings
     %% Output params
     sOut=[];
     capture = [];
