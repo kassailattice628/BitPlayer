@@ -129,7 +129,7 @@ if app.saveON
 
     clear SaveData SaveTimestamps
     app.SaveData = [];
-    app.SaveTimeStamps = [];
+    app.SaveTimestamps = [];
     app.Data = [];
     app.Timestamps = [];
 
