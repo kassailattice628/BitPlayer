@@ -8,7 +8,7 @@ if app.CaptureTime.Value > rect
     app.CaptureTime.Value = 1000;
     app.imaq.duration_ms = 1000;
 else
-    app.imaq.duration_ms = app.CaptureTime.Value;
+    app.imaq.duration_ms = app.VideoCaptureTime.Value;
 end
 
 
