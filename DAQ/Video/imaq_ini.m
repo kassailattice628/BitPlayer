@@ -23,7 +23,7 @@ frame rate
 
 %% Image aquisition exploer 20220131 %%
 imaq.vid = videoinput("pointgrey", 1, "F7_Mono8_960x600_Mode1");
-imaq.vid.ROIPosition = [420  204  150  150];
+imaq.vid.ROIPosition = [420  204  160  152];
 
 imaq.src = getselectedsource(imaq.vid);
 imaq.src.FrameRate = 500;
@@ -55,10 +55,10 @@ imaq.src.ShutterMode = "Manual";
 %Recording time
 %
 app.imaq.duration_ms = app.VideoCaptureTime.Value;
-rec_time = app.imaq.duration_ms/1000; % in sec
-imaq.vid.FramesPerTrigger = rec_time * imaq.src.FrameRate; %
+video_rec_time = app.imaq.duration_ms/1000; % in sec
+imaq.vid.FramesPerTrigger = video_rec_time * imaq.src.FrameRate; %
 imaq.vid.TriggerRepeat = 0;
-imaq.vid.TriggerFrameDelay = 0;
+imaq.vid.TriggerFrameDelay = 0; %if needed, add GUI
 
 % Save Mode
 imaq.vid.LoggingMode = 'disk'; % 'disk' or 'memory'
