@@ -12,9 +12,9 @@ obj.FileName = [prefix, ext];
 
 if ~isfield(obj, 'SaveDirMouse')
     obj.SaveDirMouse = '';
-    e_fname = dir([obj.SaveDirMouse, '/', prefix, '_*', ext]);
+    e_fname = dir([obj.SaveDirMouse, filesep, prefix, '_*', ext]);
 else
-    e_fname = dir([obj.SaveDirMouse, '/', prefix, '_*', ext]);
+    e_fname = dir([obj.SaveDirMouse, filesep, prefix, '_*', ext]);
 end
 
 if size(e_fname, 1) == 0
@@ -30,7 +30,7 @@ end
 
 fname_ind = [prefix, '_', num2str(obj.savecount), ext];
 
-obj.FileName = [obj.SaveDirMouse, '/', fname_ind];
+obj.FileName = [obj.SaveDirMouse, filesep, fname_ind];
 
 switch mode
     case 'ptb'

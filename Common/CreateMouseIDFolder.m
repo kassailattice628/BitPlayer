@@ -20,7 +20,7 @@ switch mode
 end
 
 %Mouse Folder
-savedir = [d, '/', mouseID];
+savedir = [d, filesep, mouseID];
 if ~exist(savedir, 'dir')
     mkdir(savedir);
 end
