@@ -1,6 +1,6 @@
 # BitPlayer
 
-Last Update 2023/01/31
+Last Update 2023/02/01
 
 ***
 BitPlayer is the Matlab app for
@@ -48,10 +48,10 @@ ___
 ___
 ## DAQ channel configureation (see daq_ini)
 1. Recording Eye positino singal from iRecHS2 (anohter WindowsPC)
-    1. AI0: Pupil Horizontal
-    1. AI1: Pupl Vertica
+    1. AI0: Pupil Horizontal movement
+    1. AI1: Pupil Verticac movement
     1. AI2: Photo sensor
-    1. AI3: ****
+    1. AI3: **** Used for trigger monitor
     1. AI4: Pupil Size (not good)
 1. Video recording of Eye camera (500Hz)
 1. Recoding locomotion (Rotary encoder)
@@ -61,6 +61,10 @@ ___
 
 2022/01/31
 * Change settings of the capturing video from uncompress AVI to motion jpeg AVI.
+
+2022/02/01
+* Correct Movie setting.
+* Check next number of save-directory.
 ***
 
 
