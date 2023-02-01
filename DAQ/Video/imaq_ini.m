@@ -29,6 +29,14 @@ imaq.src = getselectedsource(imaq.vid);
 imaq.src.FrameRate = 500;
 imaq.src.Strobe1 = "On";
 
+% Need to check Exposure, Shutter, and so on...
+% imaq.src.Exposure = 1.358;
+% imaq.src.ExposureMode = "Manual";
+% imaq.src.Gain = 11.398;
+% imaq.src.GainMode = "Manual";
+% imaq.src.Shutter = 1.924;
+% imaq.src.ShutterMode = "Manual";
+
 %% old setting 
 %{
 imaq.vid = videoinput('pointgrey', 1, 'F7_Raw8_1920x1200_Mode7');

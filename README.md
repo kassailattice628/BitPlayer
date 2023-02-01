@@ -1,6 +1,6 @@
 # BitPlayer
 
-Last Update 2023/01/11
+Last Update 2023/01/31
 
 ***
 BitPlayer is the Matlab app for
@@ -19,6 +19,7 @@ BitPlayer is the Matlab app for
 - Matlab R2022a
     - DAQ toolbox
     - IMAQ toolbox
+    - Image Acquisition Toolbox Support Package for Point Grey Hardware
 - NI DAQ (USB 6341 (BNC))
 - USB3 Camera, [FLIR Grasshopper3 USB](https://www.flir.jp/products/grasshopper3-usb3/?model=GS3-U3-23S6M-C&vertical=machine+vision&segment=iis)
 - [iRecHS2](https://staff.aist.go.jp/k.matsuda/iRecHS2/index_j.html) software (by Dr. Matsuda)
@@ -58,6 +59,8 @@ ___
 ***
 ## Change history
 
+2022/01/31
+* Change settings of the capturing video from uncompress AVI to motion jpeg AVI.
 ***
 
 
