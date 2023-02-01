@@ -43,26 +43,15 @@ while 1
 
         %% Video setting
         if app.CameraSave.Value
-            app.imaq = LoggingVideoSetting(app.recobj, app.imaq, n_in_loop);
-            %{
-        % Whne CameraSave is ON
-        % Generate experiment fodler and movie file name with trial number.
-        movie_trial_dir = [app.recobj.SaveMovieDirMouse, '\Movie_', num2str(n_in_loop)];
-        if exist(movie_trial_dir, 'dir')==0
-            mkdir(movie_trial_dir)
-        end
+            
+            % Whne CameraSave is ON
+            % Generate experiment fodler and movie file name with trial number
+            movie_trial_dir = [app.recobj.SaveMovieDirMouse, '\Movie_', num2str(n_in_loop)];
+            if exist(movie_trial_dir, 'dir')==0
+                mkdir(movie_trial_dir)
+            end
 
-        % Save moive as AVI (<- originally MPEG-4)
-        movie_fname = [movie_trial_dir, '\movie_', num2str(n_in_loop, '%03u')];
-        %logvid = VideoWriter(movie_fname, 'MPEG-4');
-        logvid = VideoWriter(movie_fname, 'Uncompressed AVI');
-        logvid.FrameRate = app.imaq.src.FrameRate;
-        app.imaq.vid.LoggingMode = 'disk';
-        app.imaq.vid.DiskLogger = logvid;
-        if isrunning(app.imaq.vid) == 0
-            start(app.imaq.vid)
-        end
-            %}
+            app.imaq = LoggingVideoSetting(app.imaq, n_in_loop);
         end
 
         %% Prep TTL
@@ -72,12 +61,20 @@ while 1
         end
         
         %% Start Recording
+
+        %Start DAQ, trigger PTB and other devices
         write(app.d_out, [1, 1, 1, 0]); %(1) DAQ trigger, (2) FV trigger, (3) PTB triggers, (4) nothing
+        
+        %Start Video (with delay)
+        if app.CameraSave.Value && isrunning(app.imaq.vid) == 0
+            pause(app.imaq.delay_ms/1000)
+            start(app.imaq.vid)
+        end
 
         app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
         fprintf("Loop#: %d.\n", n_in_loop);
         
-        pause(0.05)
+        pause(0.01)
         %turn off triggers
         write(app.d_out, [0, 0, 0, 0]); % PTB trigger OFF
         %disp(app.StateText.Text)
@@ -100,7 +97,7 @@ while 1
                 pause(.1);
             end
             stop(app.imaq.vid)
-            disp(['Movie is saved as', app.imaq.movie_fname]);
+            disp(['Movie is saved as: ', app.imaq.movie_fname]);
         end
 
         % Reset TTL pulse

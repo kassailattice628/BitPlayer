@@ -11,6 +11,10 @@ function imaq_ini(app)
 
 imaqreset;
 
+
+CheckDuration_Camera(app);
+imaq = app.imaq;
+
 % Connect to Device%
 %{
 Mode 0 is the standard imaging mode with full resolution readout.
@@ -24,6 +28,7 @@ frame rate
 %% Image aquisition exploer 20220131 %%
 imaq.vid = videoinput("pointgrey", 1, "F7_Mono8_960x600_Mode1");
 imaq.vid.ROIPosition = [420  204  160  152];
+imaq.vid.LoggingMode = 'disk';
 
 imaq.src = getselectedsource(imaq.vid);
 imaq.src.FrameRate = 500;
@@ -61,9 +66,12 @@ imaq.src.ShutterMode = "Manual";
 
 %% Recoding setting
 %Recording time
-%
-app.imaq.duration_ms = app.VideoCaptureTime.Value;
-video_rec_time = app.imaq.duration_ms/1000; % in sec
+
+%These are set in CheckDuration_Camera.m
+%app.imaq.duration_ms = app.VideoCaptureTime.Value;
+%app.imaq.delay_ms = app.VideoCaptureDelay.Value;
+
+video_rec_time =app.VideoCaptureTime.Value/1000; % in sec
 imaq.vid.FramesPerTrigger = video_rec_time * imaq.src.FrameRate; %
 imaq.vid.TriggerRepeat = 0;
 imaq.vid.TriggerFrameDelay = 0; %if needed, add GUI
