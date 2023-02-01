@@ -65,6 +65,7 @@ ___
 2022/02/01
 * Correct Movie setting.
 * Check next number of save-directory.
+* Need to repair DAQ save function: SaveData & SaveTimestamps does not save 1st loop...
 ***
 
 
