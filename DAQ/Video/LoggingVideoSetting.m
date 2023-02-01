@@ -11,9 +11,11 @@ end
 movie_fname = [movie_trial_dir, '\movie_', num2str(n_in_loop, '%03u')];
 imaq.movie_fname = movie_fname;
 %logvid = VideoWriter(movie_fname, 'MPEG-4');
+%logvid = VideoWriter(movie_fname, 'Uncompressed AVI');
+logvid = VideoWriter(movie_fname, "Motion JPEG AVI");
+logvid.FrameRate = imaq.src.FrameRate; %500Hz
+logvid.Quality = 100; %100% quality
 
-logvid = VideoWriter(movie_fname, 'Uncompressed AVI');
-logvid.FrameRate = imaq.src.FrameRate;
 imaq.vid.LoggingMode = 'disk';
 imaq.vid.DiskLogger = logvid;
 
