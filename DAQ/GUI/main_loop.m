@@ -1,12 +1,11 @@
 function main_loop(app)
-%%
+%
 % Loop fucntion of BitPlayer_DAQ
 %
-%
-%
 
+%% 
 recobj = app.recobj;
-n_in_loop = 1;
+app.recobj.n_in_loop = 1;
 
 app.d_in.ScansAvailableFcn = @(src, evt) scanAvailableCallback_BP(app, src, evt);
 %Start Background recording ---> See scanAvailableCallback_BP.m
@@ -22,8 +21,6 @@ app.recobj.DAQt = [];
 t = tic;
 
 while 1
-    % Send CTS to PTB (Line3)
-    %write(app.d_out, [0, 0, 1, 0]); %(1) DAQ trigger, (2) FV trigger, (3) PTB triggers, (4) ----
     stateMonitor(app)
 
     % Check button state
@@ -46,15 +43,17 @@ while 1
             
             % Whne CameraSave is ON
             % Generate experiment fodler and movie file name with trial number
-            movie_trial_dir = [app.recobj.SaveMovieDirMouse, '\Movie_', num2str(n_in_loop)];
+            movie_trial_dir =...
+                [app.recobj.SaveMovieDirMouse, '\Movie_', num2str(app.recobj.n_in_loop)];
+
             if exist(movie_trial_dir, 'dir')==0
                 mkdir(movie_trial_dir)
             end
 
-            app.imaq = LoggingVideoSetting(app.imaq, n_in_loop);
+            app.imaq = LoggingVideoSetting(app.imaq, app.recobj.n_in_loop);
         end
 
-        %% Prep TTL
+        %% Prep analog output for external TTL
         if app.TTLSwitch.Value
             preload(app.d_out_ao, 5 * recobj.TTL.outputSignal) % 5V ouput
             start(app.d_out_ao);
@@ -63,33 +62,27 @@ while 1
         %% Start Recording
 
         %Start DAQ, trigger PTB and other devices
-        write(app.d_out, [1, 1, 1, 0]); %(1) DAQ trigger, (2) FV trigger, (3) PTB triggers, (4) nothing
-        
+        %(1) DAQ trigger, (2) FV trigger, (3) PTB triggers, (4) nothing
+        write(app.d_out, [1, 1, 1, 0]);
+
         %Start Video (with delay)
         if app.CameraSave.Value && isrunning(app.imaq.vid) == 0
             pause(app.imaq.delay_ms/1000)
             start(app.imaq.vid)
         end
-
-        app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
-        fprintf("Loop#: %d.\n", n_in_loop);
         
-        pause(0.01)
+        pause(0.1)
+        app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
+        fprintf("Loop#: %d.\n", app.recobj.n_in_loop);
         %turn off triggers
         write(app.d_out, [0, 0, 0, 0]); % PTB trigger OFF
-        %disp(app.StateText.Text)
+
 
         %% Wait for data acquisition
         %pause(app.recobj.interval + app.recobj.rect/1000)
         pause(app.recobj.rect/1000)
 
         %% Finishing loop
-        % Store Data
-        if length(app.CaptureTimestamps) == app.recobj.recp && app.saveON
-            app.SaveData(:, :, n_in_loop) = app.CaptureData;
-            app.SaveTimestamps(:, 1, n_in_loop) = app.CaptureTimestamps;
-            fprintf("Saved loop#: %d.\n", n_in_loop)
-        end
 
         % Save Movie
         if app.CameraSave.Value
@@ -104,7 +97,6 @@ while 1
         if app.TTLSwitch.Value
             stop(app.d_out_ao);
         end
-        n_in_loop = n_in_loop + 1;        %% Start Recording
 
     end %end of RTS detected.
 
@@ -116,19 +108,20 @@ end % end of loop
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-SaveData = app.SaveData;
-SaveTimestamps = app.SaveTimestamps;
-recobj.n_in_loop = n_in_loop - 1;
+
+app.recobj.n_in_loop = app.recobj.n_in_loop - 1;
 
 %% Save DAQ data to the file
 if app.saveON
+    SaveData = app.SaveData;
+    SaveTimestamps = app.SaveTimestamps;
+
     save(app.recobj.FileName, 'recobj', 'SaveData', 'SaveTimestamps');
 
     clear SaveData SaveTimestamps
+
     app.SaveData = [];
     app.SaveTimestamps = [];
-    app.Data = [];
-    app.Timestamps = [];
 
     %SAVE Button change
     app.DAQSTOPButton.Enable = "off";

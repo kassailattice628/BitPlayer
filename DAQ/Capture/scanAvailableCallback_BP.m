@@ -6,7 +6,7 @@ function scanAvailableCallback_BP(app, src, ~)
 %  (specified time window) of acquired data and relative timestamps in
 %  FIFO(First in, First out) buffers. 
 %  A live plot is updated with the data in the FIFO buffer.
-
+%%
 c = app.c; % Capture setting
 
 % Get data from daq
@@ -58,22 +58,27 @@ end
 % as specified by the capture duration, extract the capture data from the
 % data buffer and save it to a base workspace variable.
 
+%{
 % For trigger detection, store previous and current ScanAvailable callback
 % data and timestamps
 if isempty(app.Timestamps)
     app.Data = data;
     app.Timestamps = timestamps;
 else
-    app.Data = [app.Data(end,:); data];
-    app.Timestamps = [app.Timestamps(end,:); timestamps];
-end
 
-% App state control logic
+    app.Data = app.TimestampsFIFOBuffer(firstPoint:end,:);
+    app.TimeStamps = app.TimestampsFIFOBuffer(firstPoint:end);
+    %app.Data = [app.Data(end, :); data];
+    %app.Timestamps = [app.Timestamps(end,:); timestamps];
+end
+%}
+
+
 stateMonitor(app);
 
+%% App state control logic
 switch app.CurrentState
     case 'Aqcuisition.Buffering'
-        %app.CurrentState = 'Capture.LookingForTrigger';
         app.CurrentState = 'Capture.LookingForRTS';
 
 %         if size(app.TimestampsFIFOBuffer, 1) > 1 %app.c.BufferSize/2
@@ -82,7 +87,7 @@ switch app.CurrentState
 
     case 'Capture.LookingForRTS'
 
-        if app.RTS
+        if app.RTS %&& size(app.TimestampsFIFOBuffer, 1) > 1
             app.CurrentState = 'Capture.LookingForTrigger';
         end
 
@@ -95,17 +100,22 @@ switch app.CurrentState
     case 'Capture.CapturingData'
         %Not enough acquired data to cover capture timespan (rect) during
         %this ScanAvailable callback execution
-        if isEnoughDataCpatured(app)
+        if isEnoughDataCpatured(...
+                app.TimestampsFIFOBuffer(end), ...
+                app.CaptureStartMoment, ...
+                app.c.TimeSpan)
+
             app.CurrentState = 'Capture.CaptureComplete';
         end
 
     case 'Capture.CaptureComplete'
         %Acquired enough data to complete capture of specified duration
         CompleteCapture(app)
-        app.CurrentState = 'Capture.LookingForTrigger';
+
+        app.CurrentState = 'Capture.LookingForRTS';
 end
 
-%disp(app.CurrentState);
+
 end
 
 
@@ -140,6 +150,7 @@ if size(datablock,1) < buffersize
         % and keep data size equal to buffer size.
         % current data(=[0,0,0,0,0,0,1,1,1])
         % new data (=[2,2,2])
+        %  [([0,0,0]<- discard, ),0,0,0,1,1,1,(<- append [2,2,2])]
         % update data (= [0,0,0,1,1,1,2,2,2])
         shiftPosition = size(datablock,1);
         data = circshift(data,-shiftPosition); 
