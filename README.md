@@ -1,6 +1,6 @@
 # BitPlayer
 
-Last Update 2023/02/01
+Last Update 2023/02/02
 
 ***
 BitPlayer is the Matlab app for
@@ -66,6 +66,11 @@ ___
 * Correct Movie setting.
 * Check next number of save-directory.
 * Need to repair DAQ save function: SaveData & SaveTimestamps does not save 1st loop...
+
+2022/02/02
+* Correct capture setting.
+* Delete app.Data and app.TimeStamos. These are temporal file for detecting trigger.
+* But, FIFOBuffer can be used.
 ***
 
 
