@@ -37,6 +37,8 @@ app.plot4(1).XData = app.CaptureTimestamps;
 app.plot4(1).YData = app.CaptureData(:,1);
 app.plot4(2).XData = app.CaptureTimestamps;
 app.plot4(2).YData = app.CaptureData(:,2);
+app.PlotRecorded.Title.String = ...
+    ['Captured Trace: trial#:', num2str(app.recobj.n_in_loop)];
 
 app.PlotRecorded.XLim =...
     [min(app.CaptureTimestamps), max(app.CaptureTimestamps)];
