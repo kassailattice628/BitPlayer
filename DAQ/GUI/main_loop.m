@@ -68,6 +68,7 @@ while 1
         %Start Video (with delay)
         if app.CameraSave.Value && isrunning(app.imaq.vid) == 0
             pause(app.imaq.delay_ms/1000)
+            disp('start camera rec')
             start(app.imaq.vid)
         end
         
@@ -80,7 +81,8 @@ while 1
 
         %% Wait for data acquisition
         %pause(app.recobj.interval + app.recobj.rect/1000)
-        pause(app.recobj.rect/1000)
+        
+        pause(max(app.recobj.rect/1000, app.imaq.duration_ms/1000));
 
         %% Finishing loop
 
@@ -88,6 +90,7 @@ while 1
         if app.CameraSave.Value
             while app.imaq.vid.FramesAcquired ~= app.imaq.vid.DiskLoggerFrameCount
                 pause(.1);
+                disp('video saving...')
             end
             stop(app.imaq.vid)
             disp(['Movie is saved as: ', app.imaq.movie_fname]);

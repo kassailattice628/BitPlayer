@@ -32,6 +32,7 @@ imaq.vid.triggerRepeat = 0;
 % Capture single image
 start(imaq.vid)
 img = getdata(imaq.vid);
+
 % Show image
 imaq.fig_ROI = figure('CloseRequestFcn',@Reset_button);
 set(imaq.fig_ROI, 'WindowButtonUpFcn', @GetROIPosition);
@@ -40,11 +41,11 @@ axis image;
 
 
 if ~isfield(imaq, 'roi_position')
-    imaq.roi_position = [380, 174, 192, 168];
+    %imaq.roi_position = [380, 174, 192, 168];
+    imaq.roi_position = [420  204  160  152];
 end
 
 roi = drawrectangle('Color', 'w', 'LineWidth', 1.5, 'Position', imaq.roi_position);
-
 %% Return
 app.imaq = imaq;
 
@@ -59,8 +60,8 @@ app.imaq = imaq;
 
 %
     function GetROIPosition(~, ~)
-        imaq.roi_position = round(roi.Position);
+        app.imaq.roi_position = round(roi.Position);
         disp('New ROI position: ')
-        disp(imaq.roi_position);
+        disp(app.imaq.roi_position);
     end
 end
