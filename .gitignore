@@ -1,2 +1,10 @@
 #gitignore
+
+.DS_Store
+#matlab tempfile
 *.asv
+
+#python pycache
+*.pyc
+__pycache__/
+
