@@ -12,7 +12,8 @@ capture.callbackTimeSpan = double(app.d_in.ScansAvailableFcnCount)/app.d_in.Rate
 
 % Determine required buffer timespan, seconds
 buffertimespan= max([capture.TimeSpan, capture.livePlotTimeSpan]);
-capture.BufferTimeSpan = buffertimespan + 2*capture.callbackTimeSpan;
+capture.BufferTimeSpan = buffertimespan + 5*capture.callbackTimeSpan;
+%2* callbackTimeSpan is too short?? change to 5 //20230208
 
 % Determine data buffer size
 capture.BufferSize = ceil(app.d_in.Rate * capture.BufferTimeSpan);
