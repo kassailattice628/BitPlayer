@@ -74,7 +74,12 @@ while 1
 
         %Start DAQ, trigger PTB and other devices
         %(1) DAQ trigger, (2) FV trigger, (3) PTB triggers, (4) nothing
-        write(app.d_out, [1, 1, 1, 0]);
+        if app.recobj.n_in_loop == 1
+            write(app.d_out, [1, 1, 1, 0]);
+        else
+            write(app.d_out, [1, 0, 1, 0]);
+        end
+
         
         pause(0.1)
         app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
