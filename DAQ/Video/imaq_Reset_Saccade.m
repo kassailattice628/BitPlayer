@@ -10,8 +10,6 @@ imaq.frame_rate = 500;
 %Update selected ROI
 imaq.vid.ROIPosition = imaq.roi_position;
 
-
-
 %Recording time
 rec_time = app.recobj.rect/1000; % in sec
 imaq.vid.FramesPerTrigger = rec_time * imaq.frame_rate; %
