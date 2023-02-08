@@ -22,13 +22,20 @@ addinput(d_in, "Dev2", "ai2", "Voltage") %photo sensor
 addinput(d_in, "Dev2", "ai3", "Voltage") %trigger monitor
 addinput(d_in, "Dev2", "ai4", "Voltage") %pupil size
 addinput(d_in, "Dev2", "ai5", "Voltage") %researve
+
 % Add Rotary Encoder (ch7)
 addinput(d_in, "Dev2", "ctr0",  "Position");
 d_in.Channels(7).EncoderType = "X4";
 % Add PTB_serialport connection RTS monitor (ch8)
 addinput(d_in, "Dev2", "Port0/Line4", "Digital")
 
-%Port0/Line0: DAQ Start (L -> H)
+%Range
+d_in.Channels(1).Range = [-5, 5];
+d_in.Channels(2).Range = [-5, 5];
+d_in.Channels(3).Range = [-0.2, 0.2];
+d_in.Channels(4).Range = [-5, 5];
+d_in.Channels(5).Range = [-5, 5];
+d_in.Channels(6).Range = [-5, 5];
 
 %% Output Channel Setting
 

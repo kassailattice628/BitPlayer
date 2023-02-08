@@ -61,15 +61,20 @@ while 1
         
         %% Start Recording
 
-        %Start DAQ, trigger PTB and other devices
-        %(1) DAQ trigger, (2) FV trigger, (3) PTB triggers, (4) nothing
-        write(app.d_out, [1, 1, 1, 0]);
-
         %Start Video (with delay)
         if app.CameraSave.Value && isrunning(app.imaq.vid) == 0
             pause(app.imaq.delay_ms/1000)
+
+            disp('Start camera rec')
+            imaq_t = app.imaq.duration_ms/1000;
             start(app.imaq.vid)
+        else
+            imaq_t = 0;
         end
+
+        %Start DAQ, trigger PTB and other devices
+        %(1) DAQ trigger, (2) FV trigger, (3) PTB triggers, (4) nothing
+        write(app.d_out, [1, 1, 1, 0]);
         
         pause(0.1)
         app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
@@ -79,18 +84,20 @@ while 1
 
 
         %% Wait for data acquisition
-        %pause(app.recobj.interval + app.recobj.rect/1000)
-        pause(app.recobj.rect/1000)
+        pause(max(app.recobj.rect/1000, imaq_t));
 
         %% Finishing loop
 
         % Save Movie
         if app.CameraSave.Value
-            while app.imaq.vid.FramesAcquired ~= app.imaq.vid.DiskLoggerFrameCount
+
+            fprintf("%d. frame is afquired", app.imaq.vid.FramesAcquired);
+            while app.imaq.vid.FramesAcquired < app.imaq.vid.DiskLoggerFrameCount
                 pause(.1);
+                disp('video saving...')
             end
-            stop(app.imaq.vid)
             disp(['Movie is saved as: ', app.imaq.movie_fname]);
+            stop(app.imaq.vid)
         end
 
         % Reset TTL pulse
@@ -100,9 +107,11 @@ while 1
 
     end %end of RTS detected.
 
-
-
-    pause(0.01) %Look for RTS
+    if app.StandAloneModeButton.Value
+        pause(app.recobj.interval)
+    else
+        pause(0.01) %Look for RTS
+    end
 
 end % end of loop
 

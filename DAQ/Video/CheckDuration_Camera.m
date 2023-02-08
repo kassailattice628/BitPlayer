@@ -11,6 +11,6 @@ if app.VideoCaptureTime.Value + app.VideoCaptureDelay.Value > rect
 end
 
 app.imaq.duration_ms = app.VideoCaptureTime.Value;
-app.imaq.delay_ms = app.VideoCaptureTime.Value;
+app.imaq.delay_ms = app.VideoCaptureDelay.Value;
 
 end

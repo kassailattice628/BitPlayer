@@ -104,7 +104,6 @@ switch app.CurrentState
                 app.TimestampsFIFOBuffer(end), ...
                 app.CaptureStartMoment, ...
                 app.c.TimeSpan)
-
             app.CurrentState = 'Capture.CaptureComplete';
         end
 
@@ -112,7 +111,17 @@ switch app.CurrentState
         %Acquired enough data to complete capture of specified duration
         CompleteCapture(app)
 
-        app.CurrentState = 'Capture.LookingForRTS';
+        if app.CameraSave.Value
+            app.CurrentState = 'Saving.Movie';
+        else
+            app.CurrentState = 'Capture.LookingForRTS';
+        end
+
+    case 'Saving.Movie'
+        if ~isrunning(app.imaq.vid)
+            app.CurrentState = 'Capture.LookingForRTS';
+        end
+
 end
 
 
@@ -140,6 +149,7 @@ function data = storeDataInFIFO(data, buffersize, datablock)
 % This can occur if the buffer size is changed to a lower value during acquisition
 if size(data,1) > buffersize
     data = data(end-buffersize+1:end, :);
+
 end
 
 if size(datablock,1) < buffersize
@@ -156,7 +166,9 @@ if size(datablock,1) < buffersize
         data = circshift(data,-shiftPosition); 
         data(end-shiftPosition+1:end,:) = datablock;
 
-    elseif (size(data,1) < buffersize) && (size(data,1)+size(datablock,1) > buffersize)
+
+    elseif (size(data,1) < buffersize) &&...
+            (size(data,1)+size(datablock,1) > buffersize)
         % Current data size is less than buffer size and appending the new
         % data block results in a size greater than the buffer size.
         data = [data; datablock];
@@ -169,10 +181,12 @@ if size(datablock,1) < buffersize
         % data block results in a size smaller than or equal to the buffer size.
         % (if (size(data,1) < buffersize) && (size(data,1)+size(datablock,1) <= buffersize))
         data = [data; datablock];
+
     end
 else
     % Data block size (number of rows) is larger than or equal to buffer size
     data = datablock(end-buffersize+1:end,:);
+
 end
 
 end
