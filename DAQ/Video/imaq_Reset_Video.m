@@ -1,21 +1,25 @@
-function imaq_Reset_Saccade(app)
+function imaq_Reset_Video(app)
 %%
 %
 % After reset roi, imaq setting shoud be changed.
 %
 %%
 imaq = app.imaq;
-imaq.frame_rate = 500;
 
+%% Setup Parameters
 %Update selected ROI
 imaq.vid.ROIPosition = imaq.roi_position;
 
+imaq.src.FrameRate = 500;
+
+
 %Recording time
-rec_time = app.recobj.rect/1000; % in sec
-imaq.vid.FramesPerTrigger = rec_time * imaq.frame_rate; %
+video_rec_time = app.VideoCaptureTime.Value/1000; % in sec
+imaq.vid.FramesPerTrigger = video_rec_time * imaq.frame_rate; %
+imaq.vid.TriggerRepeat = 0;
 imaq.vid.TriggerFrameDelay = 0;
 
-% Save Mode
+% Save Mode & Trigger Mode
 imaq.vid.LoggingMode = 'disk'; % 'disk' or 'memory'
 triggerconfig(imaq.vid, 'hardware', 'risingEdge', 'externalTriggerMode0-Source0');
 
@@ -25,7 +29,11 @@ imaq.src.Exposure = 1.358;
 imaq.src.Gain = 11.398;
 imaq.src.Shutter = 1.924;
 
-%% Return
+
+
+% actual frame rate
+imaq.frame_rate = imaq.src.FrameRate;
+% Update imaq
 app.imaq = imaq;
 
 end

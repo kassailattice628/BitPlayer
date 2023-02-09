@@ -57,7 +57,7 @@ while 1
         if app.CameraSave.Value && isrunning(app.imaq.vid) == 0
             pause(app.imaq.delay_ms/1000)
 
-            disp('Camera Rec ON')
+            %disp('Camera Rec ON')
             imaq_t = app.imaq.duration_ms/1000;
             start(app.imaq.vid)
         else
@@ -75,7 +75,7 @@ while 1
         
         pause(0.1)
         app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
-        fprintf("Loop#: %d.\n", app.recobj.n_in_loop);
+        fprintf("Start Loop#: %d.\n", app.recobj.n_in_loop);
         %turn off triggers
         write(app.d_out, [0, 0, 0, 0]); % PTB trigger OFF
 
@@ -88,10 +88,10 @@ while 1
         % Save Movie
         if app.CameraSave.Value
 
-            fprintf("%d. frame is afquired", app.imaq.vid.FramesAcquired);
+            fprintf("%d frame is acquired.\n", app.imaq.vid.FramesAcquired);
             while app.imaq.vid.FramesAcquired < app.imaq.vid.DiskLoggerFrameCount
                 pause(.1);
-                disp('video saving...')
+                disp('Movie saving...')
             end
             disp(['Movie is saved as: ', app.imaq.movie_fname]);
             stop(app.imaq.vid)

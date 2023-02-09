@@ -10,7 +10,7 @@ imaq = app.imaq;
 % imaq.vid = videoinput('pointgrey', 1, 'F7_Raw8_960x600_Mode1');
 
 % Change image size for full image
-imaq.vid.ROIPosition = [0 0 960, 600];
+imaq.vid.ROIPosition = [0, 0, 960, 600];
 
 % Reset Capture setting
 imaq.vid.FramesPerTrigger = 1;
@@ -44,7 +44,7 @@ roi = drawrectangle('Color', 'w', 'LineWidth', 1.5, 'Position', imaq.roi_positio
         delete(imaq.fig_ROI)
         app.AdujstROIButton.Value = false;
 
-        imaq_Reset_Saccade(app); 
+        imaq_Reset_Video(app); 
     end
 %% sub; Update roi_position
     function GetROIPosition(~, ~)
