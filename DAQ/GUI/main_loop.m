@@ -41,15 +41,7 @@ while 1
         %% Video setting
         if app.CameraSave.Value
             
-            % Whne CameraSave is ON
-            % Generate experiment fodler and movie file name with trial number
-            movie_trial_dir =...
-                [app.recobj.SaveMovieDirMouse, '\Movie_', num2str(app.recobj.n_in_loop)];
-
-            if exist(movie_trial_dir, 'dir')==0
-                mkdir(movie_trial_dir)
-            end
-
+            % When CameraSave is ON
             app.imaq = LoggingVideoSetting(app.imaq, app.recobj.n_in_loop);
         end
 
@@ -65,7 +57,7 @@ while 1
         if app.CameraSave.Value && isrunning(app.imaq.vid) == 0
             pause(app.imaq.delay_ms/1000)
 
-            disp('Start camera rec')
+            %disp('Camera Rec ON')
             imaq_t = app.imaq.duration_ms/1000;
             start(app.imaq.vid)
         else
@@ -74,11 +66,16 @@ while 1
 
         %Start DAQ, trigger PTB and other devices
         %(1) DAQ trigger, (2) FV trigger, (3) PTB triggers, (4) nothing
-        write(app.d_out, [1, 1, 1, 0]);
+        if app.recobj.n_in_loop == 1
+            write(app.d_out, [1, 1, 1, 0]);
+        else
+            write(app.d_out, [1, 0, 1, 0]);
+        end
+
         
         pause(0.1)
         app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
-        fprintf("Loop#: %d.\n", app.recobj.n_in_loop);
+        fprintf("Start Loop#: %d.\n", app.recobj.n_in_loop);
         %turn off triggers
         write(app.d_out, [0, 0, 0, 0]); % PTB trigger OFF
 
@@ -91,10 +88,10 @@ while 1
         % Save Movie
         if app.CameraSave.Value
 
-            fprintf("%d. frame is afquired", app.imaq.vid.FramesAcquired);
+            fprintf("%d frame is acquired.\n", app.imaq.vid.FramesAcquired);
             while app.imaq.vid.FramesAcquired < app.imaq.vid.DiskLoggerFrameCount
                 pause(.1);
-                disp('video saving...')
+                disp('Movie saving...')
             end
             disp(['Movie is saved as: ', app.imaq.movie_fname]);
             stop(app.imaq.vid)

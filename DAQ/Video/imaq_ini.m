@@ -4,30 +4,25 @@ function imaq_ini(app)
 % Setting info: Matlab App -> Image Acquisition EXplorer 
 % for R2022a
 %
-%  2022/01/17
-% -> Cannot record at 500 Hz....
-% Try to change setting by IAE 2022/01/31
-%
-
-imaqreset;
-
 
 CheckDuration_Camera(app);
+
+imaqreset;
 imaq = app.imaq;
 
-% Connect to Device%
-%{
-Mode 0 is the standard imaging mode with full resolution readout.
-Mode 1 is 2x2 binning. Effetive resolution is reduced by half and image
-brightness is increased all cases.
-Mode 5 is 4x4binning. Effective resollution is reduced by a factor of four.
-Mode 7 optimize highe well depth, SNR, quantum efficiency at the expense of
-frame rate 
-%}
+%% Camera Mode Info
+% Mode 0 is the standard imaging mode with full resolution readout.
+% Mode 1 is 2x2 binning. Effetive resolution is reduced by half and image
+% brightness is increased all cases.
+% Mode 5 is 4x4binning. Effective resollution is reduced by a factor of four.
+% Mode 7 optimize highe well depth, SNR, quantum efficiency at the expense of
+% frame rate 
+
 
 %% Image aquisition exploer 20220131 %%
 imaq.vid = videoinput("pointgrey", 1, "F7_Mono8_960x600_Mode1");
 imaq.vid.ROIPosition = [420  204  160  152];
+imaq.roi_position = imaq.vid.ROIPosition;
 imaq.vid.LoggingMode = 'disk';
 
 imaq.src = getselectedsource(imaq.vid);
@@ -71,18 +66,17 @@ imaq.src.ShutterMode = "Manual";
 %app.imaq.duration_ms = app.VideoCaptureTime.Value;
 %app.imaq.delay_ms = app.VideoCaptureDelay.Value;
 
-video_rec_time =app.VideoCaptureTime.Value/1000; % in sec
+video_rec_time = app.VideoCaptureTime.Value/1000; % in sec
 imaq.vid.FramesPerTrigger = video_rec_time * imaq.src.FrameRate; %
 imaq.vid.TriggerRepeat = 0;
 imaq.vid.TriggerFrameDelay = 0; %if needed, add GUI
 
-% Save Mode
+% Save Mode & Trigger Mode
 imaq.vid.LoggingMode = 'disk'; % 'disk' or 'memory'
-
-% Set external trigger and trigger source?
 triggerconfig(imaq.vid, 'hardware', 'risingEdge', 'externalTriggerMode0-Source0');
 
 
-% Return
+imaq.frame_rate = imaq.src.FrameRate; %actual FrameRate
+% Update imaq
 app.imaq = imaq;
 end

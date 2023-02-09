@@ -27,6 +27,15 @@ if samplesToPlot > 1
     xlim(app.RotaryEncoder, [app.TimestampsFIFOBuffer(firstPoint), app.TimestampsFIFOBuffer(end)])
 end
 
+%1 addinput(d_in, "Dev2", "ai0", "Voltage") %pupil X
+%2 addinput(d_in, "Dev2", "ai1", "Voltage") %pupil Y
+%3 addinput(d_in, "Dev2", "ai2", "Voltage") %photo sensor
+%4 addinput(d_in, "Dev2", "ai3", "Voltage") %trigger monitor
+%5 addinput(d_in, "Dev2", "ai4", "Voltage") %pupil size
+%6 addinput(d_in, "Dev2", "ai5", "Voltage") %researve
+%7 addinput(d_in, "Dev2", "ctr0",  "Position") %rotary encoder
+%8 addinput(d_in, "Dev2", "Port0/Line4", "Digital") %RST monitor
+
 %Pupil
 t = app.TimestampsFIFOBuffer(firstPoint:end);
 app.plot1(1).XData = t;
@@ -40,13 +49,13 @@ app.plot2.YData = app.DataFIFOBuffer(firstPoint:end, 3);
 
 %Rotary Encoder -> Checking RTS
 app.plot3.XData = t;
-app.plot3.YData = app.DataFIFOBuffer(firstPoint:end, 8);
+app.plot3.YData = app.DataFIFOBuffer(firstPoint:end, 7);
 
 %Trigger monitor
 app.plot5.XData = t;
 app.plot5.YData = app.DataFIFOBuffer(firstPoint:end, 4);
 
-% Detect RTS trigger from PTB
+%% Detect RTS trigger from PTB
 if app.StandAloneModeButton.Value
     app.RTS = true;
 else

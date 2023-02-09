@@ -13,6 +13,7 @@ switch state
         app.StandAloneModeButton.Enable = 'off';
         app.CameraButton.Enable = 'off';
         app.TTLSwitch.Enable = 'off';
+
     case 'Ready'
         app.EditFieldMouseID.Enable = 'on';
         app.EditFieldFileName.Enable = 'on';
@@ -24,4 +25,37 @@ switch state
         app.StandAloneModeButton.Enable = 'on';
         app.CameraButton.Enable = 'on';
         app.TTLSwitch.Enable = 'on';
+
+        app.EditFieldMouseID.Editable = 'on';
+        app.EditFieldFileName.Editable = 'on';
+        app.RecTime.Editable = 'on';
+        app.SamplingRate.Editable = 'on';
+
+    case 'Recording'
+        app.EditFieldMouseID.Editable = 'off';
+        app.EditFieldFileName.Editable = 'off';
+        app.RecTime.Editable = 'off';
+        app.SamplingRate.Editable = 'off';
+
+    case 'CameraON'
+        app.AdujstROIButton.Enable = 'on';
+        app.CameraPreviewButton.Enable = 'on';
+        app.CameraSave.Enable = 'on';
+        app.VideoCaptureDelay.Enable = 'on';
+        app.VideoCaptureTime.Enable = 'on';
+        app.CameraButton.Text = 'Camera ON';
+        app.CameraButton.BackgroundColor = [0, 1, 0];
+
+    case 'CameraOFF'
+        app.AdujstROIButton.Enable = 'off';
+        app.CameraPreviewButton.Enable = 'off';
+        app.CameraSave.Enable = 'off';
+        app.CameraSave.Value = 0;
+        app.CameraSave.BackgroundColor = [0.96, 0.96, 0.96];
+        app.CameraSave.Text = 'SAVE CAM OFF';
+        app.VideoCaptureDelay.Enable = 'off';
+        app.VideoCaptureTime.Enable = 'off';
+        app.CameraButton.Text = 'Camera OFF';
+        app.CameraButton.BackgroundColor = [.96, .96, .96];
+
 end

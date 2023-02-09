@@ -1,30 +1,21 @@
 function imaq_Reset_ROI(app)
 %
 % Capture and show the single full image.
-% Move ROI area in order to capture the eye.
+% Reset (Move) ROI in order to set the appropriate eye position.
 %
 
 imaq = app.imaq;
 
-% imaqreset;
-% if isfield(imaq, 'vid')
-%     delete(imaq.vid)
-% end
+%
+% imaq.vid = videoinput('pointgrey', 1, 'F7_Raw8_960x600_Mode1');
 
-%%
-%imaq.vid = videoinput('pointgrey', 1, 'F7_Raw8_960x600_Mode1');
-% ROI selection
-imaq.vid.ROIPosition = [0 0 960, 600];
-%imaq.src = getselectedsource(imaq.vid);
+% Change image size for full image
+imaq.vid.ROIPosition = [0, 0, 960, 600];
 
-%Capture setting
+% Reset Capture setting
 imaq.vid.FramesPerTrigger = 1;
-% imaq.frame_rate = 500;
-% imaq.src.Exposure = 1.358;
-% %imaq.src.FrameRatePercentage = 100;
-% imaq.src.Gain = 11.398;
-% imaq.src.Shutter = 1.924;
-% Save Mode
+
+% Change logging mode for temporal image.
 imaq.vid.LoggingMode = 'memory'; % 'disk' or 'memory'
 triggerconfig(imaq.vid, 'immediate');
 imaq.vid.triggerRepeat = 0;
@@ -35,30 +26,27 @@ img = getdata(imaq.vid);
 
 % Show image
 imaq.fig_ROI = figure('CloseRequestFcn',@Reset_button);
+
+% Update "imaq.roi_position" by moving ROI on the image
 set(imaq.fig_ROI, 'WindowButtonUpFcn', @GetROIPosition);
+
 imshow(img);
 axis image;
 
-
 if ~isfield(imaq, 'roi_position')
-    %imaq.roi_position = [380, 174, 192, 168];
     imaq.roi_position = [420  204  160  152];
 end
 
 roi = drawrectangle('Color', 'w', 'LineWidth', 1.5, 'Position', imaq.roi_position);
-%% Return
-app.imaq = imaq;
 
-%% subfunction
+%% sub: Reset logging mode
     function Reset_button(~, ~)
         delete(imaq.fig_ROI)
         app.AdujstROIButton.Value = false;
 
-        imaq_Reset_Saccade(app);
-        
+        imaq_Reset_Video(app); 
     end
-
-%
+%% sub; Update roi_position
     function GetROIPosition(~, ~)
         app.imaq.roi_position = round(roi.Position);
         disp('New ROI position: ')
