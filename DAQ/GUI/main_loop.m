@@ -41,15 +41,7 @@ while 1
         %% Video setting
         if app.CameraSave.Value
             
-            % Whne CameraSave is ON
-            % Generate experiment fodler and movie file name with trial number
-            movie_trial_dir =...
-                [app.recobj.SaveMovieDirMouse, '\Movie_', num2str(app.recobj.n_in_loop)];
-
-            if exist(movie_trial_dir, 'dir')==0
-                mkdir(movie_trial_dir)
-            end
-
+            % When CameraSave is ON
             app.imaq = LoggingVideoSetting(app.imaq, app.recobj.n_in_loop);
         end
 
@@ -65,7 +57,7 @@ while 1
         if app.CameraSave.Value && isrunning(app.imaq.vid) == 0
             pause(app.imaq.delay_ms/1000)
 
-            disp('Start camera rec')
+            disp('Camera Rec ON')
             imaq_t = app.imaq.duration_ms/1000;
             start(app.imaq.vid)
         else
