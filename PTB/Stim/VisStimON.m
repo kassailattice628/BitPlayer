@@ -87,7 +87,7 @@ switch sobj.Pattern
         end
 
         %Stim OFF
-        sobj = MovingStim_off(sobj, app.StiminfoTextArea);
+        sobj = MovingStim_off(sobj, app.StiminfoTextArea, vbl);
         
     case 'Moving Spot'
         %Stim position
@@ -122,7 +122,7 @@ switch sobj.Pattern
         end
         
         %Stim OFF
-        sobj = MovingStim_off(sobj, app.StiminfoTextArea);
+        sobj = MovingStim_off(sobj, app.StiminfoTextArea, vbl);
         
         
     case 'Static Bar'
@@ -177,7 +177,7 @@ switch sobj.Pattern
         end
         
         %Stim OFF
-        sobj = MovingStim_off(sobj, app.StiminfoTextArea);
+        sobj = MovingStim_off(sobj, app.StiminfoTextArea, vbl);
         
 
         
@@ -224,8 +224,8 @@ switch sobj.Pattern
             vbl = Screen('Flip', sobj.wPtr, vbl + (sobj.MonitorInterval/2));
         end
         
-        %Stim off
-        sobj = MovingStim_off(sobj, app.StiminfoTextArea);
+        %Stim OFF
+        sobj = MovingStim_off(sobj, app.StiminfoTextArea, vbl);
         
 
     case 'Gabor'
@@ -283,7 +283,8 @@ switch sobj.Pattern
             vbl = Screen('Flip', sobj.wPtr, vbl + (sobj.MonitorInterval/2));
         end
         
-        sobj = MovingStim_off(sobj, app.StiminfoTextArea);
+        %Stim OFF
+        sobj = MovingStim_off(sobj, app.StiminfoTextArea, vbl);
 
 
     case 'Images'

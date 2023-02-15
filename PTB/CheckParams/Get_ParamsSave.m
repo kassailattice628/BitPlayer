@@ -26,9 +26,13 @@ p.stim1.BGColor = sobj.bgcol;
 %}
 
 %%% Center Position %%%
-p.stim1.Center_position = sobj.index_center_in_mat;
-p.stim1.CenterX_pix = sobj.StimCenterPos(1);
-p.stim1.CenterY_pix = sobj.StimCenterPos(2);
+switch sobj.Pattern
+    case {'Moving Bar'}
+    otherwise
+        p.stim1.Center_position = sobj.index_center_in_mat;
+        p.stim1.CenterX_pix = sobj.StimCenterPos(1);
+        p.stim1.CenterY_pix = sobj.StimCenterPos(2);
+end
 
 %%% Size %%%
 p.stim1.Size_deg = sobj.StimSize_deg;

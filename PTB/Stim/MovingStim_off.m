@@ -1,4 +1,4 @@
-function sobj = MovingStim_off(sobj, stiminfo)
+function sobj = MovingStim_off(sobj, stiminfo, vbl)
 % stiminfo: app.StiminfoTextArea
 % serport: app.SerPort
 %
