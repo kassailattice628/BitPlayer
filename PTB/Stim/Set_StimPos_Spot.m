@@ -61,7 +61,7 @@ elseif i_in_cycle == 1
     if randomize == 1
         list_order = randperm(list_size);
     else
-        list_order = 1:listsize;
+        list_order = 1:list_size;
     end
 end 
 
