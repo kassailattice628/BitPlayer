@@ -84,7 +84,7 @@ switch sobj.Pattern
 end
 
 gui.Value = text_stim_info;
-gui.BackgroundColor = [1,1,0.8];
+gui.BackgroundColor = [1,1,0.5];
 drawnow;
 
 end

@@ -22,9 +22,8 @@ gui = app.PTBSTARTButton;
 %Save data
 ParamsSave = {};
 
-bl = app.Blankloop.Value;%%% need to change %%%
+n_blankloop = 1;%%% need to change %%%
 n_in_loop = 1;
-n_in_loop = n_in_loop - bl;
 
 n_off = 1;
 
@@ -47,7 +46,7 @@ while 1
         disp('Loop Stop')
         break;
     end
-    
+
     %% Evaluate CTS state
     if CTSstate
         disp('Trigger ON')
@@ -55,23 +54,29 @@ while 1
         app.TTLfromDAQLamp.Color = [1,1,0];
         disp(['Trial# : ', num2str(n_in_loop)]);
 
-        
+
         %false: "Presenting a stimulus"
         setRTS(app.SerPort, false);
         pause(0.01) %for GUI update
 
         %%%%% Visual Stim ON %%%%%
-        VisStimON(app, n_in_loop);
-        
+        VisStimON(app, n_in_loop, n_blankloop);
+
         %get stim parameters
-        ParamsSave{1, n_in_loop} = Get_ParamsSave(app.sobj); %#ok<AGROW> 
+        if n_blankloop > app.Blankloop.Value
+            blank = false;
+        else
+            blank = true;
+        end
+        ParamsSave{1, n_in_loop} = Get_ParamsSave(app.sobj, blank); %#ok<AGROW>
 
         %%%%% ISI
         pause(app.ISI.Value)
         setRTS(app.SerPort, true) %Ready to start DAQ
         %%%%%%%%%%%%%%%%%%%%%%%%%%
-        
+
         n_in_loop = n_in_loop + 1;
+        n_blankloop = n_blankloop + 1;
         n_off = 1;
     else
         if n_off == 1
@@ -89,7 +94,7 @@ while 1
         end
         n_off = n_off + 1;
         pause(0.001)
-        
+
 
     end
 
@@ -97,7 +102,7 @@ end
 
 %%%%%%%%%% Out of Loop %%%%%%%%%%
 
-sobj = app.sobj; 
+sobj = app.sobj;
 sobj.n_in_loop = n_in_loop - 1;
 
 
