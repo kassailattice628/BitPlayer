@@ -23,6 +23,8 @@ switch value
         app.Size.Enable = 'off';
         
     case 'Moving Bar'
+        app.ShapeDropDown.Enable = 'off';
+        app.PositionOrderDropDown.Enable = 'off';
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
         app.MoveSpd.Enable = 'on';
@@ -39,6 +41,7 @@ switch value
         app.DurationMoveStim_Label.Enable = 'on';
         
     case 'Static Bar'
+        app.ShapeDropDown.Enable = 'off';
         app.BarOrientation.Enable = 'on';
         app.BarOrientation_Label.Enable = 'on';
 
@@ -79,6 +82,9 @@ function EnableOffAll(app)
 % All off other than Size, MonitorDiv, Fixed Pos
 %
 app.DurationMoveStim_Label.Enable = 'off';
+
+app.PositionOrderDropDown.Enable = 'on';
+app.ShapeDropDown.Enable = 'on';
 
 app.Size.Enable = 'on';
 app.MonitorDiv.Enable = 'on';
