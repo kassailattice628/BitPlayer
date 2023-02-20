@@ -13,7 +13,8 @@ n = app.n_in_loop;
 
 
 %% photo sensor
-th_photo = app.Threshold_photo_sensor.Value;
+[ON, OFF] = Get_stim_timing(app);
+% addline, add area
 
 % [corON, corOFF] = Plot_photo_sensor(app, recTime, data(:,3,n), th_photo, n, flag);
 % Show_stim_area(app.UIAxes_photosensor, data(:,3,n), corON , corOFF, 150, -0.1)

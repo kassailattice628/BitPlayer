@@ -17,10 +17,10 @@ mainvar = app.mainvar;
 if isfield(mainvar, 'dirname_ptb')
     % If data directory is already exist.
     [f, d] = uigetfile({[mainvar.dirname_ptb, '*.mat']});
+    
 elseif isfield(mainvar, 'mouse')
     a = split(mainvar.dirname_daq, filesep);
     d = fullfile(a{1:end-3}, [mainvar.date,'ptb'], mainvar.mouse, '/');
-    
     [f, d] = uigetfile({['/', d, '*.mat']});
     
 else
@@ -56,6 +56,7 @@ else
     
     app.sobj = sobj;
     app.ParamsSave = ParamsSave;
+    app.mainvar = mainvar;
     
     %% GUI
     app.StimPattern.Text = ['Stim: ', sobj.Pattern];

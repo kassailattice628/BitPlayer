@@ -3,21 +3,23 @@ function [ON, OFF] = Get_stim_timing(app)
 % Correct Visual Stimulus timing by Photo sensor signal
 % and Thoreshold (GUI).
 %
-ON = [];
-OFF = [];
-
 n = app.n_in_loop;
 if ~isempty(app.sobj)
-s = app.sobj;
-p = app.ParamsSave;
-th = app.Threshold_photo_sensor.Value;
-
+    s = app.sobj;
+    p = app.ParamsSave;
+    th = app.Threshold_photo_sensor.Value;
 end
 
 %%
-if n > prestim
+if ~isfield(s, 'Blankloop')
+    s.Blankloop = 0;
+end
+
+%%
+if n > s.Blankloop
     % May have photo sensor signals
-    % Detect crossing point (ON, OFF)
+    % Detect crossing points (ON, OFF), when visial stim is ON.
+    
     i_stim_on = find(app.SaveData(:, 3, n) > th, 1);
     i_stim_off = find(app.SaveData(:, 3, n) > th, 1, 'last');
     
@@ -26,10 +28,19 @@ if n > prestim
         t_off = app.SaveTimestamps(i_stim_off, n);
         
         if ~isfield(p{1,n}.stim1, 'corON')
-            ON = t_on - (s.RECT(4) - p{1,n}.stim1.centerY_pix -...
-                
-        endkassailattice628
-        
+            %Do I need to update corON/OFF_
+        end
+    else
+        t_on = app.SaveTimestamps(1, n) + p{1,n}.stim1.On_time;
+        t_off = app.SaveTimestamps(1, n) + p{1,n}.stim1.Off_time;
+    end
+else
+    t_on = [];
+    t_off = [];
+end
 
+%% Return
+ON = t_on;
+OFF = t_off;
 
 end
