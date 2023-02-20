@@ -1,4 +1,4 @@
-function Open_Mat(app)
+function Open_daq_mat(app)
 %
 % Original is select Select_Open_Mat.
 % Modified to use in BitPlayer.
