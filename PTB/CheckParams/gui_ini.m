@@ -7,12 +7,18 @@ app.ShapeDropDown.Value = 'Circle';
 
 %%
 app.Duration.Value = round(app.sobj.Duration_sec);
-app.Duration_Label.Text = ['sec = ', num2str(round(app.Duration.Value / app.sobj.MonitorInterval)), ' flips'];
+app.Duration_Label.Text =...
+    ['sec = ', num2str(round(app.Duration.Value / app.sobj.MonitorInterval)), ' flips'];
 
 app.Delay.Value = app.sobj.Delay_sec;
-app.Delay_Label.Text = ['sec = ', num2str(round(app.Delay.Value / app.sobj.MonitorInterval)), ' flips'];
+app.Delay_Label.Text =...
+    ['sec = ', num2str(round(app.Delay.Value / app.sobj.MonitorInterval)), ' flips'];
 
 app.ISI.Value = app.sobj.ISI_sec;
+
+app.Blankloop.Value = app.sobj.Blankloop_times;
+app.BlankloopLabel.Text = ...
+    ['loops, ', num2str((app.Duration.Value + app.ISI.Value)*app.Blankloop.Value), ' sec'];
 
 %app.SetBlank.Value = 2;
 %app.SetBlank_Label.Txt = ['loops = ' num2str(round(app.SetBlank.Value * )), ' sec'];
