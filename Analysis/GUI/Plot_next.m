@@ -20,14 +20,13 @@ app.ParamsSave{1,n}.stim1.correct_StimON_timing = ON;
 app.ParamsSave{1,n}.stim1.correct_StimOFF_timing = OFF;
 
 
-%% rotary encoder
-[~, rotVel] = Decode_Rotary_Encoder(data(:, 7, n), app.recobj.sampf);
-Set_plot(app.UIAxes_4, t(1:end-1, n), rotVel(:, 1), [ON, OFF]);
-% Show_stim_area(app.UIAxes_Locomotion, rotVel, corON , corOFF, [], [])
+%% Locomotion (Rotary encoder)
+[~, locomotion_velocity] = Decode_Rotary_Encoder(data(:, 7, n), app.recobj.sampf);
+Set_plot(app.UIAxes_4, t(1:end-1, n), locomotion_velocity, [ON, OFF]);
 
 
-%% eye velocity
-% [~, ~, vel] = get_eye_velocity(app.recobj.sampf, data(:,1:2,n));
+%% Eye movment velocity
+eye_velocity = Get_eye_velocity(data(:, 1:2, n), app.recobj.sampf);
 % %saccade timing
 % th_low = app.Vel_threshold_low.Value;
 % th_high = app.Vel_threshold_high.Value;
@@ -35,9 +34,7 @@ Set_plot(app.UIAxes_4, t(1:end-1, n), rotVel(:, 1), [ON, OFF]);
 % %[locs, pks] = get_detect_saccade(p{1,n}, vel, recTime, th, 0);
 % app.ParamsSave{1,n}.sac_t = recTime(locs);
 % 
-% %eye velocity
-% Set_plot(app.UIAxes_Eye_Velo, recTime(1:end-1), vel);
-% Show_stim_area(app.UIAxes_Eye_Velo, vel, corON , corOFF, 2, -0.01)
+Set_plot(app.UIAxes_3, t(1:end-1, n), eye_velocity, [ON, OFF]);
 
 %% eye horizontal
 Set_plot(app.UIAxes_1, t(:, n), data(:, 1, n), [ON, OFF]);
