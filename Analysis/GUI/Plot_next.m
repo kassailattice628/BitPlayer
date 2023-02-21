@@ -3,6 +3,7 @@ function Plot_next(app)
 % Plot daq data
 % Plot_next(app, set_n, flag)
 %
+
 data = app.SaveData;
 t = app.SaveTimestamps;
 n = app.n_in_loop;
@@ -19,13 +20,9 @@ app.ParamsSave{1,n}.stim1.correct_StimON_timing = ON;
 app.ParamsSave{1,n}.stim1.correct_StimOFF_timing = OFF;
 
 
-
-% Show_stim_area(app.UIAxes_photosensor, data(:,3,n), corON , corOFF, 150, -0.1)
-
-
 %% rotary encoder
-% [~, rotVel] = DecodeRot(data(:, ch_rot, n), n, p, app.recobj.sampf);
-% Set_plot(app.UIAxes_Locomotion, recTime(1:end-1), rotVel)
+[~, rotVel] = Decode_Rotary_Encoder(data(:, 7, n), app.recobj.sampf);
+Set_plot(app.UIAxes_4, t(1:end-1, n), rotVel(:, 1), [ON, OFF]);
 % Show_stim_area(app.UIAxes_Locomotion, rotVel, corON , corOFF, [], [])
 
 
@@ -48,9 +45,8 @@ Set_plot(app.UIAxes_1, t(:, n), data(:, 1, n), [ON, OFF]);
 %% eye vertical
 Set_plot(app.UIAxes_2, t(:, n), data(:, 2, n), [ON, OFF]);
 
-
-% 
-% %% Detect Spikes;
+ 
+%% Detect Spikes;
 % Add_plot_saccade(app, recTime, data(:,1:2,n), locs, pks)
 
 

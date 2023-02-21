@@ -43,6 +43,7 @@ if n > s.Blankloop
     % Add plot sensor lines.
     th = app.Threshold_photo_sensor.Value;
     Plot_photo_sensor(app.UIAxes_5, th, t_on, t_off, t(:, n));
+    app.UIAxes_5.XTick = round(linspace(t(1,n), t(end,n), 5), 2);
 
 else
     t_on = [];
