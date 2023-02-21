@@ -3,7 +3,6 @@ function Plot_next(app)
 % Plot daq data
 % Plot_next(app, set_n, flag)
 %
-
 data = app.SaveData;
 t = app.SaveTimestamps;
 n = app.n_in_loop;
@@ -12,11 +11,15 @@ n = app.n_in_loop;
 %Update_text(app);
 
 
-%% photo sensor
-[ON, OFF] = Get_stim_timing(app);
-% addline, add area
+%% Photo sensor
 
-% [corON, corOFF] = Plot_photo_sensor(app, recTime, data(:,3,n), th_photo, n, flag);
+[ON, OFF] = Get_stim_timing(app); %+ add stim timing, plot photosensor
+
+app.ParamsSave{1,n}.stim1.correct_StimON_timing = ON;
+app.ParamsSave{1,n}.stim1.correct_StimOFF_timing = OFF;
+
+
+
 % Show_stim_area(app.UIAxes_photosensor, data(:,3,n), corON , corOFF, 150, -0.1)
 
 
@@ -40,20 +43,18 @@ n = app.n_in_loop;
 % Show_stim_area(app.UIAxes_Eye_Velo, vel, corON , corOFF, 2, -0.01)
 
 %% eye horizontal
-Set_plot(app.UIAxes_1, t(:, n), data(:, 1, n));
-%Show_stim_area(app.UIAxes_Eye_Horizontal, data(:,1, n), corON , corOFF, [], [])
+Set_plot(app.UIAxes_1, t(:, n), data(:, 1, n), [ON, OFF]);
 
 %% eye vertical
-Set_plot(app.UIAxes_2, t(:, n), data(:, 2, n));
-% Show_stim_area(app.UIAxes_Eye_Vertical, data(:,2, n), corON , corOFF, [], [])
+Set_plot(app.UIAxes_2, t(:, n), data(:, 2, n), [ON, OFF]);
+
+
 % 
 % %% Detect Spikes;
 % Add_plot_saccade(app, recTime, data(:,1:2,n), locs, pks)
 
-%% Photo sensor
-Set_plot(app.UIAxes_3, t(:, n), data(:, 3, n));
 
 
-%drawnow;
+
 
 end
