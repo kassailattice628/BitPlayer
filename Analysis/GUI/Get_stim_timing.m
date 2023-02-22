@@ -8,7 +8,6 @@ function [t_on, t_off] = Get_stim_timing(t, data, n, p, th)
 % t = app.SaveTimestamps;
 % data = app.SaveData;
 % th = app.Threshold_photo_sensor.Value;
-% ax = app.UIAxes_5;
 %
 % Output: [stim on in sec, stim off in sec];
 %%
