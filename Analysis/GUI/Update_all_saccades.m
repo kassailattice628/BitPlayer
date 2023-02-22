@@ -50,7 +50,9 @@ for i = 1:size(t, 2)
     p{1,i}.p_saccades = locations; %time point
     p{1,i}.t_saccades = t_saccades; %time
     
-    disp(i)
+    if rem(i, 20) == 0
+        fprintf('Processing trial# %d ...\n', i);
+    end
 end
 disp('Done...')
 

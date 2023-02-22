@@ -7,14 +7,8 @@ function Open_daq_mat(app)
 
 %% Clean up preloaded variables
 
-% app.SaveData
-% app.SaveTimestamps
-% app.imgobj
-% app.recobj
-
 SaveData = [];
 mainvar = [];
-
 
 
 %% Load Data
@@ -41,19 +35,22 @@ else
     end
     
     %% Success file load
+    app.n_in_loop = 1;
+    app.Trial_n.Value = 1;
+    
     mainvar.dirname_daq = d;
     if ~isfield(mainvar, 'mouse')
         a = split(d, filesep);
         mainvar.mouse = a{end-1};
-        app.Mouse.Text = ['Mouse: ', mainvar.mouse];
         mainvar.date = a{end-2}(1:end-3);
-        app.Date.Text = ['Date: ', mainvar.date];
-        app.n_in_loop = 1;
-        app.Trial_n.Value = 1;
+        
+        %Photo sensor V -> mV
+        SaveData(:,3,:) =  SaveData(:,3,:)* 1000;
     end
+    app.Mouse.Text = ['Mouse: ', mainvar.mouse];
+    app.Date.Text = ['Date: ', mainvar.date];
     
-    %Photo sensor V -> mV
-    SaveData(:,3,:) =  SaveData(:,3,:)* 1000;
+    
     
     %% Check file name
     if length(regexp(f, '_')) > 1
@@ -90,7 +87,12 @@ else
     app.SaveData = SaveData;
     app.SaveTimestamps = SaveTimestamps;
     app.recobj = recobj;
-    
+    app.sobj = sobj;
+    app.ParamsSave = ParamsSave;
+    if ~isempty(sobj)
+        app.StimPattern.Text = ['Stim: ', sobj.Pattern];
+    end
+
 end
 
 
