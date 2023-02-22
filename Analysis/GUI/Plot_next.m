@@ -16,7 +16,7 @@ n = app.n_in_loop;
 app.ParamsSave{1,n}.stim1.correct_StimON_timing = ON;
 app.ParamsSave{1,n}.stim1.correct_StimOFF_timing = OFF;
 
-%% Separate? %%
+
 %% Locomotion (Rotary encoder)
 [~, locomotion_velocity] = Decode_Rotary_Encoder(data(:, 7, n), app.recobj.sampf);
 app.ParamsSave{1,n}.locomotion_velocity = locomotion_velocity;
@@ -29,8 +29,16 @@ Set_plot(app.UIAxes_3, t(1:end-1, n), eye_velocity, [ON, OFF]);
 
 
 %% Update saccade and plot eye movements with deteted saccades
-Update_saccade(app);
+% If sacccades have already been detected, it is not calculated again.
+% To update saccades, use GUI.
+if ~isfield(app.ParamsSave{1,n}, 't_saccades')
+    Update_saccade(app);
+end
 
+%% GUI_text
+Update_text_detected_saccade...
+    (app.Detected_saccade, app.ParamsSave{1,n}.t_saccades);
+Plot_eye_movements(app)
 end
 
 

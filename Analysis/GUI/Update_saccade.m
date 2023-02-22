@@ -10,10 +10,4 @@ t_saccades = t(locations, n);
 app.ParamsSave{1,n}.p_saccades = locations; %time point
 app.ParamsSave{1,n}.t_saccades = t_saccades; %time
 
-%% GUI_text
-Update_text_detected_saccade(app.Detected_saccade, t_saccades);
-
-%%
-Plot_eye_movements(app)
-
 end
