@@ -9,13 +9,10 @@ t = app.SaveTimestamps;
 n = app.n_in_loop;
 
 
-%% Photo sensor
-
-[ON, OFF] = Get_stim_timing(app); %+ add stim timing, plot photosensor
-
+%% Photo sensor 
+[ON, OFF] = Plot_photo_sensor(app, n);
 app.ParamsSave{1,n}.stim1.correct_StimON_timing = ON;
 app.ParamsSave{1,n}.stim1.correct_StimOFF_timing = OFF;
-
 
 %% Locomotion (Rotary encoder)
 [~, locomotion_velocity] = Decode_Rotary_Encoder(data(:, 7, n), app.recobj.sampf);
