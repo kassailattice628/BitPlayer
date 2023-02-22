@@ -42,13 +42,14 @@ else
     
     %% Success file load
     mainvar.dirname_daq = d;
-    
     if ~isfield(mainvar, 'mouse')
         a = split(d, filesep);
         mainvar.mouse = a{end-1};
         app.Mouse.Text = ['Mouse: ', mainvar.mouse];
         mainvar.date = a{end-2}(1:end-3);
         app.Date.Text = ['Date: ', mainvar.date];
+        app.n_in_loop = 1;
+        app.Trial_n.Value = 1;
     end
     
     %Photo sensor V -> mV
