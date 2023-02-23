@@ -9,6 +9,8 @@ function Open_daq_mat(app)
 
 SaveData = [];
 mainvar = [];
+sobj = [];
+ParamsSave = [];
 
 
 %% Load Data

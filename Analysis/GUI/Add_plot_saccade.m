@@ -8,4 +8,5 @@ if ~isempty(peaks)
     plot(gui, t_saccades, data_saccades, 'm*');
     hold(gui, 'off');
 end
+
 end
