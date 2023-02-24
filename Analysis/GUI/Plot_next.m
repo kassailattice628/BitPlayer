@@ -1,9 +1,11 @@
 function Plot_next(app)
 %
-% Plot daq data
-% Plot_next(app, set_n, flag)
+% Show traces
+% Calcurate stim timing, velocitie, if needed.
+% Update app.ParamsSave;
 %
 
+%%
 data = app.SaveData;
 t = app.SaveTimestamps;
 n = app.n_in_loop;
