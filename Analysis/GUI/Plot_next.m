@@ -12,7 +12,7 @@ n = app.n_in_loop;
 
 
 %% Photo sensor 
-[ON, OFF] = Plot_photo_sensor(app, n);
+[ON, OFF] = Plot_photo_sensor(app);
 app.ParamsSave{1,n}.stim1.correct_StimON_timing = ON;
 app.ParamsSave{1,n}.stim1.correct_StimOFF_timing = OFF;
 

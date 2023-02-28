@@ -10,7 +10,7 @@ ax1_plot = app.ax1_p;
 
 
 %% Update plot
-y = im.F(:,n);
+y = im.dFF(:,n);
 %plot(ax, im.FVt, y);
 
 ax1_plot.XData = im.FVt;

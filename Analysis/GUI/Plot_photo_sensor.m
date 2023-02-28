@@ -1,10 +1,11 @@
-function [t_on, t_off] = Plot_photo_sensor(app, n)
+function [t_on, t_off] = Plot_photo_sensor(app)
 
 p = app.ParamsSave;
 t = app.SaveTimestamps;
 data = app.SaveData;
 th = app.Threshold_photo_sensor.Value;
 ax = app.UIAxes_5;
+n = app.n_in_loop;
 
 if ~isempty(app.sobj)
     s = app.sobj;

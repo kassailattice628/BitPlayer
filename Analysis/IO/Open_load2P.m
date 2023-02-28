@@ -28,6 +28,7 @@ if d == 0
 else
     
     app.mainvar.dirname_2p = d;
+    app.mainvar.fname_2p = f;
     app.FileName.Text = {['File: ', d], f};
     % Load data 
     app.imgobj = Load_imaging_data(im, d, f, app.sobj.Pattern);
@@ -44,9 +45,9 @@ if contains(f, 'Fall')
     [F, Mask_ROIs, centroid] = ...
         Load_Fall_suite2p(im, d, f);
     
-    dFF_raw = [];
-    % Calculate dFF
-    dFF = [];
+    % pre Calculate dFF
+    F0 = mean(F(1:100, :));
+    dFF = (F - F0)./ repmat(F0, size(F,1), 1);
 
 
 else
@@ -54,9 +55,9 @@ else
     [~, ~, ext] = fileparts(f);
     if strcmp(ext, '.mat')
         load([d, f], 'dFF_mat');
-        dFF_raw = dFF_mat;
+        dFF = dFF_mat;
         F = [];
-        dFF = [];
+        
     else
         errordlg('Select *dFF.mat file!')
     end
@@ -70,11 +71,11 @@ fvt = im.FVsampt;
 
 im.FVt = 0:fvt:fvt*(FVflames - 1);
 im.F = F; % raw traces
-im.dFF_raw = dFF_raw; % dFF_raw
 im.dFF = dFF; % calculated dFF
 im.Num_ROIs = num_ROIs;
 im.Mask_ROIs = Mask_ROIs;
 im.Centroid = centroid;
+im.f0 = 1:100; %default f0 frames;
 
 % Remove colorap data
 if isfield(im, 'mat2D')
