@@ -1,4 +1,4 @@
-function im = Get_FVsampt(im, OIB_dirname)
+function [im, f, d] = Get_FVsampt(im, OIB_dirname)
 %
 % Read Frame Rate (fps) & Size of the image
 % from Olympus OIF/OIB file (FV10).
@@ -14,7 +14,7 @@ disp('Reading metadata....')
 
 %params = Get_metadata([], key);
 disp(OIB_dirname)
-params = Get_metadata(OIB_dirname, key);
+[params, f, d] = Get_metadata(OIB_dirname, key);
 
 im.FVsampt = params(1) * 10^-6;
 im.imgsz = [params(2), params(3)];
@@ -22,7 +22,7 @@ im.imgsz = [params(2), params(3)];
 end
 
 %% %%%%%%%%%%
-function params = Get_metadata(fpath, keylist)
+function [params, f, d] = Get_metadata(fpath, keylist)
 %
 % Read imaging metadata from OIF/OIB file using python scripts.
 %

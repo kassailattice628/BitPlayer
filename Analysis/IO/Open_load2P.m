@@ -67,9 +67,12 @@ end
 fvt = im.FVsampt;
 
 %% Update imgobj
-[FVflames, num_ROIs] = size(F);
 
+% FV
+[FVflames, num_ROIs] = size(F);
 im.FVt = 0:fvt:fvt*(FVflames - 1);
+
+
 im.F = F; % raw traces
 im.dFF = dFF; % calculated dFF
 im.Num_ROIs = num_ROIs;
