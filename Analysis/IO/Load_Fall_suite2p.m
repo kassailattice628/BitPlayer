@@ -1,5 +1,5 @@
 function [F_neuron, Mask_rois, centroid] =...
-    Load_Fall_suite2p(imagesize, d, f)
+    Load_Fall_suite2p(im, d, f)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %input
 %1, app.imgobj
@@ -32,18 +32,18 @@ F_neuron = F(rois', :) - 0.7*Fneu(rois',:); %Neuropil factor = 0.7
 F_neuron = F_neuron';
 
 %% Extract ROI shape and position (and roi center)
-Mask_rois = zeros(imagesize * imagesize, length(rois));
+Mask_rois = zeros(im.imgsz * im.imgsz, length(rois));
 centroid = zeros(length(rois), 2);
 for i = 1:length(rois)
     n = rois(i);
-    a = zeros(imagesize, imagesize);
+    a = zeros(im.imgsz, im.imgsz);
     y = stat{n}.ypix + 1;
     x = stat{n}.xpix + 1;
     for m = 1:length(y)
         a(y(m), x(m)) = 1;
     end
     %figure, imshow(a)
-    Mask_rois(:,i) = reshape(a,[imagesize^2, 1]);  
+    Mask_rois(:,i) = reshape(a,[im.imgsz^2, 1]);  
     %
     centroid(i,:) = fliplr(stat{n}.med);
 end
