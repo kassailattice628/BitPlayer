@@ -1,4 +1,4 @@
-function Get_stim_timing(app)
+function [ON, OFF] = Get_stim_timing_2p(app)
 %
 % Show stimi timing in the 2P GUI
 %

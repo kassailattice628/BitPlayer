@@ -6,7 +6,7 @@ function Plot_stim_area(app)
 ax1 = app.UIAxes;   % n_ROI
 ax2 = app.UIAxes_2; % selected_ROI
 
-Get_stim_timing(app);
+Get_stim_timing_2p(app);
 
 %%
 s = app.sobj;
