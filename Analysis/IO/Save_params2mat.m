@@ -1,4 +1,4 @@
-function Save_params2mat(app)
+function Save_params2mat(app, selectapp)
 
 mainvar = app.mainvar;
 SaveData = app.SaveData;
@@ -12,6 +12,8 @@ sobj = app.sobj;
 
 save_fname = app.SaveFileName.Value;
 save_file_path = [mainvar.dirname_daq, save_fname];
+% update mainvar
+app.mainvar.fname_daq = save_fname;
 
 %% save as mat file
 fprintf(['Saving... \n', save_file_path, '\n']);
@@ -21,8 +23,10 @@ save(save_file_path,...
     'imgobj', 'ParamsSave', 'recobj', 'sobj');
 
 disp('Done...');
-
 %% update GUI
-app.FileName.Text = ['File Nmae: ', save_fname];
+if strcmp(selectapp, 'Main')
+    app.FileName.Text = ['File Nmae: ', save_fname];
+end
+app.SaveFileName.Value = save_fname;
 
 end
