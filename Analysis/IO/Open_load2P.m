@@ -26,12 +26,16 @@ if d == 0
     % When file is not selected.
     errordlg('No 2P data file selected.')
 else
-    
     app.mainvar.dirname_2p = d;
     app.mainvar.fname_2p = f;
     app.FileName.Text = {['File: ', d], f};
     % Load data 
     app.imgobj = Load_imaging_data(im, d, f, app.sobj.Pattern);
+    
+    app.mainvar.Detrend = 0;
+    app.mainvar.Lowcutfilter = 0;
+    app.mainvar.Offset = 0;
+    app.mainvar.Zscore = 0;
 end
 
 
