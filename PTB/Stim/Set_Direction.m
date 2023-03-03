@@ -1,29 +1,31 @@
 function sobj = Set_Direction(direction, sobj)
 
+i = sobj.n_in_loop - sobj.Blankloop_times;
+
 switch direction
     case 'Rand8'
         [dir_list, list_size] = make_list(8);
         %Randomize list
-        sobj.MoveDir_i_in_list = Get_RandomDirection(sobj.n_in_loop, list_size, 1);
+        sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, 1);
         sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
         
         
     case 'Rand12'
         [dir_list, list_size] = make_list(12);
         %Randomize list
-        sobj.MoveDir_i_in_list = Get_RandomDirection(sobj.n_in_loop, list_size, 1);
+        sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, 1);
         sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
         
     case 'Rand16'
         [dir_list, list_size] = make_list(16);
         %Randomize list
-        sobj.MoveDir_i_in_list = Get_RandomDirection(sobj.n_in_loop, list_size, 1);
+        sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, 1);
         sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
         
     case 'Ord8'
         [dir_list, list_size] = make_list(8);
         %Randomize list
-        sobj.MoveDir_i_in_list = Get_RandomDirection(sobj.n_in_loop, list_size, 0);
+        sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, 0);
         sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
         
     otherwise
