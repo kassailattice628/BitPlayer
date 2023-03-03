@@ -1,6 +1,6 @@
 # BitPlayer
 
-Last Update 2023/03/03
+Last Update 2023/03/03, tag:v0.3.3
 
 ***
 BitPlayer is the Matlab app for
@@ -64,6 +64,9 @@ ___
 ***
 ## Change history
 
+2022/03/03
+* Running test OK for DAQ+PTB and trigger F10
+* Data load is OK for Analsys. Need to make stimulus specific analysys.
 2022/02/26
 * Developping Analysis app (Analysys + 2P)
 
