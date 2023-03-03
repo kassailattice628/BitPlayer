@@ -7,7 +7,7 @@ p = app.ParamsSave;
 s = app.sobj;
 im = app.imgobj;
 
-n = s.Blankloop + 1;
+n = s.Blankloop_times + 1;
 
 %%
 if isfield(p{1, n}.stim1, 'correct_StimON_timing')

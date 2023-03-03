@@ -6,6 +6,7 @@ function Apply_change_dFF(app)
 %% Reset
 dFF = app.imgobj.F;
 F0 = mean(dFF(app.imgobj.f0,:));
+F0mat = repmat(F0, size(dFF, 1), 1);
 
 %%
 
@@ -19,20 +20,21 @@ if app.Lowcutfilter.Value
     dFF = lowcut(dFF);
 end
 
-% Step3 Offset
-if app.Offset.Value
-    dFF = dFF - F0;
-end
-
 % Step4 (re) calculate dFF
+dFF = (dFF - F0mat)./ F0mat;
 
-dFF = (dFF - F0)./ repmat(F0, size(dFF,1),1);
+% Step4 Offset
+if app.Offset.Value
+    F0 = mean(dFF(app.imgobj.f0,:));
+    F0mat = repmat(F0, size(dFF, 1), 1);
+    dFF = dFF - F0mat;
+end
 
 % Step5 Zscored
 if app.Zscore.Value
-    sd_dFF = sd(dFF(app.imgobj.f0, :));
-    sd_dFF = repmapt(sd_dFF, size(F,1),1);
-    dFF = dFF/sd_dFF;
+    sd_dFF = std(dFF(app.imgobj.f0, :));
+    sd_dFF = repmat(sd_dFF, size(dFF,1),1);
+    dFF = dFF./sd_dFF;
 end
 
 %% Return

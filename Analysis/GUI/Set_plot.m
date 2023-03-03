@@ -1,7 +1,11 @@
 function Set_plot(ax, x, y, stim)
 
-ON = stim(1);
-OFF = stim(2);
+if isempty(stim)
+    ON = [];
+else
+    ON = stim(1);
+    OFF = stim(2);
+end
 
 %% Plot data
 ax.XLim = [min(x), max(x)];

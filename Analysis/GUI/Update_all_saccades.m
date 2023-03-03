@@ -8,8 +8,8 @@ t = app.SaveTimestamps;
 data = app.SaveData;
 th = app.Threshold_photo_sensor.Value;
 
-if ~isfield(app.sobj, 'Blankloop')
-    app.sobj.Blankloop = 0;
+if ~isfield(app.sobj, 'Blankloop_times')
+    app.sobj.Blankloop_times = 0;
 end
 
 %%
@@ -17,7 +17,7 @@ disp('Update all saccades...')
 for i = 1:size(t, 2)
     
     % Extract stim timing
-    if i > app.sobj.Blankloop
+    if i > app.sobj.Blankloop_times
     
         [ON, OFF] = Get_stim_timing(t, data, i, p, th); 
 

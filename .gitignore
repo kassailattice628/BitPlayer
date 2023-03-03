@@ -4,7 +4,8 @@
 #matlab tempfile
 *.asv
 
-#python pycache
+#python pycache, pyenv version
+.python-version
 *.pyc
 __pycache__/
 

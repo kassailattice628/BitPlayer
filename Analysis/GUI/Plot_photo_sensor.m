@@ -11,11 +11,11 @@ if ~isempty(app.sobj)
     s = app.sobj;
     
     %%
-    if ~isfield(s, 'Blankloop')
-        s.Blankloop = 0;
+    if ~isfield(s, 'Blankloop_times')
+        s.Blankloop_times = 0;
     end
     
-    if n > s.Blankloop
+    if n > s.Blankloop_times
         % May have photo sensor signals
         % Detect crossing points (ON, OFF), when visial stim is ON.
         

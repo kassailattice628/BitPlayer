@@ -15,7 +15,7 @@ th_high = th(2);
 th_low = th(1);
 
 %%
-peak_distance_in_sec = 0.3; %peak distance in sec.
+peak_distance_in_sec = 0.1; %peak distance in sec.
 
 [peaks, locs_in_sec] = findpeaks(velocity, sf,...
     'MinPeakHeight', th_low,...

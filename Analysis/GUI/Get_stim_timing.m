@@ -20,8 +20,14 @@ if ~isempty(i_stim_on) && ~isempty(i_stim_off)
     t_off = t(i_stim_off, n);
     
 else
-    t_on = t(1, n) + p{1,n}.stim1.On_time;
-    t_off = t(1, n) + p{1,n}.stim1.Off_time;
+    if ~isfield(p{1,n}.stim1, 'On_time')
+        % in Blank Loops
+        t_on = [];
+        t_off = [];
+    else
+        t_on = t(1, n) + p{1,n}.stim1.On_time;
+        t_off = t(1, n) + p{1,n}.stim1.Off_time;
+    end
 end
 
 end
