@@ -31,11 +31,11 @@ addinput(d_in, "Dev2", "Port0/Line4", "Digital")
 
 %Range
 d_in.Channels(1).Range = [-5, 5];
-d_in.Channels(2).Range = [-5, 5];
-d_in.Channels(3).Range = [-0.2, 0.2];
-d_in.Channels(4).Range = [-5, 5];
-d_in.Channels(5).Range = [-5, 5];
-d_in.Channels(6).Range = [-5, 5];
+% d_in.Channels(2).Range = [-5, 5];
+% d_in.Channels(3).Range = [-0.2, 0.2];
+% d_in.Channels(4).Range = [-5, 5];
+% d_in.Channels(5).Range = [-5, 5];
+% d_in.Channels(6).Range = [-5, 5];
 
 %% Output Channel Setting
 

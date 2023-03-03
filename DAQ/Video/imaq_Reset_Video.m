@@ -9,6 +9,7 @@ imaq = app.imaq;
 %% Setup Parameters
 %Update selected ROI
 imaq.vid.ROIPosition = imaq.roi_position;
+disp(imaq.vid.ROIPosition);
 
 imaq.src.FrameRate = 500;
 
