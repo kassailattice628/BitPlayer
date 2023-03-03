@@ -6,16 +6,18 @@ if contains(sobj.Pattern, {'Uni', 'Size Random', 'Moving Spot', 'Static Bar'})
 elseif strcmp(sobj.Pattern, 'Fine Mapping')
     div = sobj.Div_grid;
 end
+
+i = sobj.n_in_loop - sobj.Blankloop_times;
 %%%%%%
 switch mode
     case 'Random Matrix'
         %Randmize position center
-        sobj.index_center_in_mat = Get_RandomCenterPosition(sobj.n_in_loop, div^2, 1);
+        sobj.index_center_in_mat = Get_RandomCenterPosition(i, div^2, 1);
         sobj.StimCenterPos = sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
  
     case 'Ordered Matrix'
         %Present stim in order
-        sobj.index_center_in_mat = Get_RandomCenterPosition(sobj.n_in_loop, div^2, 0);
+        sobj.index_center_in_mat = Get_RandomCenterPosition(i, div^2, 0);
         sobj.StimCenterPos = sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
         
     case 'Fix Repeat'
@@ -61,7 +63,7 @@ elseif i_in_cycle == 1
     if randomize == 1
         list_order = randperm(list_size);
     else
-        list_order = 1:listsize;
+        list_order = 1:list_size;
     end
 end 
 

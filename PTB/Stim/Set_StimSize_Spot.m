@@ -1,8 +1,15 @@
 function sobj = Set_StimSize_Spot(sobj)
 
-%Randomize size
-index_size_in_list = Get_RandomSize(sobj.n_in_loop, length(sobj.StimSize_deg_list));
+%Randomize size order.
+i = sobj.n_in_loop - sobj.Blankloop_times;
+
+% Get randamized index.
+index_size_in_list = Get_RandomSize(i, length(sobj.StimSize_deg_list));
+
+% Get stim size (diameter) in degree
 sobj.StimSize_deg = sobj.StimSize_deg_list(index_size_in_list);
+
+% Get stim size (diameter) in pixels
 sobj.StimSize_pix = round(ones(1,2) * ...
     Deg2Pix(sobj.StimSize_deg, sobj.MonitorDist, sobj.Pixelpitch)); %Defafult 1 deg
 
@@ -25,5 +32,3 @@ end
 index_list = list_order(i_in_cycle);
 
 end
-
-%% 
