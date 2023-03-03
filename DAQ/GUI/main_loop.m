@@ -3,7 +3,7 @@ function main_loop(app)
 % Loop fucntion of BitPlayer_DAQ
 %
 
-%% 
+%% Intialize condition.
 recobj = app.recobj;
 app.recobj.n_in_loop = 1;
 
@@ -19,6 +19,8 @@ stateMonitor(app)
 
 app.recobj.DAQt = [];
 t = tic;
+
+%% Loop start
 
 while 1
     stateMonitor(app)
@@ -114,7 +116,7 @@ end % end of loop
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-
+%% Loop stop
 app.recobj.n_in_loop = app.recobj.n_in_loop - 1;
 
 %% Save DAQ data to the file

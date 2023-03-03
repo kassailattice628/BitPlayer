@@ -49,7 +49,9 @@ app.plot2.YData = app.DataFIFOBuffer(firstPoint:end, 3);
 
 %Rotary Encoder -> Checking RTS
 app.plot3.XData = t;
-app.plot3.YData = app.DataFIFOBuffer(firstPoint:end, 7);
+REang = Decode_RotaryEncoder(app.DataFIFOBuffer(firstPoint:end, 7));
+app.plot3.YData = REang;
+%app.plot3.YData = app.DataFIFOBuffer(firstPoint:end, 7);
 
 %Trigger monitor
 app.plot5.XData = t;

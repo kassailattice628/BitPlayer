@@ -22,7 +22,7 @@ if isempty(firstSampleIndex) ||...
     stop(app.d_in);
     flush(app.d_in);
     app.DAQSTARTButton.Enable = "on";
-    uialert(app.BitPlayer_DAQAppUIFigure,...
+    uialert(app.UIFigure,...
         'Could not complete capture.', 'Capture error');
     return
 end
@@ -52,7 +52,7 @@ else
     fprintf("Complete capture, loop#: %d.\n", app.recobj.n_in_loop)
 end
 
-% count up loop number
+% Count up loop number
 app.recobj.n_in_loop = app.recobj.n_in_loop + 1; 
        
 end

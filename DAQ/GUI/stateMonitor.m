@@ -21,7 +21,7 @@ switch app.CurrentState
         app.StateText.FontColor = [0, 0, 1];
         
     case 'Capture.CaptureComplete'
-        app.StateText.Text = 'Finish Captur!!!!';
+        app.StateText.Text = 'Finish Capture!!!!';
         app.StateText.FontColor = [0.07,0.62,1.00];
 
     case 'Saving.Movie'
