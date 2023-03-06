@@ -23,7 +23,12 @@ if ~isempty(app.sobj)
         
         
         % Photo sensor
-        Set_plot(ax, t(:, n), data(:, 3, n), [t_on, t_off]);
+        %Set_plot(ax, t(:, n), data(:, 3, n), [t_on, t_off]);
+
+        Set_plot(ax, t(:, n), data(:, 3, n));
+        Add_stim_timing(ax, t_on, t_off, 'Photo sensor')
+
+
         % Add plot sensor lines.
         hold(ax, 'on');
         % stim line
@@ -40,15 +45,16 @@ if ~isempty(app.sobj)
         % Prestimulus condition
         t_on = [];
         t_off = [];
-        Set_plot(ax, t(:, n), data(:, 3, n), [t_on, t_off]);
+%         Set_plot(ax, t(:, n), data(:, 3, n), [t_on, t_off]);
+        Set_plot(ax, t(:, n), data(:, 3, n));
     end
 
 else
     % if sobj is not used. Plot sensor data only.
     t_on = [];
     t_off = [];
-    
-    Set_plot(ax, t(:, n), data(:, 3, n), [t_on, t_off]);
+%     Set_plot(ax, t(:, n), data(:, 3, n), [t_on, t_off]);
+    Set_plot(ax, t(:, n), data(:, 3, n));
 end
 
 end

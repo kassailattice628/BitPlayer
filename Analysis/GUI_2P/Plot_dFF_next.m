@@ -8,7 +8,7 @@ n = app.n_ROI.Value;
 ax1_plot = app.ax1_p;
 
 
-
+app.UIAxes.Title.String = ['ROI# ', num2str(n)];
 %% Update plot
 y = im.dFF(:,n);
 %plot(ax, im.FVt, y);
