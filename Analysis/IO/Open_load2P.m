@@ -2,7 +2,7 @@ function Open_load2P(app)
 %
 % Load extracted fluprescnce changes of etracted ROIs.
 %
-%%
+
 im = app.imgobj;
 im.imgsz = app.ImageSize.Value;
 

@@ -69,10 +69,9 @@ else
     %% Check imgobj <- for imaging data
     if ~exist('imgobj', 'var')
         %First time to select mat file.
-        imgobj.nROI = 0;
-        imgobj.selectROI = 1;
-        imgobj.maxROIs =  0;
-        imgobj.dFF =[];
+        imgobj.Num_ROIs = 1;
+        imgobj.selected_ROIs = 1;
+        imgobj.dFF = [];
         
         % Check frame rate
         if isfield(imgobj, 'FVsampt')
