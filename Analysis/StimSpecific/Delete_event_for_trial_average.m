@@ -10,10 +10,10 @@ function dFF_each = Delete_event_for_trial_average(...
 %
 
 if nargin == 1
-    selectedROI = 1:size(dFF_each, 2);
-    show = [];
+    selectedROI = 1:size(dFF_each, 3);
+    show = 0;
 elseif nargin == 2
-    show = [];
+    show = 0;
 end
 
 %% Detect outliers
@@ -35,5 +35,11 @@ for i = selectedROI
         % Delet event
         a(i_out) = NaN;
         dFF_each(:,:,i) = a;
+        %fprintf('Delete outlier in ROI#%d.\n', i)
     end
+end
+
+if ~show
+    disp('Delete outliers from dFF_peak')
+end
 end

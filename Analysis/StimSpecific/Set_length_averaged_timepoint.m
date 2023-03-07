@@ -1,4 +1,4 @@
-function [p_prestim, p_stim_poststim, p_data] =...
+function [p_prestim, p_stim, p_poststim] =...
     Set_length_averaged_timepoint(s, im)
 %%%%%%%%%%
 %
@@ -37,9 +37,7 @@ switch s.Pattern
     otherwise
         d = 5;
 end
-p_stim_poststim = round( (duration + d) / im.FVsampt);
-
-% Data points for plot
-p_data = p_prestim + p_stim_poststim;
+p_stim = round(duration/im.FVsampt);
+p_poststim = round(d/ im.FVsampt);
 
 end

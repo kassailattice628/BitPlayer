@@ -85,8 +85,8 @@ for i = 1:size(p, 2) % Extract stimulus
 end
 
 %% Set length of time points for stimulus average
-[p_prestim, p_stim_poststim, p_data] = Set_length_averaged_timepoint(s, im);
-
+[p_prestim, p_stim, p_poststim] = Set_length_averaged_timepoint(s, im);
+p_data = p_prestim + p_stim + p_poststim;
 %% Get the number of stimuli
 if strcmp(s.Pattern, 'Static Bar')
     stim(stim == 180) = 0;
@@ -127,11 +127,11 @@ for i = selected_ROIs % i for each ROI
         skip_i = [];
         
 
-        % Pkea values for individual trials
+        % Peak values for individual trials
         for i3 = 1:length(i_extracted_stim) % i3 for each trial
             extracted_frames =...
                 frame_stimON(i_extracted_stim(i3)) - p_prestim :...
-                frame_stimON(i_extracted_stim(i3)) + p_stim_poststim -1;
+                frame_stimON(i_extracted_stim(i3)) + p_stim + p_poststim -1;
 
             if min(extracted_frames) <= 0
                 skip_i = [skip_i, i3]; %#ok<*AGROW>
@@ -203,18 +203,20 @@ for i = selected_ROIs % i for each ROI
     end
 end
 
-%% Remove 0 data
+% Remove 0 data
 dFF_peak_each_trials(dFF_peak_each_trials == 0) = NaN;
 Peak_each(Peak_each == 0) = NaN;
 Peak_each_inverted(Peak_each_inverted == 0) = NaN;
 
+disp('Trial average of dFF is generated.')
 %% Delete outlierd peak(?)
 if ~isempty(dFF_peak_each_trials)
-    %dFF_peak_each_trials = Delete_event_for_trial_average2(dFF_peak_each_trials);
+    dFF_peak_each_trials = Delete_event_for_trial_average(...
+        dFF_peak_each_trials);
 
-    %Check
-    dFF_peak_each_trials = Delete_event_for_trial_average2(...
-        dFF_peak_each_trials, 1, 1);
+%     %Check
+%     dFF_peak_each_trials = Delete_event_for_trial_average(...
+%         dFF_peak_each_trials, 1, 1);
 end
 
 %% Update imgobj
@@ -244,31 +246,4 @@ im.Me_minus_2SD = Me - 2*SD;
 %Update imgobj
 app.imgobj = im;
 
-%{
-%% Get stimulus specific tuning properties
-% ex) im._Ang_dir, L_dir, Ang_ori, L_ori
-
-Get_Stim_Tuning(app);
-%im = Get_Stim_Tuning(im, s);
-
-%%
-disp('Trial averages and individual peak values are extracted.')
-
-%%
-% for orientation
-switch s.pattern
-    case {'MoveBar', 'Rect', 'StaticBar', 'Gabor'}
-        %im = Get_Trial_Averages_orientation(im,s,r,p);
-        im = Get_Trial_Averages_orientation(app);
 end
-
-%% Get tuned ROI
-if size(s_each,2) ~= 1
-    im = Get_Tuned_ROI_byThreshold(im, s);
-end
-%%
-% save as imgobj
-app.imgobj = im;
-
-%}
-end %end of Get_Trial_Averages_for_timecoruse;
