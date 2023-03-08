@@ -87,6 +87,8 @@ end
 %% Set length of time points for stimulus average
 [p_prestim, p_stim, p_poststim] = Set_length_averaged_timepoint(s, im);
 p_data = p_prestim + p_stim + p_poststim;
+im.p_prestim = p_prestim;
+im.p_stim = p_stim;
 %% Get the number of stimuli
 if strcmp(s.Pattern, 'Static Bar')
     stim(stim == 180) = 0;
@@ -243,7 +245,15 @@ im.SD = SD;
 im.Me2SD = Me + 2*SD;
 im.Me_minus_2SD = Me - 2*SD;
 
-%Update imgobj
+%% Update imgobj
 app.imgobj = im;
+
+%% Update GUI
+app.Bootstrap.Enable = 'on';
+app.newbootstrapCheckBox.Enable = 'on';
+app.ShowColormap.Enable = 'on';
+app.ShowSelected.Enable = 'on';
+app.ShowTuningSelected.Enable = 'on';
+app.ShowROIMap.Enable = 'on';
 
 end
