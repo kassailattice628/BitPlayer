@@ -57,12 +57,12 @@ else
     %% Check file name
     if length(regexp(f, '_')) > 1
         i = regexp(f, '_');
-        mainvar.fname_daq = [f(1:i(end)-1), '.mat'];
-        disp(f)
-    else
-        mainvar.fname_daq = f;
-    end
-    
+        %mainvar.fname_daq = [f(1:i(end)-1), '.mat'];
+        if ~isfield(mainvar, 'fname_daq_original')
+            mainvar.fname_daq_original = [f(1:i(end)-1), '.mat'];
+        end
+    mainvar.fname_daq = f;
+
     app.FileName.Text = ['File Name: ', f];
     app.SaveFileName.Value = f;
     
