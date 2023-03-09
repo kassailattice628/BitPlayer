@@ -1,24 +1,34 @@
-function [imgBG, RGB] = ROImap_DSOS(im, type)
+function [imgBG, RGB] = ROImap_DSOS(im, type, pn)
 
 imgsz = im.imgsz;
 mask = im.Mask_ROIs;
 imgBG = zeros(imgsz(1) * imgsz(2), 3);
 RGB = [];
 
+if nargin == 2
+    % Use positive response
+    pn = 1;
+end
+
 switch type
     case 'DS'
         n = 36;
         h_list = linspace(0, 1, n);
         angle_list = linspace(0, 2*pi, n);
-        L = im.L_DS;
-        Ang = im.Ang_DS;
-        rois = im.roi_DS_positive;
+        L = im.L_DS(pn, :);
+        Ang = im.Ang_DS(pn, :);
+        if pn == 1
+            rois = im.roi_DS_positive;
+        elseif pn == 2
+            rois = im.roi_DS_negative;
+        end
 
+        %%%%%
         for roi = rois
             %set HSV
-            ang1 = find(angle_list > Ang(1, roi), 1, 'first');
-            ang2 = find(angle_list <= Ang(1, roi), 1, 'last');
-            if abs(Ang(1, roi) - angle_list(ang1)) < abs(Ang(1, roi) - angle_list(ang2))
+            ang1 = find(angle_list > Ang(roi), 1, 'first');
+            ang2 = find(angle_list <= Ang(roi), 1, 'last');
+            if abs(Ang(roi) - angle_list(ang1)) < abs(Ang(roi) - angle_list(ang2))
                 ang = ang1;
             else
                 ang = ang2;
@@ -27,9 +37,9 @@ switch type
             %Hue
             h = h_list(ang);
 
-            %Blighness
+            %Blightness
             % Bit more blight color;
-            v = L(1,roi)*1.5;
+            v = L(roi)*1.5;
             v(v>1) = 1;
             HSV_roi = [h, 1, v];
             RGB = hsv2rgb(HSV_roi);
@@ -59,18 +69,23 @@ switch type
         n = 18;
         h_list = linspace(0, 1, n);
         angle_list = linspace(-pi/2, pi/2, n);
-        L = im.L_OS;
-        Ang = im.Ang_OS;
-        rois = im.roi_OS_positive;
+
+        if pn == 1
+            rois = im.roi_OS_positive;
+        elseif pn == 2
+            rois = im.roi_OS_negative;
+        end
+        L = im.L_OS(pn, :);
+        Ang = im.Ang_OS(pn, :);
         RGB = zeros(length(rois), 3);
 
         for roi = rois
             %set HSV
-            ang1 = find(angle_list > Ang(1, roi), 1, 'first');
-            ang2 = find(angle_list <= Ang(1, roi), 1, 'last');
+            ang1 = find(angle_list > Ang(roi), 1, 'first');
+            ang2 = find(angle_list <= Ang(roi), 1, 'last');
 
-            if abs(Ang(1, roi) - angle_list(ang1)) <...
-                    abs(Ang(1, roi) - angle_list(ang2))
+            if abs(Ang(roi) - angle_list(ang1)) <...
+                    abs(Ang(roi) - angle_list(ang2))
                 ang = ang1;
             else
                 ang = ang2;
@@ -79,7 +94,7 @@ switch type
             %Hue
             h = h_list(ang);
             %Blightness
-            v = L(1, roi) * 1.5;
+            v = L(roi) * 2;
             v(v>1) = 1;
             HSV_roi = [h, 1, v];
             RGB(rois == roi, :) = hsv2rgb(HSV_roi);
@@ -90,7 +105,7 @@ switch type
         imshow(imgBG);
         hold on
         for i2 = rois
-            Put_template_bar(i2, im.Centroid, RGB(rois==i2, :), Ang);
+            Put_template_bar(i2, im.Centroid, RGB(rois==i2, :), Ang(i2));
         end
         hold off
 
