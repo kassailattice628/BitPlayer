@@ -20,7 +20,12 @@ function im = Get_Tuned_ROI_byThreshold(im, s)
 rois = 1:im.Num_ROIs;
 
 % Visually responding ROIs
-im.roi_res = union(im.roi_positive, im.roi_negative);
+roi_res = union(im.roi_positive, im.roi_negative);
+if size(roi_res,2) == 1
+    roi_res = roi_res';
+end
+im.roi_res = roi_res;
+
 
 % Non-responding ROIs
 im.roi_nores = setdiff(rois, im.roi_res);
@@ -48,6 +53,10 @@ switch s.Pattern
         im.roi_OS_positive = roi_OS_p;
         im.roi_OS_negative = roi_OS_n;
 
+        %ROI_sorted
+        im.roi_sort(1,:) = Sort_ROI_by_DSOS(im, 'DS');
+        im.roi_sort(2,:) = Sort_ROI_by_DSOS(im, 'OS');
+
     case {'Moving Spot','Sinusoidal', 'Gabor'}
 
         th_DS = 0.15;
@@ -57,6 +66,8 @@ switch s.Pattern
         im.roi_DS_negative = roi_DS_n;
         im.roi_non_selective = setdiff(im.roi_res, roi_DS);
 
+        im.roi_sort = Sort_ROI_by_DSOS(im, 'DS');
+
     case 'Static Bar'
         
         th_OS = 0.15;
@@ -65,6 +76,8 @@ switch s.Pattern
         im.roi_OS_positive = roi_OS_p;
         im.roi_OS_negative = roi_OS_n;
         im.roi_non_selective = setdiff(im.roi_res, roi_OS);
+
+        im.roi_sort = Sort_ROI_by_DSOS(im, 'OS');
         
 
 end

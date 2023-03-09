@@ -1,7 +1,7 @@
 function im = Get_OSI_va(im)
 %%%%%
 %
-% 'Sinusoidal', 'Shifting Grating', 'Gabor', 'Moving Bar', 'Moving Spot'
+% 'Moving Bar', 'Shifting Grating'
 %
 % im: imgobj
 % rois: 1:im.Num_ROIs
@@ -9,11 +9,19 @@ function im = Get_OSI_va(im)
 % BitPlayer version 20230307
 %%%%%
 
-peak_positive = im.dFF_peak_each_positive;
-peak_negative = im.dFF_peak_each_negative;
+if isfield(im, 'dFF_peak_each_positive_orientation')
+    %Moving Bar or Shifting Grating
+    peak_positive = im.dFF_peak_each_positive_orientation;
+    peak_negative = im.dFF_peak_each_negative_orientation;
+else
+    peak_positive = im.dFF_peak_each_positive;
+    peak_negative = im.dFF_peak_each_negative;
+end
+
+% number of stim with same orientaion
 n_stim = size(peak_positive, 2);
 
-% Store *Ang: preferred angle and L:gDSI
+% Store, Ang: preferred angle and L:gOSI
 Ang = zeros(1, im.Num_ROIs);
 L = Ang;
 

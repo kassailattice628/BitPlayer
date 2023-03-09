@@ -1,6 +1,7 @@
 function im = Get_Trial_Averages_for_orientation(im, selected_ROIs)
 %
-% This function is used for "Moving bar" and "Shifting Grating" stimuli.
+% This function is used for calculate traial average for orientatino
+% "Moving bar" and "Shifting Grating" stimuli.
 % Stacking same data for orientation using following vars.
 %
 % im.dFF_stim_average
@@ -14,6 +15,7 @@ if nargin == 1
 end
 
 n_stim = size(im.dFF_stim_average, 2);
+
 
 if rem(n_stim, 2) ~= 0
     errordlg('Trial average for orientation skipped.')
@@ -30,14 +32,14 @@ else
     % Reshape for orientation
     for i = selected_ROIs
 
-        % averaged trace
+        % averaging opposite direction (= same bar orientation)
         for ii = 1:n_stim/2
             a = im.dFF_stim_average(:, ii, i);
             b = im.dFF_stim_average(:, ii+n_stim/2, i);
             dFF_average_ori(:, ii, i) = mean([a, b], 2);
         end
 
-        % peak 
+        % stackgin peak matrix
         a = im.dFF_peak_each(:, 1:n_stim/2, i);
         b = im.dFF_peak_each(:, n_stim/2+1:end, i);
         dFF_peak_ori(:,:,i) = [a;b];

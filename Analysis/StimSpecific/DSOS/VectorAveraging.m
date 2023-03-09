@@ -8,15 +8,15 @@ switch type
 
     case 'Orientation'
 
-        Z = sum(y .* exp(2* 1i * stim))/sum(y);
+        Z = sum(y .* exp(2 * 1i * stim))/sum(y);
         L= abs(Z);
+        
+        Ang = wrapToPi(angle(Z)/2 + pi/2);
 
-        a = angle(Z)/2 + pi/2;
-        Ang = a;
+        % Wrap tp [-pi/2:pi/2]
+        Ang(Ang > pi/2) = Ang(Ang > pi/2) - pi;
+        Ang(Ang < -pi/2) = Ang(Ang < -pi/2) + pi;
 
-        % Wrap tp [-pi:pi]
-        cond = a > pi/2 || 3*pi/2 > a;
-        Ang(cond) = Ang(cond) - pi;
 end
 
 end
