@@ -1,4 +1,4 @@
-function Plot_DSOS(im, stim, roi, type)
+function Plot_DSOS(im, stim, roi)
 %
 % plot simple DSOS properties 
 %
@@ -36,11 +36,11 @@ y(isnan(y)) = [];
 %Set color
 if ismember(roi, [im.roi_DS_positive, im.roi_DS_negative])
     Col = 'b';
-    TiTxt = 'Polar Distribution (DS)';
+    TiTxt = 'Direction selective';
 
 elseif ismember(roi, [im.roi_OS_positive, im.roi_OS_negative])
     Col = 'g';
-    TiTxt = 'Polar Distribution (OS)';
+    TiTxt = 'Orientation selective';
 
 elseif ismember(roi, im.roi_nores)
     Col = 'k';

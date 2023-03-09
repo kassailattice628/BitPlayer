@@ -1,4 +1,7 @@
 function Show_mat(mat, n_ROIs, n_stim, p_data, clims)
+%
+%
+%
 
 % Plot colormap
 imagesc(mat, clims)

@@ -33,13 +33,13 @@ roi_negative = [];
 
 threshold = 2;
 
-
 %% Collect the number(s) for each stimulus parameter.
 
 for i = 1:size(p, 2) % Extract stimulus 
 
     % Select stim ON trials
     ON = p{i}.stim1.correct_StimON_timing;
+    
     if ~isempty(ON)
         % Nearest frame to stim on timing;
         ii = knnsearch((im.FVt)', ON);
