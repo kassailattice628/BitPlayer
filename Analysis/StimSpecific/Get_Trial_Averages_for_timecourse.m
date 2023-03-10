@@ -246,6 +246,7 @@ im.Me2SD = Me + 2*SD;
 im.Me_minus_2SD = Me - 2*SD;
 
 %% Update imgobj
+im.bstrpDone = false;
 app.imgobj = im;
 
 %% Update GUI

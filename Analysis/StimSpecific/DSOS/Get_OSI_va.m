@@ -46,7 +46,7 @@ for i = rois
     [L_nega(i), Ang_nega(i)] = VectorAveraging(y_negative, StimAngles, 'Orientation');
 end
 
-im.stim_orientation = StimAngles;
+im.stim_orientations = StimAngles;
 im.Ang_OS= [Ang; Ang_nega];
 im.L_OS = [L; L_nega];
 

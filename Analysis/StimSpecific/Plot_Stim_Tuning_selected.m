@@ -7,7 +7,7 @@ s = app.sobj;
 %%%%%%%%%%
 
 stim_list = 1:size(im.dFF_stim_average, 2);
-switch s.pattern
+switch s.Pattern
     case {'Uni', 'Fine Mapping'}
         
         Plot_RF_selected(app, im.selectROI);
@@ -24,7 +24,7 @@ switch s.pattern
         end
         %%%%%%%%%%
         
-        for i = im.selectROI
+        for i = im.selected_ROIs
             figure
             plot(stim_list, im.R_size(:, i, 1), 'bo-', 'LineWidth', 2);
             hold on
@@ -38,11 +38,19 @@ switch s.pattern
         
         
     case {'Sinusoidal', 'Shifting Grating', 'Gabor', 'Moving Bar', 'Moving Spot'}
-        
-        Plot_DSOS_selected(im)
+        stim = im.stim_directions;
+
+        for roi = im.selected_ROIs
+            Plot_DSOS(im, stim, roi)
+        end
+
+    case ''
 
     case 'Static Bar'
-        Plot_OS_selected(im)
+        stim = im.stim_orientations;
+        for roi = im.selected_ROIs
+            Plot_OS_selected(im, stim, roi)
+        end
 end
 
 %%
