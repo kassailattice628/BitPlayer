@@ -1,4 +1,4 @@
-function [B, Median_data]= Bootstrap_DSI_OSI(im, type, shuffle)
+function [B, Median_data, data_bstrp_]= Bootstrap_DSI_OSI(im, type, shuffle)
 %
 %
 %
@@ -35,7 +35,9 @@ Median_data = zeros(length(stim), n_ROIs);
 %
 tic
 %
-n_col = size(dFF_peak, 2); 
+n_col = size(dFF_peak, 2);
+data_bstrp_ = zeros(n_bstrp, n_col, n_ROIs);
+
 for roi = 1 : n_ROIs
     data = dFF_peak(:,:,roi);
     data_bstrp = zeros(n_bstrp, n_col);
@@ -50,12 +52,13 @@ for roi = 1 : n_ROIs
             data_bstrp(:, c) = d;
         end
     end
-
+    data_bstrp_(:,:,roi) = data_bstrp;
     Median_data(:, roi) = median(data_bstrp)';
 
     % Calculate bootstrapped Index, Preferred
     B(:, :, roi) = Get_Boot_selectivity(data_bstrp, stim, type);
 
+    % Report progress
     if rem(roi, 10) == 0
         fprintf('Running bootstrap %s, ROI#%d.\n', type, roi)
         toc;
@@ -79,20 +82,29 @@ parfor i = 1: size(d_bstrp, 1)
 end
 
 end
-%%
+%% Shuffled dataset calculate p_value.
 function d = Shuffle(d, rois)
 
 for i = 1:rois
-    d_ = d(:,:, i);
+    ii = 1;
+    while ii
+        d_ = d(:,:, i);
 
-    i1 = size(d_,1);
-    i2 = size(d_,2);
-    d_ = reshape(d_, [], 1);
-    d_ = d(randperm(length(d_)));
+        i1 = size(d_,1);
+        i2 = size(d_,2);
+        d_ = reshape(d_, [], 1);
+        d_ = d(randperm(length(d_)));
+        d_ = reshape(d_, i1, i2);
+        d(:,:, i) = d_;
 
-    d(:,:, i) = reshape(d_, i1, i2);
+        %check if all columb is NaN
+        if sum(sum(isnan(d_)== i1)) == 0
+            ii = 0;
+        end
+    end
 end
 end
+
 
 
 

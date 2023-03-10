@@ -17,6 +17,12 @@ switch type
         % -roi_non_DS_negative
         %roi_no-res
 
+        %check the ROI inclueded in both positive/negatives
+        [~, ia] = intersect(im.roi_DS_positive, im.roi_DS_negative);
+        if ~isempty(ia)
+            im.roi_DS_negative(ia) = [];
+        end
+
         roi1 = im.roi_DS_positive;
         roi2 = setdiff(im.roi_positive, roi1);
         roi3 = im.roi_DS_negative;
@@ -28,8 +34,14 @@ switch type
             errordlg('Size of ROIs and sorted ROIs is differet!')
         end
         A = im.Ang_DS;
+
     case'OS'
 
+        %check the ROI inclueded in both positive/negatives
+        [~, ia] = intersect(im.roi_OS_positive, im.roi_OS_negative);
+        if ~isempty(ia)
+            im.roi_OS_negative(ia) = [];
+        end
         roi1 = im.roi_OS_positive;
         roi2 = setdiff(im.roi_positive, roi1);
         roi3 = im.roi_OS_negative;
