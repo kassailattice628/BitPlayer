@@ -19,7 +19,7 @@ switch s.Pattern
     case {'Moving Bar', 'Shifting Grating'}
 
         %%% DS %%%
-        [P, dFF_peak_btsrp, data_bstrp] = Bootstrap_DSI_OSI(im, 'Direction');
+        [P, data_bstrp] = Bootstrap_DSI_OSI(im, 'Direction');
         P_shuffled = Bootstrap_DSI_OSI(im, 'Direction', 1);
 
         %compare DSI vs DSI_shuffle and define selective ROI.
@@ -32,12 +32,17 @@ switch s.Pattern
             end
         end
 
-        im.L_DS_bstrp = squeeze(P(:,1,:));
-        im.Ang_DS_bstrp = squeeze(P(:,2,:));
-        im.dFF_peak_btsrp = dFF_peak_btsrp;
+        % Save median and 95% range.
+        L = squeeze(P(:,1,:));
+        im.L_DS_bstrp = Get_Median_95Rabge(L);
+        %im.L_DS_bstrp = squeeze(P(:,1,:));
+        Ang = squeeze(P(:,2,:));
+        im.Ang_DS_bstrp = Get_Median_95Rabge(Ang);
+        %im.Ang_DS_bstrp = squeeze(P(:,2,:));
+        im.dFF_peak_btsrp = Get_Median_95Rabge(data_bstrp);
 
         %%% OS %%%
-        [P, dFF_peak_btsrp] = Bootstrap_DSI_OSI(im, 'Orientation');
+        [P, data_btsrp] = Bootstrap_DSI_OSI(im, 'Orientation');
         P_shuffled = Bootstrap_DSI_OSI(im, 'Orientation', 1);
 
         roi_OS = [];
@@ -48,10 +53,12 @@ switch s.Pattern
             end
         end
 
-        im.L_OS_bstrp = squeeze(P(:,1,:));
-        im.Ang_OS_bstrp = squeeze(P(:,2,:));
-        im.dFF_peak_btsrp_orientation = dFF_peak_btsrp;
-
+        
+        L = squeeze(P(:,1,:));
+        im.L_OS_bstrp = Get_Median_95Rabge(L);
+        Ang = squeeze(P(:,2,:));
+        im.Ang_OS_bstrp = Get_Median_95Rabge(Ang);
+        im.dFF_peak_btsrp_orientation = Get_Median_95Rabge(data_btsrp);
 
         %Update selective ROI
         im.roi_DS_positive = roi_DS;
@@ -78,6 +85,7 @@ switch s.Pattern
         F_VM2 = @(b, x) b(1) * exp(b(2) * cos(x - b(5))) .*...
                 exp(b(3) * cos(2*x - 2*(b(5)+b(6)))) + b(4);
 
+        %% Fit VM for selective cells
         for roi = union(roi_DS, roi_OS)
             [beta, ci, f_select, R, Ja] = ...
                 Fit_vonMises(data_bstrp(:,:, roi), im.stim_directions,...
@@ -169,6 +177,8 @@ end
 %% Update imgobj
 
 im.bstrpDone = true;
+app.Bootstrap.BackgroundColor = [1, 0.81, 0.81];
+
 app.imgobj = im;
 
 

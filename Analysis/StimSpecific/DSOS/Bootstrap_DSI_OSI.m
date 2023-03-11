@@ -1,6 +1,7 @@
-function [B, Median_data, data_bstrp_]= Bootstrap_DSI_OSI(im, type, shuffle)
+function [B, data_bstrp_]= Bootstrap_DSI_OSI(im, type, shuffle)
 %
 %
+
 %
 if nargin == 2
     shuffle = false;
@@ -29,8 +30,6 @@ end
 %%
 % B: [DSI/OSI, Preferred Angle]
 B = zeros(n_bstrp, 2, n_ROIs);
-% Median_data: Median of bootstrped samples;
-Median_data = zeros(length(stim), n_ROIs);
 
 %
 tic
@@ -49,13 +48,12 @@ for roi = 1 : n_ROIs
         if length(d) > 1
             data_bstrp(:, c) = bootstrp(n_bstrp, @mean, d);
         else 
-            data_bstrp(:, c) = d;
+            data_bstrp(:, c) = repmat(d, n_bstrp, 1);
         end
     end
     data_bstrp_(:,:,roi) = data_bstrp;
-    Median_data(:, roi) = median(data_bstrp)';
 
-    % Calculate bootstrapped Index, Preferred
+    % Calculate bootstrapped DS/OS index, Preferred angle
     B(:, :, roi) = Get_Boot_selectivity(data_bstrp, stim, type);
 
     % Report progress

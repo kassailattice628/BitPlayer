@@ -65,8 +65,11 @@ hold on
 plot(x, y, '.', 'Color', Col);
 
 if im.bstrpDone
-    peak_boot = im.dFF_peak_btsrp(:, roi);
-    plot(stim, peak_boot, 'ro')
+    peak_boot = im.dFF_peak_btsrp(1, :, roi);
+    error_neg = im.dFF_peak_btsrp(2, :, roi);
+    error_pos = im.dFF_peak_btsrp(3, :, roi);
+    %plot(stim, peak_boot, 'ro')
+    errorbar(stim, peak_boot, error_neg, error_pos, 'ro')
 else
     plot(stim, peak_ave, 'bo');
 end
@@ -80,10 +83,10 @@ xlabel('Move Angle (deg)');
 %% Polar plot
 subplot(1,2,2)
 
-polarplot([stim,stim(1)], [peak_ave; peak_ave(1)], 'o-', 'Color', Col);
+polarplot([stim, stim(1)], [peak_ave; peak_ave(1)], 'o-', 'Color', Col);
 if im.bstrpDone
     hold on;
-    polarplot([stim,stim(1)], [peak_boot; peak_boot(1)], 'ro-', 'Color', Col);
+    polarplot([stim, stim(1)], [peak_boot, peak_boot(1)], 'ro-');
 end
 
 title(TiTxt)
