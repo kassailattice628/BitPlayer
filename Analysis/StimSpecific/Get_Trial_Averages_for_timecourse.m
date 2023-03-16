@@ -19,8 +19,10 @@ main = app.mainvar;
 %%%%%%%%%%
 
 if nargin == 1
+    % Use all ROIs
     selected_ROIs = 1:im.Num_ROIs;
 else
+    % Use selected ROI(s)
     selected_ROIs = varargin(1);
 end
 
@@ -108,10 +110,9 @@ max_n_trials = max(histcounts(stim, 'BinMethod', 'integers'));
 dFF_peak_each_trials = NaN([max_n_trials, n_stim, im.Num_ROIs]);
 
 Peak_each = dFF_peak_each_trials;
-%inverted positive - negative for analyzing suppressed responses
+%inverted positive - negative for analyzing inhibition responses
 Peak_each_inverted = dFF_peak_each_trials; 
 
-%dFF_ext_cell = cell(n_stim, length(rois));
 
 %%
 for i = selected_ROIs % i for each ROI
@@ -150,7 +151,8 @@ for i = selected_ROIs % i for each ROI
                 Peak_each_inverted(i3, i2, i) = - inverted;
             else
                 %fprintf('Length of the extracted_frames is larger than the size of images! \n');
-                break;
+                skip_i = [skip_i, i3]; %#ok<*AGROW>
+                %break;
             end
         end
         dFF_extract(:, skip_i) = [];
@@ -161,7 +163,8 @@ for i = selected_ROIs % i for each ROI
     end
 
 %%%%%%%%%%%
-    % ROI with excitatory responses
+    % Clasify ROIs into roi_positive, roi_negative.
+    % Both can be overlapped.
 
     Peak_max = max(max(dFF_stim_average(:,:,i)));
     Peak_min = min(min(dFF_stim_average(:,:,i)));
@@ -187,12 +190,12 @@ for i = selected_ROIs % i for each ROI
         if Peak_max > F0 + threshold * sd_F
             roi_positive = [roi_positive, i];
 
-        elseif Peak_min < F0 -2*sd_F
+        elseif Peak_min < F0 - threshold *sd_F
             roi_negative = [roi_negative, i];
         end
-
     else
 %%%%%%%%% Following is needed? %%%%%%%%%%
+        % Use im.F rather than im.dFF.
         F0 = mean(im.F(im.f0, i));
         sd_F = std(im.F(im.f0, i));
         if Peak_max > F0 + threshold * sd_F
@@ -211,6 +214,7 @@ Peak_each(Peak_each == 0) = NaN;
 Peak_each_inverted(Peak_each_inverted == 0) = NaN;
 
 disp('Trial average of dFF is generated.')
+
 %% Delete outlierd peak(?)
 if ~isempty(dFF_peak_each_trials)
     dFF_peak_each_trials = Delete_event_for_trial_average(...
@@ -222,9 +226,11 @@ if ~isempty(dFF_peak_each_trials)
 end
 
 %% Update imgobj
-%
+
 im.dFF_stim_average = dFF_stim_average;
+%peak_each_trials including both positive and negative data.
 im.dFF_peak_each = dFF_peak_each_trials;
+
 im.dFF_peak_each_positive = Peak_each;
 im.dFF_peak_each_negative = Peak_each_inverted;
 
@@ -233,11 +239,20 @@ im.roi_negative = roi_negative;
 
 im.order_stim = ic;
 
-%im.dFFcells = dFF_ext_cell;
+% all ROIS
+rois = 1:im.Num_ROIs;
+% Visually responding ROIs
+roi_res = union(im.roi_positive, im.roi_negative);
+if size(roi_res, 2) == 1
+    roi_res = roi_res';
+end
+im.roi_res = roi_res;
+% Non-responding ROIs
+im.roi_nores = setdiff(rois, im.roi_res);
+
 
 %% Calculate threshold for visu cell as Mean +/- 2SD
 % is 2SD appropriate?
-
 Me = mean(im.dFF(im.f0, :));
 SD = std(im.dFF(im.f0, :));
 im.Me = Me;
