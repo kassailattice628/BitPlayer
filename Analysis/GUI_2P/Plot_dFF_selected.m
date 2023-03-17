@@ -30,6 +30,8 @@ for i = 1:length(n_ROIs)
         %no data containing
         discards = [discards, i];
     end
+    ax.YLim = [min(min(y)), max(max(y))];
+    ax.XLim = [0, im.FVt(end)];
 end
 hold(ax, 'off')
 

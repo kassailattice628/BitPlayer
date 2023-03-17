@@ -26,7 +26,7 @@ if shuffle
     dFF_peak = Shuffle(dFF_peak, n_ROIs);
     txt_sh = [type,'(shuffled)'];
 else
-    txt_sh = [];
+    txt_sh = type;
 end
 
 %%
