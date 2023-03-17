@@ -4,7 +4,21 @@ function [ON, OFF] = Get_stim_timing_2p(app)
 %
 
 p = app.ParamsSave;
-n_stim = app.sobj.Blankloop_times + 1: size(p,2);
+
+% Check stim ON trial
+test = 1;
+n_end = size(p, 2);
+while test
+    % check
+    if ~isfield(p{n_end}.stim1, 'correct_StimON_timing')
+        n_end = n_end -1;
+    else
+        test = 0;
+    end
+end
+
+%stim on trials
+n_stim = app.sobj.Blankloop_times + 1: n_end;
 
 area_X = zeros(4, length(n_stim));
 area_Y = repmat([-10; 30; 30; -10], 1, length(n_stim));

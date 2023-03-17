@@ -16,7 +16,6 @@ switch type
         dFF_peak = im.dFF_peak_each_positive;
         stim = im.stim_directions;
 
-
     case 'Orientation'
         dFF_peak = im.dFF_peak_each_positive_orientation;
         stim = im.stim_orientations;
@@ -81,22 +80,25 @@ end
 
 end
 %% Shuffled dataset calculate p_value.
-function d = Shuffle(d, rois)
+function d_shuflled = Shuffle(d, rois)
 
+d_shuflled = d * 0;
 for i = 1:rois
     ii = 1;
+
     while ii
         d_ = d(:,:, i);
 
-        i1 = size(d_,1);
-        i2 = size(d_,2);
+        i1 = size(d_,1); % n_trial
+        i2 = size(d_,2); % n_stim
         d_ = reshape(d_, [], 1);
         d_ = d(randperm(length(d_)));
         d_ = reshape(d_, i1, i2);
-        d(:,:, i) = d_;
-
-        %check if all columb is NaN
-        if sum(sum(isnan(d_)== i1)) == 0
+        
+        %check if all columb is NaN re-generate shuffle
+        if sum(sum(isnan(d_)) == i1) ~= 0
+            fprintf('Re-generate shuffle for ROI#%d.\n', i)
+        else
             ii = 0;
         end
     end

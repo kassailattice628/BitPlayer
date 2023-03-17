@@ -64,12 +64,36 @@ hold on
 %each peak data mean
 plot(x, y, '.', 'Color', Col);
 
+
+% for fitting
 if im.bstrpDone
+    %DS or OS
     peak_boot = im.dFF_peak_btsrp(1, :, roi);
-    error_neg = im.dFF_peak_btsrp(2, :, roi);
-    error_pos = im.dFF_peak_btsrp(3, :, roi);
-    %plot(stim, peak_boot, 'ro')
-    errorbar(stim, peak_boot, error_neg, error_pos, 'ro')
+
+    if im.fit.f_select(roi)~=0
+        x_fit = linspace(0, 2*pi, 500);
+
+        if im.fit.f_select(roi) == 1
+            f_fit = @(b, x) b(1) * exp(b(2) * cos(x - b(3))) + b(4);
+            beta = im.fit.beta(roi, 1:4);
+
+        elseif im.fit.f_select(roi) == 2
+            f_fit = @(b, x) b(1) * exp(b(2) * cos(x - b(5))) .* ...
+                exp(b(3) * cos(2*x - 2*(b(5)+b(6)))) + b(4);
+            beta = im.fit.beta(roi, :);
+        end
+
+        [Ypred, delta] = nlpredci(f_fit, x_fit, beta,...
+            im.fit.R{roi}, 'Jacobian', im.fit.Ja{roi});
+        plot(stim, peak_boot, 'o')
+        boundedline(x_fit, Ypred, delta, 'alpha');
+    elseif im.fit.f_select(roi)==0
+        % Non selective, No response
+        error_neg = im.dFF_peak_btsrp(2, :, roi);
+        error_pos = im.dFF_peak_btsrp(3, :, roi);
+        plot(stim, peak_boot, 'ro')
+        errorbar(stim, peak_boot, error_neg, error_pos, 'ro')
+    end
 else
     plot(stim, peak_ave, 'bo');
 end
@@ -84,6 +108,8 @@ xlabel('Move Angle (deg)');
 subplot(1,2,2)
 
 polarplot([stim, stim(1)], [peak_ave; peak_ave(1)], 'o-', 'Color', Col);
+
+
 if im.bstrpDone
     hold on;
     polarplot([stim, stim(1)], [peak_boot, peak_boot(1)], 'ro-');

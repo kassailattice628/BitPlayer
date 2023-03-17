@@ -36,6 +36,8 @@ else
     app.mainvar.Lowcutfilter = 0;
     app.mainvar.Offset = 0;
     app.mainvar.Zscore = 0;
+
+    app.SaveFileName.Value = app.mainvar.fname_daq;
 end
 
 

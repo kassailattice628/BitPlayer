@@ -52,8 +52,9 @@ switch s.Pattern
                 roi_OS = [roi_OS, roi];
             end
         end
-
+        disp('Finish bootstrap resampling.')
         
+
         L = squeeze(P(:,1,:));
         im.L_OS_bstrp = Get_Median_95Rabge(L);
         Ang = squeeze(P(:,2,:));
@@ -64,11 +65,14 @@ switch s.Pattern
         im.roi_DS_positive = roi_DS;
         im.roi_OS_positive = roi_OS;
         im.roi_non_selective = setdiff(im.roi_res, union(roi_DS, roi_OS));
+        
         %ROI_sorted
         im.roi_sort(1,:) = Sort_ROI_by_DSOS(im, 'DS');
         im.roi_sort(2,:) = Sort_ROI_by_DSOS(im, 'OS');
-        
+
+
         %% Fit vonMises
+        disp('Fitting data...')
         beta_ = zeros(im.Num_ROIs, 6);
         Ci_ = zeros(im.Num_ROIs, 6 * 2);
 
@@ -104,7 +108,8 @@ switch s.Pattern
         im.fit.f_select = f_select_;
         im.fit.R = R_;
         im.fit.Ja = Ja_;
-        
+
+        disp('Done.')
         
         %%%%%%%%%%
 

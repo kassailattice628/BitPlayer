@@ -38,7 +38,11 @@ threshold = 2;
 for i = 1:size(p, 2) % Extract stimulus 
 
     % Select stim ON trials
-    ON = p{i}.stim1.correct_StimON_timing;
+    if isfield(p{i}.stim1, 'correct_StimON_timing')
+        ON = p{i}.stim1.correct_StimON_timing;
+    else
+        continue;
+    end
     
     if ~isempty(ON)
         % Nearest frame to stim on timing;

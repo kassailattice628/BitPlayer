@@ -4,24 +4,36 @@ function roi_sort = Sort_ROI_by_DSOS(im, type)
 % ex)
 % sortby = im.Ang_DS
 
+[~, ia] = intersect(im.roi_negative, im.roi_positive);
+if ~isempty(ia)
+    disp('Checked positive & negative ')
+    im.roi_negative(ia) = [];
+end
+
 switch type
     case 'DS'
         %%%% Sort order %%%%
         %roi_res
         % -roi_positive
         %  --roi_DS_ppsitive sort by Ang_DS
-        % -roi_non_DS_positive
+        %  --roi_non_DS_positive
         %
         % -roi_negative
         %  --roi_DS_negative sort by Ang_DS
-        % -roi_non_DS_negative
+        %  --roi_non_DS_negative
+        %
         %roi_no-res
 
         %check the ROI inclueded in both positive/negatives
+        [~, ia] = intersect(im.roi_DS_positive, im.roi_negative);
+        im.roi_DS_positive(ia) = [];
+
         [~, ia] = intersect(im.roi_DS_positive, im.roi_DS_negative);
-        if ~isempty(ia)
-            im.roi_DS_negative(ia) = [];
-        end
+        im.roi_DS_positive(ia) = [];
+        
+        [~, ia] = intersect(im.roi_DS_positive, im.roi_nores);
+        im.roi_DS_positive(ia) = [];
+
 
         roi1 = im.roi_DS_positive;
         roi2 = setdiff(im.roi_positive, roi1);
@@ -38,10 +50,20 @@ switch type
     case'OS'
 
         %check the ROI inclueded in both positive/negatives
-        [~, ia] = intersect(im.roi_OS_positive, im.roi_OS_negative);
+        [~, ia] = intersect(im.roi_OS_positive, im.roi_negative);
+        if ~isempty(ia)
+            %change to roi_DS_positive;
+            im.roi_OS_positive(ia) = [];
+        end
+        [~, ia] = intersect(im.roi_OS_negative, im.roi_positive);
         if ~isempty(ia)
             im.roi_OS_negative(ia) = [];
         end
+        [~, ia] = intersect(im.roi_OS_negative, im.roi_OS_positive);
+        if ~isempty(ia)
+            im.roi_OS_negative(ia) = [];
+        end
+
         roi1 = im.roi_OS_positive;
         roi2 = setdiff(im.roi_positive, roi1);
         roi3 = im.roi_OS_negative;

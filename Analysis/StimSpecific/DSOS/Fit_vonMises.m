@@ -21,9 +21,9 @@ bu = [10, max(data)*2, 2*pi, max(data)];
 [b_fit1, res1, ci1, J1, R1] = Exec_Fit(f_vM1, stim, data, beta0, bl, bu, opts);
 
 % Model2: Double peaks (sum of 2 VM)
-beta0 = [1, 1, 0, 0, prefAng, wrapTo2Pi(prefAng+pi)];
-bl = [0.001, 0.01, 0.01, 0, 0, pi/4];
-bu = [10, max(data)*2, max(data)*2, 5, 2*pi, 7*pi/4];
+beta0 = [1, 1, 0, 0, prefAng, pi]; %wrapTo2Pi(prefAng+pi)];
+bl = [0.001, 0.01, 0.01, 0, 0, 3*pi/4];
+bu = [10, max(data)*2, max(data)*2, 5, 2*pi, 5*pi/4];
 [b_fit2, res2, ci2, J2, R2] = Exec_Fit(f_vM2, stim, data, beta0, bl, bu, opts);
 
 
