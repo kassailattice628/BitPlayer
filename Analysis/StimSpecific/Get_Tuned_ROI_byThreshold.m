@@ -37,8 +37,8 @@ switch s.Pattern
         im.roi_non_selective = setdiff(im.roi_res, union(roi_DS, roi_OS));
 
         %ROI_sorted
-        im.roi_sort(1,:) = Sort_ROI_by_DSOS(im, 'DS');
-        im.roi_sort(2,:) = Sort_ROI_by_DSOS(im, 'OS');
+        im.roi_sortDS = Sort_ROI_by_DSOS(im, 'DS');
+        im.roi_sortOS = Sort_ROI_by_DSOS(im, 'OS');
 
     case {'Moving Spot','Sinusoidal', 'Gabor'}
 

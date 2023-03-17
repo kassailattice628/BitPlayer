@@ -111,10 +111,10 @@ function roi_sort = Sort_ROIs(A, type, roi1, roi2, roi3, roi4, roi5)
     %
     % type = 1: positive, 2: negative
     %
-    if strcmd(type, 'positive')
+    if strcmp(type, 'positive')
         n1 = 1; %pos
         n2 = 2; %nega
-    elseif strcmd(type, 'negative')
+    elseif strcmp(type, 'negative')
         n1 = 2;
         n2 = 1;
     end
