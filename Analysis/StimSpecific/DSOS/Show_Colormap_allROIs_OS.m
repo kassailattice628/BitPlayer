@@ -21,9 +21,9 @@ nexttile([1,2]);
 Show_mat(im.mat2Dori, im.Num_ROIs, n_stim, p_data, clims);
 
 %Sort by tuning
-if isfield(im ,'roi_sort')
+if isfield(im ,'roi_sortOS')
     nexttile([1,2]);
-    Show_mat(im.mat2Dori(im.roi_sort(2,:),:),...
+    Show_mat(im.mat2Dori(im.roi_sortOS(1,:),:),...
         im.Num_ROIs, n_stim, p_data, clims);
     title('Sorted by Tuning')
 end

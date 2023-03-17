@@ -16,46 +16,29 @@ function im = Get_Tuned_ROI_byThreshold(im, s)
 % BitPlayer version 20230307
 %
 
-%%
-rois = 1:im.Num_ROIs;
-
-% Visually responding ROIs
-roi_res = union(im.roi_positive, im.roi_negative);
-if size(roi_res,2) == 1
-    roi_res = roi_res';
-end
-im.roi_res = roi_res;
-
-
-% Non-responding ROIs
-im.roi_nores = setdiff(rois, im.roi_res);
-
-
 %% Get ROIs with selectivity
 switch s.Pattern
         
     case {'Moving Bar', 'Shifting Grating'}
-        
         % Set threshold
         th_DS = 0.2;
         th_OS = 0.15;
 
+        % p: positive, n: negative, and merged 
         [roi_DS, roi_DS_p, roi_DS_n] = Find_DSOS(im.L_DS, im.roi_res, th_DS);
         [roi_OS, roi_OS_p, roi_OS_n] = Find_DSOS(im.L_OS, im.roi_res, th_OS);
 
-
         im.roi_DS = roi_DS;
         im.roi_OS = roi_OS;
-        im.roi_non_selective = setdiff(im.roi_res, union(roi_DS, roi_OS));
-
         im.roi_DS_positive = roi_DS_p;
         im.roi_DS_negative = roi_DS_n;
         im.roi_OS_positive = roi_OS_p;
         im.roi_OS_negative = roi_OS_n;
+        im.roi_non_selective = setdiff(im.roi_res, union(roi_DS, roi_OS));
 
         %ROI_sorted
-        im.roi_sort(1,:) = Sort_ROI_by_DSOS(im, 'DS');
-        im.roi_sort(2,:) = Sort_ROI_by_DSOS(im, 'OS');
+        im.roi_sortDS = Sort_ROI_by_DSOS(im, 'DS');
+        im.roi_sortOS = Sort_ROI_by_DSOS(im, 'OS');
 
     case {'Moving Spot','Sinusoidal', 'Gabor'}
 

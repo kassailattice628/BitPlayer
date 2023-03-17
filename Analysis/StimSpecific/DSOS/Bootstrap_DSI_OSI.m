@@ -66,14 +66,16 @@ end
 
 %%
 function B_ = Get_Boot_selectivity(d_bstrp, stim, type)
+%
+% Calculate vectoraveraging
+% type: 'Direction' or 'Orientation'
+%
 
 %DSI/OSI, Preferred Angle
 B_ = zeros(size(d_bstrp, 1), 2);
 
 parfor i = 1: size(d_bstrp, 1)
     d = d_bstrp(i,:);
-%     Z = VA(d, stim);
-%     theta = GET_ANG(Z);
     [L, Ang] = VectorAveraging(d, stim, type);
     B_(i, :) = [L, Ang];
 end

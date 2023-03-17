@@ -32,7 +32,6 @@ for i = rois
     y_positive(y_positive < 0) = 0;
     y_negative(y_negative < 0) = 0;
 
-
     % vector average for orientation
     [L(i), Ang(i)] = VectorAveraging(y_positive, StimAngles, 'Direction');
     [L_nega(i), Ang_nega(i)] = VectorAveraging(y_negative, StimAngles, 'Direction');
@@ -45,6 +44,3 @@ im.L_DS = [L; L_nega];
 disp('Calculated DSI by vector averaging')
 
 end
-
-%%%%%%%%%%
-

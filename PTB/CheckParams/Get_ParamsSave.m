@@ -43,7 +43,7 @@ p.stim1.BGColor = sobj.bgcol;
 
     %%% Pattern Specific, & trial specific Parameters %%%
     switch sobj.Pattern
-        case {'Uni', 'Size_rand'}
+        case {'Uni', 'Size Random'}
             %Luminance & Color?
 
         case {'Fine Mapping'}
