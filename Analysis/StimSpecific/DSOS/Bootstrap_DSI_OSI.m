@@ -24,6 +24,9 @@ end
 %%
 if shuffle
     dFF_peak = Shuffle(dFF_peak, n_ROIs);
+    txt_sh = [type,'(shuffled)'];
+else
+    txt_sh = [];
 end
 
 %%
@@ -57,7 +60,7 @@ for roi = 1 : n_ROIs
 
     % Report progress
     if rem(roi, 10) == 0
-        fprintf('Running bootstrap %s, ROI#%d.\n', type, roi)
+        fprintf('Running bootstrap %s, ROI#%d.\n', txt_sh, roi)
         toc;
     end
 end
@@ -102,9 +105,11 @@ for i = 1:rois
             fprintf('Re-generate shuffle for ROI#%d.\n', i)
         else
             ii = 0;
+            d_shuflled(:,:,i) = d_;
         end
     end
 end
+
 end
 
 

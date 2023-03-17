@@ -10,99 +10,71 @@ roi_sort = zeros(2, im.Num_ROIs); %for positive and negative
 
 switch type
     case 'DS'
-        %%%% Sort order %%%%
-        %roi_res
-        % -roi_positive
-        %  --roi_DS_ppsitive sort by Ang_DS
-        %  --roi_non_DS_positive
-        %
-        % -roi_negative
-        %  --roi_DS_negative sort by Ang_DS
-        %  --roi_non_DS_negative
-        %
-        %roi_no-res
-
-
-        %Sorted based on positive responses
-        roi1 = im.roi_DS_positive;
-        roi2 = setdiff(im.roi_positive, roi1); %non-selective for positive
-        % Remove overlapped ROIs from negative ROIs
-        [~, ia]= intersect(im.roi_negative, im.roi_positive);
-        roi_3 =  im.roi_negative; % negative
-        roi_3(ia) = [];
-        % Update DS negative
-        [roi3, ia] = intersect(roi_3, im.roi_DS_negative);
-        % Remaining are non-selevtive negative;
-        roi4 = im.roi_negative;
-        roi4(ia) = [];
-        roi5 = im.roi_nores;
-%         %check
-%         a1 = [roi1, roi2, roi3, roi4, roi5];
-%         if length(a1)~=im.Num_ROIs
-%             errordlg('Size of ROIs and sorted ROIs is differet!')
-%         end
-
         % Angles
         A = im.Ang_DS;
-        roi_sort(1,:) = Sort_ROIs(A, 'positive', roi1, roi2, roi3, roi4, roi5);
 
-        % Negative
-        roi1 = im.roi_DS_negative;
-        roi2 = setdiff(im.roi_negative, roi1); %non-selective for negative
-        %remove overlapped from negative ROIs
-        [~, ia]= intersect(im.roi_positive, im.roi_negative);
-        roi_3 =  im.roi_positive; % negative
-        roi_3(ia) = [];
-        roi3 = intersect(im.roi_DS_positive, roi_3); % negative + DS_negative;
-        roi4 = setdiff(im.roi_positive, roi3); %non-selective for negative
-        roi5 = im.roi_nores;
-%         %check
-%         a2 = [roi1, roi2, roi3, roi4, roi5];
-%         if length(a2)~=im.Num_ROIs
-%             errordlg('Size of ROIs and sorted ROIs is differet!')
-%         end
-
-        roi_sort(2, :) = Sort_ROIs(A, 'negative', roi1, roi2, roi3, roi4, roi5);
-
+        %Positive
+        [roi1, roi2, roi3, roi4] = Select_ROIs(...
+            im.roi_positive, im.roi_DS_positive,...
+            im.roi_negative, im.roi_DS_negative);
+        roi_sort(1,:) = Sort_ROIs(A, 'positive', roi1, roi2, roi3, roi4,...
+            im.roi_nores);
+        
+        %Negative
+        [roi1, roi2, roi3, roi4] = Select_ROIs(...
+            im.roi_negative, im.roi_DS_negative,...
+            im.roi_positive, im.roi_DS_positive);
+        roi_sort(2,:) = Sort_ROIs(A, 'positive', roi1, roi2, roi3, roi4,...
+            im.roi_nores);
 
     case'OS'
-
-        %Sorted based on positive responses
-        roi1 = im.roi_OS_positive;
-        roi2 = setdiff(im.roi_positive, roi1); %non-selective for positive
-        % Remove overlapped ROIs from negative ROIs
-        [~, ia]= intersect(im.roi_negative, im.roi_positive);
-        roi_3 =  im.roi_negative; % negative
-        roi_3(ia) = [];
-        % Update DS negative
-        [roi3, ia] = intersect(roi_3, im.roi_OS_negative);
-        % Remaining are non-selevtive negative;
-        roi4 = im.roi_negative;
-        roi4(ia) = [];
-        roi5 = im.roi_nores;
-
         % Angles
         A = im.Ang_OS;
-        roi_sort(1,:) = Sort_ROIs(A, 'positive', roi1, roi2, roi3, roi4, roi5);
-
-        % Negative
-        roi1 = im.roi_OS_negative;
-        roi2 = setdiff(im.roi_negative, roi1); %non-selective for negative
-        %remove overlapped from negative ROIs
-        [~, ia]= intersect(im.roi_positive, im.roi_negative);
-        roi_3 =  im.roi_positive; % negative
-        roi_3(ia) = [];
-        roi3 = intersect(im.roi_OS_positive, roi_3); % negative + DS_negative;
-        roi4 = setdiff(im.roi_positive, roi3); %non-selective for negative
-        roi5 = im.roi_nores;
-        roi_sort(2, :) = Sort_ROIs(A, 'negative', roi1, roi2, roi3, roi4, roi5);
+                %Positive
+        [roi1, roi2, roi3, roi4] = Select_ROIs(...
+            im.roi_positive, im.roi_OS_positive,...
+            im.roi_negative, im.roi_OS_negative);
+        roi_sort(1,:) = Sort_ROIs(A, 'positive', roi1, roi2, roi3, roi4,...
+            im.roi_nores);
+        
+        %Negative
+        [roi1, roi2, roi3, roi4] = Select_ROIs(...
+            im.roi_negative, im.roi_OS_negative,...
+            im.roi_positive, im.roi_OS_positive);
+        roi_sort(2,:) = Sort_ROIs(A, 'positive', roi1, roi2, roi3, roi4,...
+            im.roi_nores);
 end
 
 
 
 end
 
-%% Select positive/negative responses
+%%
+function [roi1, roi2, roi3, roi4] = Select_ROIs(ROI1, ROI2, ROI3, ROI4)
+        %%%% Sort order %%%%
+        %roi_res
+        % -roi_positive: ROI1
+        %  --roi_DS_positive: ROI2
+        %  --roi_non_DS_positive
+        %
+        % -roi_negative: ROI3
+        %  --roi_DS_negative: ROI4
+        %  --roi_non_DS_negative
+        %
+        %roi_no-res: ROI5
+
+        %Sorted based on positive responses
+        roi1 = ROI2;
+        roi2 = setdiff(ROI1, roi1); %non-selective for positive
+        % Remove overlapped ROIs from negative ROIs
+        roi_neg= setdiff(ROI3, ROI1);
+        roi3 = intersect(roi_neg, ROI4); %negative DS
+        roi4 = setdiff(ROI3, roi3); %non-selective for negative
+
+        %roi_sort = Sort_ROIs(A, 'positive', roi1, roi2, roi3, roi4, ROI5);
+
+end
+%% SORT BY PREF ANGLES
 function roi_sort = Sort_ROIs(A, type, roi1, roi2, roi3, roi4, roi5)
 
 if strcmp(type, 'positive')
