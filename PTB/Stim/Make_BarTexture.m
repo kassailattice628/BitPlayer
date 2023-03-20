@@ -4,7 +4,8 @@ tf = round(dist/flipnum);
 
 %% Prepare Bar
 
-bar_h = sobj.RECT(4);
+%bar_h = sobj.RECT(4);
+bar_h = Deg2Pix(65, sobj.MonitorDist, sobj.Pixelpitch); %Fixed to 65deg
 bar_w = sobj.StimSize_pix(1);
 
 %Texture objext

@@ -1,6 +1,6 @@
 # BitPlayer
 
-Last Update 2023/03/03
+Last Update 2023/03/20, tag:v0.4.0
 
 ***
 BitPlayer is the Matlab app for
@@ -12,11 +12,12 @@ BitPlayer is the Matlab app for
 ## Requirements
 - Matlab R2022a
     - GUIs were created using appdesigner
-- Two PCs (Windows and Linux)
-- python (ver..., )
+- Windows PC for BitPlayer-DAQ
+- Ubuntu for -PTB & -Analysys
+- [Python (ver 3.8 or 3.9 is compatible for 2022a)](https://jp.mathworks.com/support/requirements/python-compatibility.html)
 
 ### DAQ
-- Windows PC (Windows 11)
+- Windows 11
 - Matlab R2022a
     - DAQ toolbox
     - IMAQ toolbox
@@ -38,13 +39,15 @@ BitPlayer is the Matlab app for
 ### Analysys
 - Developped in Ubuntu 20.04.5 LTS (macOS and Windows not tested)
 - Matlab R2022a
+- Python 3.8 or 3.9
+    - pandas 
 ___
 ## Visual Stimulation using PTB3
-1. Simple spot 
-1. Fine mapping
+1. Simple spot (full screen)
+1. Fine mapping (spot in smaller area)
 1. Random Size
-1. Moving Bar
-1. Static Bar
+1. Moving Bar (fixed bar height: 65deg)
+1. Static Bar (fixed bar height: 65deg)
 1. Moving Spot
 1. Sinusoidal, Shifting Grating, Gabor
 1. Image (under development)
@@ -58,11 +61,18 @@ ___
     1. AI2: Photo sensor
     1. AI3: **** Used for trigger monitor
     1. AI4: Pupil Size (not good)
-1. Video recording of Eye camera (500Hz)
+1. Video recording of Eye camera (500Hz) <- should be changeabe.
 1. Recoding locomotion (Rotary encoder)
 
 ***
 ## Change history
+2022/03/20
+* Update Analysys.
+* Use version info as txt file.
+
+2022/03/03
+* Running test OK for DAQ+PTB and trigger FV10
+* Data load is OK for Analsys. Need to make stimulus specific analysys.
 
 2022/02/26
 * Developping Analysis app (Analysys + 2P)

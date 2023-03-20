@@ -138,7 +138,8 @@ if n_blankloop > app.Blankloop.Value
             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
 
             %Bar length is same as the vertical size of the display
-            bar_h = sobj.RECT(4);
+            %bar_h = sobj.RECT(4);
+            bar_h = Deg2Pix(65, sobj.MonitorDist, sobj.Pixelpitch); %Fixed to 65deg
             bar_w = sobj.StimSize_pix(1);
             tex_pos = [sobj.StimCenterPos(1) - bar_w/2, sobj.StimCenterPos(2) - bar_h/2,...
                 sobj.StimCenterPos(1) + bar_w/2, sobj.StimCenterPos(2) + bar_h/2];
