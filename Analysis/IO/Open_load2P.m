@@ -2,7 +2,7 @@ function Open_load2P(app)
 %
 % Load extracted fluprescnce changes of etracted ROIs.
 %
-%%
+
 im = app.imgobj;
 im.imgsz = app.ImageSize.Value;
 
@@ -36,6 +36,8 @@ else
     app.mainvar.Lowcutfilter = 0;
     app.mainvar.Offset = 0;
     app.mainvar.Zscore = 0;
+
+    app.SaveFileName.Value = app.mainvar.fname_daq;
 end
 
 

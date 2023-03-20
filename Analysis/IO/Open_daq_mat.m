@@ -35,55 +35,55 @@ else
         [f, d] = uigetfile({[d, '*.mat']});
         load([d, f]);
     end
-    
+
     %% Success file load
     app.n_in_loop = 1;
     app.Trial_n.Value = 1;
-    
+
     mainvar.dirname_daq = d;
     if ~isfield(mainvar, 'mouse')
         a = split(d, filesep);
         mainvar.mouse = a{end-1};
         mainvar.date = a{end-2}(1:end-3);
-        
+
         %Photo sensor V -> mV
         SaveData(:,3,:) =  SaveData(:,3,:)* 1000;
     end
     app.Mouse.Text = ['Mouse: ', mainvar.mouse];
     app.Date.Text = ['Date: ', mainvar.date];
-    
-    
-    
+
+
+
     %% Check file name
     if length(regexp(f, '_')) > 1
         i = regexp(f, '_');
-        mainvar.fname_daq = [f(1:i(end)-1), '.mat'];
-        disp(f)
-    else
-        mainvar.fname_daq = f;
+        %mainvar.fname_daq = [f(1:i(end)-1), '.mat'];
+        if ~isfield(mainvar, 'fname_daq_original')
+            mainvar.fname_daq_original = [f(1:i(end)-1), '.mat'];
+        end
     end
-    
+    mainvar.fname_daq = f;
+
     app.FileName.Text = ['File Name: ', f];
     app.SaveFileName.Value = f;
-    
+
     %% Check imgobj <- for imaging data
     if ~exist('imgobj', 'var')
         %First time to select mat file.
-        imgobj.nROI = 0;
-        imgobj.selectROI = 1;
-        imgobj.maxROIs =  0;
-        imgobj.dFF =[];
-        
+        imgobj.Num_ROIs = 1;
+        imgobj.selected_ROIs = 1;
+        imgobj.dFF = [];
+
         % Check frame rate
         if isfield(imgobj, 'FVsampt')
             %Put in GUI.
             app.FVsampt.Value = imgobj.FVsampt;
         end
     end
-    
+
     %% Return
     disp(mainvar)
-    
+
     app.imgobj = imgobj;
     app.mainvar = mainvar;
     app.SaveData = SaveData;

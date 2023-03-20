@@ -7,6 +7,7 @@ function Apply_change_dFF(app)
 dFF = app.imgobj.F;
 F0 = mean(dFF(app.imgobj.f0,:));
 F0mat = repmat(F0, size(dFF, 1), 1);
+dFF = (dFF - F0mat)./ F0mat;
 
 %%
 
@@ -20,8 +21,8 @@ if app.Lowcutfilter.Value
     dFF = lowcut(dFF);
 end
 
-% Step4 (re) calculate dFF
-dFF = (dFF - F0mat)./ F0mat;
+% Step3 (re) calculate dFF
+%dFF = (dFF - F0mat)./ F0mat;
 
 % Step4 Offset
 if app.Offset.Value
