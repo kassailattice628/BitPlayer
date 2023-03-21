@@ -79,8 +79,9 @@ while 1
         n_blankloop = n_blankloop + 1;
         n_off = 1;
     else
+        %% RTS monitor (~1k Hz)
         if n_off == 1
-            disp ('Trigger OFF')
+            disp ('PTB: Loop start >>>>>')
             % Wating trigger
             app.TTLfromDAQLamp.Color = [0,0,0];
             %disp('Wating Trigger');
@@ -88,9 +89,7 @@ while 1
         elseif n_off == 2
             disp('Waiting for Trigger (CTS)')
         elseif n_off == 1000
-            disp('Waiting for Trigger (CTS)')
-            n_off = 2;
-
+            n_off = 1;
         end
         n_off = n_off + 1;
         pause(0.001)
