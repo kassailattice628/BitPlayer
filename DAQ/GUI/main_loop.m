@@ -1,126 +1,103 @@
 function main_loop(app)
 %
 % Loop fucntion of BitPlayer_DAQ
+% 
+% Structure update 20230321
+% previous version is main_loop_20230320
 %
 
-%% Intialize condition.
-recobj = app.recobj;
+%% Initialize condition
+
 app.recobj.n_in_loop = 1;
-
-app.d_in.ScansAvailableFcn = @(src, evt) scanAvailableCallback_BP(app, src, evt);
-%Start Background recording ---> See scanAvailableCallback_BP.m
-start(app.d_in, 'continuous');
-
 % Reset TTL
 write(app.d_out, [0, 0, 0, 0])
-
+app.d_in.ScansAvailableFcn = @(src, evt) scanAvailableCallback_BP(app, src, evt);
+% Start Background recording >> See scanAvailableCallback_BP.m
+% To detect RTS
+start(app.d_in, 'continuous');
 app.CurrentState = 'Aqcuisition.Buffering';
 stateMonitor(app)
 
 app.recobj.DAQt = [];
-t = tic;
 
-%% Loop start
+%% Loop start %%%%%%%%
+while app.loopON
 
-while 1
-    stateMonitor(app)
-
-    % Check button state
+    % GUI Button check
     if ~app.loopON
-        disp('Loop Stop')
         write(app.d_out, [0, 0, 0, 0])
-        break; % get out from main loop
+        break
     end
 
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
-    while app.RTS
-        % Check button state
-        if ~app.loopON
-            break; % out from recording loop
+    %% Prepare
+    % Video setting
+    if app.CameraSave.Value % When CameraSave is ON
+        app.imaq = LoggingVideoSetting(app.imaq, app.recobj.n_in_loop);
+    end
+    % AO for TTL
+    if app.TTLSwitch.Value % TTL is ON
+        preload(app.d_out_ao, 5 * app.recobj.TTL.outputSignal) % 5V ouput
+        start(app.d_out_ao);
+    end
+
+
+    %% Start Recording
+    %Start DAQ, trigger PTB and other devices
+    %(1) DAQ trigger, (2) FV trigger, (3) PTB triggers(CTS)a, (4) nothing
+    fprintf("Start Loop#: %d.\n", app.recobj.n_in_loop);
+    if app.recobj.n_in_loop == 1
+        t = tic;
+        write(app.d_out, [1, 1, 1, 0]);
+        fprintf('Trig #%d >>>> ', 1)
+    else
+        write(app.d_out, [1, 0, 1, 0]);
+        fprintf('Trig #%d >>>> ', app.recobj.n_in_loop)
+    end
+    app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
+    app.capturing = 1;
+
+    %Start Video (with delay)
+    if app.CameraSave.Value && isrunning(app.imaq.vid) == 0
+        pause(app.imaq.delay_ms/1000) %delay
+        start(app.imaq.vid)
+    end
+
+    % Wait for complete capture
+    while app.capturing
+
+        if strcmp(app.CurrentState, 'LoopEnd') || ~app.loopON
+
+            break
+
         end
-        stateMonitor(app)
-
-        %% Video setting
-        if app.CameraSave.Value
-            
-            % When CameraSave is ON
-            app.imaq = LoggingVideoSetting(app.imaq, app.recobj.n_in_loop);
-        end
-
-        %% Prep analog output for external TTL
-        if app.TTLSwitch.Value
-            preload(app.d_out_ao, 5 * recobj.TTL.outputSignal) % 5V ouput
-            start(app.d_out_ao);
-        end
-        
-        %% Start Recording
-
-        %Start Video (with delay)
-        if app.CameraSave.Value && isrunning(app.imaq.vid) == 0
-            pause(app.imaq.delay_ms/1000)
-
-            %disp('Camera Rec ON')
-            imaq_t = app.imaq.duration_ms/1000;
-            start(app.imaq.vid)
-        else
-            imaq_t = 0;
-        end
-
-        %Start DAQ, trigger PTB and other devices
-        %(1) DAQ trigger, (2) FV trigger, (3) PTB triggers, (4) nothing
-        if app.recobj.n_in_loop == 1
-            write(app.d_out, [1, 1, 1, 0]);
-        else
-            write(app.d_out, [1, 0, 1, 0]);
-        end
-
-        
         pause(0.1)
-        app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
-        fprintf("Start Loop#: %d.\n", app.recobj.n_in_loop);
-        %turn off triggers
-        write(app.d_out, [0, 0, 0, 0]); % PTB trigger OFF
+    end
 
-
-        %% Wait for data acquisition
-        pause(max(app.recobj.rect/1000, imaq_t));
-
-        %% Finishing loop
-
-        % Save Movie
-        if app.CameraSave.Value
-
-            fprintf("%d frame is acquired.\n", app.imaq.vid.FramesAcquired);
-            while app.imaq.vid.FramesAcquired < app.imaq.vid.DiskLoggerFrameCount
-                pause(.1);
-                disp('Movie saving...')
-            end
-            disp(['Movie is saved as: ', app.imaq.movie_fname]);
-            stop(app.imaq.vid)
-        end
-
-        % Reset TTL pulse
-        if app.TTLSwitch.Value
-            stop(app.d_out_ao);
-        end
-
-    end %end of RTS detected.
-
+    %% Finishing loop
     if app.StandAloneModeButton.Value
+        disp('wait ITI')
         pause(app.recobj.interval)
     else
-        pause(0.01) %Look for RTS
+        while ~app.RTS
+            % Wait for finishing visual stimuli
+            if ~app.loopON
+                break
+            end
+            pause(0.1)
+        end
     end
+    app.CurrentState = 'Aqcuisition.Buffering';
+    app.recobj.n_in_loop = app.recobj.n_in_loop + 1;
 
-end % end of loop
+end %% Loop end %%%%%%%%
 
-%%%%%%%%%% %%%%%%%%%% %%%%%%%%%%
 
-%% Loop stop
-app.recobj.n_in_loop = app.recobj.n_in_loop - 1;
 
-%% Save DAQ data to the file
 if app.saveON
+    % Save DAQ data to the file
+    app.recobj.n_in_loop = app.recobj.n_in_loop - 1;
+    recobj = app.recobj;
+
     SaveData = app.SaveData;
     SaveTimestamps = app.SaveTimestamps;
 
@@ -146,6 +123,5 @@ if app.saveON
     app.CaptureTimestamps = [];
     stateMonitor(app)
 end
-
 
 end

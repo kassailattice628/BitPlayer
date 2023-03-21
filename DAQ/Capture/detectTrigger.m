@@ -13,8 +13,10 @@ app.TrigMoment = [];
 
 if app.TrigActive
     %Find the momoent when trigger condition has been met
+    disp('Triggered')
     moment_index = 1 + find(diff(condition)==1, 1, 'first');
     app.TrigMoment = app.TimestampsFIFOBuffer(moment_index);
+
 end
 
 

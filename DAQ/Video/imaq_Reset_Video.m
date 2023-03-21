@@ -11,7 +11,7 @@ imaq = app.imaq;
 imaq.vid.ROIPosition = imaq.roi_position;
 disp(imaq.vid.ROIPosition);
 
-imaq.src.FrameRate = 500;
+imaq.src.FrameRate = app.VideoFrameRate.Value;
 
 
 %Recording time

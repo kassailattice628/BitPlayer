@@ -5,4 +5,8 @@ function results = isEnoughDataCpatured(TimeStamps, StartMoment, TimeSpan)
 
 results = (TimeStamps - StartMoment) > TimeSpan;
 
+% if (TimeStamps - StartMoment) > 0.9 * TimeSpan
+%     fprintf('data after trigger= %d.\n', (TimeStamps - StartMoment));
+% end
+
 end

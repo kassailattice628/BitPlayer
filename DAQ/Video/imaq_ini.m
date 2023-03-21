@@ -26,7 +26,8 @@ imaq.roi_position = imaq.vid.ROIPosition;
 imaq.vid.LoggingMode = 'disk';
 
 imaq.src = getselectedsource(imaq.vid);
-imaq.src.FrameRate = 500;
+%imaq.src.FrameRate = 500;
+imaq.src.FrameRate = app.VideoFrameRate.Value;
 imaq.src.Strobe1 = "On";
 
 % Need to check Exposure, Shutter, and so on...
