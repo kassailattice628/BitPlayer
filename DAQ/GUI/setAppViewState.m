@@ -43,6 +43,7 @@ switch state
         app.CameraSave.Enable = 'on';
         app.VideoCaptureDelay.Enable = 'on';
         app.VideoCaptureTime.Enable = 'on';
+        app.VideoFrameRate.Enable = 'on';
         app.CameraButton.Text = 'Camera ON';
         app.CameraButton.BackgroundColor = [0, 1, 0];
 
@@ -55,6 +56,7 @@ switch state
         app.CameraSave.Text = 'SAVE CAM OFF';
         app.VideoCaptureDelay.Enable = 'off';
         app.VideoCaptureTime.Enable = 'off';
+        app.VideoFrameRate.Enable = 'off';
         app.CameraButton.Text = 'Camera OFF';
         app.CameraButton.BackgroundColor = [.96, .96, .96];
 

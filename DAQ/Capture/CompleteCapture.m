@@ -1,12 +1,14 @@
 function CompleteCapture(app)
-%When capture was completed, plot them and save.
+% When capture was completed
+% plot captured data
+% save to a variable
 
 % Find index of first sample in data buffer to be captured
 firstSampleIndex =...
     find(app.TimestampsFIFOBuffer >= app.CaptureStartMoment, 1, 'first');
 
 % Find index of last sample in data buffer that complete the capture
-lastSampleIndex = firstSampleIndex + app.recobj.recp -1;
+lastSampleIndex = firstSampleIndex + app.recobj.recp - 1;
 
 
 %% Capture Error Handring
@@ -15,7 +17,7 @@ if isempty(firstSampleIndex) ||...
         lastSampleIndex > size(app.TimestampsFIFOBuffer, 1)
     % Something went wrong
     % Abort capture
-    %app.StatusText.Text = 'Capture error';
+    % app.StatusText.Text = 'Capture error';
 
     app.DAQSTOPButton.Enable = "off";
     app.loopON = false;
@@ -29,6 +31,9 @@ end
 
 %% Extract captured data
 app.CaptureData = app.DataFIFOBuffer(firstSampleIndex:lastSampleIndex,:);
+%flush data
+app.DataFIFOBuffer(firstSampleIndex:lastSampleIndex,:) = 0;
+
 app.CaptureTimestamps =...
     app.TimestampsFIFOBuffer(firstSampleIndex:lastSampleIndex);
 
@@ -51,8 +56,5 @@ if app.saveON
 else
     fprintf("Complete capture, loop#: %d.\n", app.recobj.n_in_loop)
 end
-
-% Count up loop number
-app.recobj.n_in_loop = app.recobj.n_in_loop + 1; 
        
 end
