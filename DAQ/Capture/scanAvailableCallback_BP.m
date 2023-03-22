@@ -67,6 +67,7 @@ app.plot5.YData = app.DataFIFOBuffer(firstPoint:end, 4);
 %% Detect RTS trigger from PTB
 if app.StandAloneModeButton.Value
     app.RTS = true;
+
 else
     app.RTS = any(app.DataFIFOBuffer(firstPoint:end, 8));
 end
@@ -91,7 +92,8 @@ switch app.CurrentState
         end
 
     case 'Capture.LookingForTrigger'
-        detectTrigger(app)
+        detectTrigger(app);
+        
         if app.TrigActive
             app.CurrentState = 'Capture.CapturingData';
             %Reset trigger
@@ -113,27 +115,31 @@ switch app.CurrentState
     case 'Capture.CaptureComplete'
         %Acquired enough data to complete capture of specified duration
         CompleteCapture(app)
-        app.capturing = false;
+        
 
         if app.CameraSave.Value
             app.CurrentState = 'Saving.Movie';
         else
+            app.capturing = false;
             app.CurrentState = 'Loop.End';
         end
 
     case 'Saving.Movie'
         if isrunning(app.imaq.vid)
-            %Save Movie
+            % Still acquiring video
             fprintf("%d frame is acquired.\n", app.imaq.vid.FramesAcquired);
             while app.imaq.vid.FramesAcquired < app.imaq.vid.DiskLoggerFrameCount
                 pause(.1);
                 disp('Movie saving...')
             end
-            disp(['Movie is saved as: ', app.imaq.movie_fname]);
             stop(app.imaq.vid)
         end
+
+        fprintf("%d frame is acquired.\n", app.imaq.vid.FramesAcquired);
+        disp(['Movie is saved as: ', app.imaq.movie_fname]);
+        app.capturing = false;
         app.CurrentState = 'Loop.End';
-        
+
 end
 end
 

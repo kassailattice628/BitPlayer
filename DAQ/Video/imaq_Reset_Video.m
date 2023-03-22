@@ -12,13 +12,17 @@ imaq.vid.ROIPosition = imaq.roi_position;
 disp(imaq.vid.ROIPosition);
 
 imaq.src.FrameRate = app.VideoFrameRate.Value;
+imaq.frame_rate = imaq.src.FrameRate; %actual FrameRate
 
 
 %Recording time
 video_rec_time = app.VideoCaptureTime.Value/1000; % in sec
-imaq.vid.FramesPerTrigger = video_rec_time * imaq.frame_rate; %
+imaq.vid.FramesPerTrigger = video_rec_time * imaq.src.FrameRate; %
 imaq.vid.TriggerRepeat = 0;
-imaq.vid.TriggerFrameDelay = 0;
+delay_ms = app.VideoCaptureDelay.Value; %ms
+delay_frames = round(delay_ms/1000 * imaq.frame_rate);
+imaq.vid.TriggerFrameDelay = delay_frames; %if needed, add GUI
+
 
 % Save Mode & Trigger Mode
 imaq.vid.LoggingMode = 'disk'; % 'disk' or 'memory'

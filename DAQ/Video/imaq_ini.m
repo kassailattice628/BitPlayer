@@ -75,6 +75,7 @@ imaq.vid.TriggerFrameDelay = 0; %if needed, add GUI
 % Save Mode & Trigger Mode
 imaq.vid.LoggingMode = 'disk'; % 'disk' or 'memory'
 triggerconfig(imaq.vid, 'hardware', 'risingEdge', 'externalTriggerMode0-Source0');
+%triggerconfig(imaq.vid, 'manual');
 
 
 imaq.frame_rate = imaq.src.FrameRate; %actual FrameRate

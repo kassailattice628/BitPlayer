@@ -105,6 +105,7 @@ while 1
         disp('ITI')
         pause(app.recobj.interval)
     end
+    
 end % end of loop
 
 %%%%%%%%%% %%%%%%%%%% %%%%%%%%%%

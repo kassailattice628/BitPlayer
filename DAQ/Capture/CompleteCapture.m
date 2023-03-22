@@ -15,9 +15,6 @@ lastSampleIndex = firstSampleIndex + app.recobj.recp - 1;
 if isempty(firstSampleIndex) ||...
         isempty(lastSampleIndex) ||...
         lastSampleIndex > size(app.TimestampsFIFOBuffer, 1)
-    % Something went wrong
-    % Abort capture
-    % app.StatusText.Text = 'Capture error';
 
     app.DAQSTOPButton.Enable = "off";
     app.loopON = false;
@@ -52,9 +49,9 @@ app.PlotRecorded.XLim =...
 if app.saveON
     app.SaveData(:, :, app.recobj.n_in_loop) = app.CaptureData;
     app.SaveTimestamps(:, app.recobj.n_in_loop) = app.CaptureTimestamps;
-    fprintf("Saved capture loop#: %d.\n", app.recobj.n_in_loop)
+    fprintf("Saved Capture: #%d.\n", app.recobj.n_in_loop)
 else
-    fprintf("Complete capture, loop#: %d.\n", app.recobj.n_in_loop)
+    fprintf("Complete Capture: #%d.\n", app.recobj.n_in_loop)
 end
        
 end

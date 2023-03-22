@@ -44,28 +44,34 @@ while app.loopON
     %% Start Recording
     %Start DAQ, trigger PTB and other devices
     %(1) DAQ trigger, (2) FV trigger, (3) PTB triggers(CTS)a, (4) nothing
-    fprintf("Start Loop#: %d.\n", app.recobj.n_in_loop);
+
+    if app.CameraSave.Value && ~isrunning(app.imaq.vid)
+        start(app.imaq.vid) %Video rec ready
+        fprintf("Start Loop & Video: #%d\n", app.recobj.n_in_loop);
+    else
+        fprintf("Start Loop: #%d\n", app.recobj.n_in_loop);
+    end
+
     if app.recobj.n_in_loop == 1
         t = tic;
-        write(app.d_out, [1, 1, 1, 0]);
-        fprintf('Trig #%d >>>> ', 1)
+        %write(app.d_out, [1, 1, 1, 0]);
+        FVtrig = 1;
     else
-        write(app.d_out, [1, 0, 1, 0]);
-        fprintf('Trig #%d >>>> ', app.recobj.n_in_loop)
+        % TTL for FV is not ON after the 1st loop.
+        FVtrig = 0;
+        %write(app.d_out, [1, 0, 1, 0]);
     end
+    %Trigger
+    write(app.d_out, [1, FVtrig, 1, 0]);
+    fprintf('Trig #%d >>>> ', app.recobj.n_in_loop)
     app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
     app.capturing = 1;
 
-    %Start Video (with delay)
-    if app.CameraSave.Value && isrunning(app.imaq.vid) == 0
-        pause(app.imaq.delay_ms/1000) %delay
-        start(app.imaq.vid)
-    end
 
     % Wait for complete capture
     while app.capturing
 
-        if strcmp(app.CurrentState, 'LoopEnd') || ~app.loopON
+        if strcmp(app.CurrentState, 'Loop.End') || ~app.loopON
 
             break
 
@@ -73,9 +79,11 @@ while app.loopON
         pause(0.1)
     end
 
+
+
     %% Finishing loop
     if app.StandAloneModeButton.Value
-        disp('wait ITI')
+        disp('Wait for ITI')
         pause(app.recobj.interval)
     else
         while ~app.RTS
@@ -101,7 +109,9 @@ if app.saveON
     SaveData = app.SaveData;
     SaveTimestamps = app.SaveTimestamps;
 
+    disp('Saving MAT >>>')
     save(app.recobj.FileName, 'recobj', 'SaveData', 'SaveTimestamps');
+    fprintf('Saved: %s\n', app.recobj.FileName);
 
     clear SaveData SaveTimestamps
 
