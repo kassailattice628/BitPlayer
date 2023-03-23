@@ -1,7 +1,6 @@
 function [B, data_bstrp_]= Bootstrap_DSI_OSI(im, type, shuffle)
 %
 %
-
 %
 if nargin == 2
     shuffle = false;
@@ -34,22 +33,26 @@ end
 B = zeros(n_bstrp, 2, n_ROIs);
 
 %
-tic
+tic;
 %
 n_col = size(dFF_peak, 2);
 data_bstrp_ = zeros(n_bstrp, n_col, n_ROIs);
 
 for roi = 1 : n_ROIs
+%for roi = 182
     data = dFF_peak(:,:,roi);
     data_bstrp = zeros(n_bstrp, n_col);
 
     % Remove NaN by column...
-    parfor c = 1:size(data,2)
+    for c = 1:size(data,2)
         d = data(:, c);
         d = d(~isnan(d));
-        if length(d) > 1
+        if isempty(d)
+            % All data is NaN
+            data_bstrp(:, c) = NaN(n_bstrp, 1);
+        elseif length(d) > 1
             data_bstrp(:, c) = bootstrp(n_bstrp, @mean, d);
-        else 
+        elseif length(d) == 1
             data_bstrp(:, c) = repmat(d, n_bstrp, 1);
         end
     end
@@ -65,6 +68,7 @@ for roi = 1 : n_ROIs
     end
 end
 
+
 end
 
 %%
@@ -78,6 +82,7 @@ function B_ = Get_Boot_selectivity(d_bstrp, stim, type)
 B_ = zeros(size(d_bstrp, 1), 2);
 
 parfor i = 1: size(d_bstrp, 1)
+%for i = 1: size(d_bstrp, 1)
     d = d_bstrp(i,:);
     [L, Ang] = VectorAveraging(d, stim, type);
     B_(i, :) = [L, Ang];

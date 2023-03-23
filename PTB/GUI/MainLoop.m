@@ -107,7 +107,9 @@ sobj.n_in_loop = n_in_loop - 1;
 
 %% When SAVE is ON, parameters are saved as .mat
 if app.SAVEONButton.Value
+    disp('Saving ...')
     save(app.sobj.FileName, 'sobj', 'ParamsSave');
+    fprintf('Done. \n Save as: %s\n', app.sobj.FileName)
 
     %SAVE Button
     app.SAVEONButton.Enable = "on";
