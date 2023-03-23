@@ -91,6 +91,7 @@ switch s.Pattern
 
         %% Fit VM for selective cells
         for roi = union(roi_DS, roi_OS)
+            
             [beta, ci, f_select, R, Ja] = ...
                 Fit_vonMises(data_bstrp(:,:, roi), im.stim_directions,...
                 im.Ang_DS_bstrp(roi), F_VM1, F_VM2);

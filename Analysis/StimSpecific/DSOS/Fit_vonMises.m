@@ -8,11 +8,14 @@ function [beta, ci, f_select, R, Ja] =...
 opts = optimset('Display','off');
 
 data = reshape(data_bootstrp, 1, []);
+%remove NaN
+remove = isnan(data);
+data(remove) = [];
 
 stim = repmat(stim, [size(data_bootstrp,1), 1]);
 stim = reshape(stim, 1, []);
-
-
+%remove NaN stim
+stim(remove) = [];
 
 % Model1: Single peak
 beta0 = [1, max(data), prefAng, min(data)];
