@@ -2,7 +2,7 @@ function recobj_ini(app)
 %% recording parameters 
 recobj.interval = 1; %loop interval (sec)
 
-recobj.sampf = 5000; %sampling rate (Hz)
+recobj.sampf = 2000; %sampling rate (Hz)
 
 recobj.rect = 2*1000; %recording time (ms)
 

@@ -78,9 +78,7 @@ while app.loopON
         end
         pause(0.1)
     end
-
-
-
+    
     %% Finishing loop
     if app.StandAloneModeButton.Value
         disp('Wait for ITI')

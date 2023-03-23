@@ -22,9 +22,18 @@ if app.TrigActive
     wait_trig = [];
 else
     wait_trig = [wait_trig, 1];
-    if length(wait_trig) == 100
-        errordlg('Missing first trigger! Start again.')
+    if length(wait_trig) == 50
+        errordlg({'Missing first trigger!',...
+            'Stop DAQ and start again.'})
+
+        %Stop looping
         app.loopON = false;
+
+        %Quit standalne mode
+        app.StandAloneModeButton.Value = 0;
+        app.StandAloneModeButton.BackgroundColor = [1, 0.82, 0.82];
+        app.StandAloneModeButton.FontColor = [0, 0, 0];
+        app.ITI.Enable = "off";
     end
 end
 

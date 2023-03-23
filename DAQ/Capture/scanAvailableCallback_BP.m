@@ -35,6 +35,7 @@ if samplesToPlot > 1
     xlim(app.RotaryEncoder,[a(firstPoint), a(end)])
 end
 
+% Channel assignment %
 %1 addinput(d_in, "Dev2", "ai0", "Voltage") %pupil X
 %2 addinput(d_in, "Dev2", "ai1", "Voltage") %pupil Y
 %3 addinput(d_in, "Dev2", "ai2", "Voltage") %photo sensor
@@ -58,7 +59,7 @@ app.plot2.YData = app.DataFIFOBuffer(firstPoint:end, 3);
 %Rotary Encoder (-> Checking RTS(ch8))
 app.plot3.XData = t;
 REang = Decode_RotaryEncoder(app.DataFIFOBuffer(firstPoint:end, 7));
-app.plot3.YData = REang;
+app.plot3.YData = REang - REang(1); %offset
 
 %Trigger monitor
 app.plot5.XData = t;
@@ -67,18 +68,16 @@ app.plot5.YData = app.DataFIFOBuffer(firstPoint:end, 4);
 %% Detect RTS trigger from PTB
 if app.StandAloneModeButton.Value
     app.RTS = true;
-
 else
     app.RTS = any(app.DataFIFOBuffer(firstPoint:end, 8));
 end
 
-
 stateMonitor(app);
 %disp(app.CurrentState)
+
 %% App state control logic
 switch app.CurrentState
     case 'Aqcuisition.Buffering'
-%         app.CurrentState = 'Capture.LookingForRTS';
 
         if size(app.TimestampsFIFOBuffer, 1) > 1 %app.c.BufferSize/2
             app.CurrentState = 'Capture.LookingForRTS';
@@ -92,6 +91,7 @@ switch app.CurrentState
         end
 
     case 'Capture.LookingForTrigger'
+        % Check Trigger condition
         detectTrigger(app);
         
         if app.TrigActive
