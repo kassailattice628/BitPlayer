@@ -1,6 +1,6 @@
 # BitPlayer
 
-Last Update 2023/03/20, tag:v0.4.0
+Last Update 2023/03/23
 
 ***
 BitPlayer is the Matlab app for
@@ -66,6 +66,10 @@ ___
 
 ***
 ## Change history
+2023/03/21-23
+* Fix loop structure in DAQ recording.
+* Fix bootstrap in Analysys
+
 2022/03/20
 * Update Analysys.
 * Use version info as txt file.
