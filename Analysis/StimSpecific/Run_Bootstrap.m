@@ -18,55 +18,58 @@ n_bstrp = im.n_bstrp;
 switch s.Pattern
     case {'Moving Bar', 'Shifting Grating'}
 
-        %%% DS %%%
-        [P, data_bstrp] = Bootstrap_DSI_OSI(im, 'Direction');
-        [P_shuffled, data_bstrp_shuffled] = Bootstrap_DSI_OSI(im, 'Direction', 1);
+        % Generate bootstrapped data
+        [P_DS, P_OS, data_bstrp] = Bootstrap_DSI_OSI(im, 0);
+        [P_DS_shuffle, P_OS_shuffle, ~] = ...
+            Bootstrap_DSI_OSI(im, 1);
+%         %test plot
+%         roi = 21;
+%         figure, scatter(P_DS(:, 1, roi), P_DS_shuffle(:, 1, roi))
+%         line([0, 1], [0, 1])
+%         hold on
+%         scatter(P_OS(:, 1, roi), P_OS_shuffle(:, 1, roi))
 
-        %compare DSI vs DSI_shuffle and define selective ROI.
-        %im.roi_DS_positive = *******+
+        % Update ROI DS/OS
         roi_DS = [];
-        parfor roi = 1:im.Num_ROIs
+        roi_OS = [];
+
+        for roi = 1:im.Num_ROIs
             % 5% shuffled DSI < DSI
-            if sum(P(:, 1, roi) < P_shuffled(:, 1, roi))/n_bstrp < 0.05
+            if sum(P_DS(:, 1, roi) < P_DS_shuffle(:, 1, roi))/size(P_DS, 1)...
+                    < 0.05
                 roi_DS = [roi_DS, roi];
             end
-        end
-
-        % Save median of L(DSI/OSI) and 95% range.
-        L = squeeze(P(:,1,:));
-        im.L_DS_bstrp = Get_Median_95Rabge(L);
-        %im.L_DS_bstrp = squeeze(P(:,1,:));
-        Ang = squeeze(P(:,2,:));
-        im.Ang_DS_bstrp = Get_Median_95Rabge(Ang);
-        %im.Ang_DS_bstrp = squeeze(P(:,2,:));
-        im.dFF_peak_btsrp = Get_Median_95Rabge(data_bstrp);
-
-        %%% OS %%%
-        [P, data_btsrp] = Bootstrap_DSI_OSI(im, 'Orientation');
-        P_shuffled = Bootstrap_DSI_OSI(im, 'Orientation', 1);
-
-        roi_OS = [];
-        parfor roi = 1:im.Num_ROIs
-            % 5% shuffled OSI < OSI
-            if sum(P(:, 1, roi) < P_shuffled(:, 1, roi))/n_bstrp < 0.05
+            
+            if sum(P_OS(:, 1, roi) < P_OS_shuffle(:, 1, roi))/size(P_OS, 1)...
+                    < 0.05
                 roi_OS = [roi_OS, roi];
             end
         end
-        disp('Finish bootstrap resampling.')
-        
 
-        L = squeeze(P(:,1,:));
+
+        %% DS
+        % Save median of L(DSI/OSI) and 95% range.
+        L = squeeze(P_DS(:,1,:));
+        im.L_DS_bstrp = Get_Median_95Rabge(L);
+        Ang = squeeze(P_DS(:,2,:));
+        im.Ang_DS_bstrp = Get_Median_95Rabge(Ang);
+        im.dFF_peak_btsrp = Get_Median_95Rabge(data_bstrp);
+
+        %% OS
+        L = squeeze(P_OS(:,1,:));
         im.L_OS_bstrp = Get_Median_95Rabge(L);
-        Ang = squeeze(P(:,2,:));
+        Ang = squeeze(P_OS(:,2,:));
         im.Ang_OS_bstrp = Get_Median_95Rabge(Ang);
-        im.dFF_peak_btsrp_orientation = Get_Median_95Rabge(data_btsrp);
+        
+        data_bstrp_os = Transform_D2O(data_bstrp);
+        im.dFF_peak_btsrp_orientation = Get_Median_95Rabge(data_bstrp_os);
 
-        %Update selective ROI
+        %% Update selective ROI
         im.roi_DS_positive = roi_DS;
         im.roi_OS_positive = roi_OS;
         im.roi_non_selective = setdiff(im.roi_res, union(roi_DS, roi_OS));
         
-        %ROI_sorted
+        %% ROI_sorted
 
         im.roi_sortDS = Sort_ROI_by_DSOS(im, 'DS');
         im.roi_sortOS = Sort_ROI_by_DSOS(im, 'OS');

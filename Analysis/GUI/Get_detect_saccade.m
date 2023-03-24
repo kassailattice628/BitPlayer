@@ -24,7 +24,7 @@ peak_distance_in_sec = 0.1; %peak distance in sec.
     'MaxPeakWidth', 0.1);
 %locations = locs_in_sec + t1;
 % sec -> point
-locations = uint16(locs_in_sec * sf);
+locations = round(locs_in_sec * sf);
 
 %% Remove saccades that have too much highe peak.
 MaxPeakHeight = th_high;

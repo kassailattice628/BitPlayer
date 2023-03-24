@@ -45,7 +45,7 @@ for num_saccades = 1:length(P.p_saccades)
         [t_30, ~] = midcross(d, t(i1:i2), 'MidPercentReferenceLevel', 30);
         
         % recalculate range_point
-        i1 = uint16(t_30(1) * sf - range_point);
+        i1 = round(t_30(1) * sf - range_point);
         i2 = i1 + range_point * 2;
         
         if i1 <= 0 || i2 > size(D, 1)

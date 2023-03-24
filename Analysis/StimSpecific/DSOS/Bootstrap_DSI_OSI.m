@@ -1,32 +1,25 @@
-function [B, data_bstrp_]= Bootstrap_DSI_OSI(im, type, shuffle)
+function [B_DS, B_OS, data_bstrp_]= Bootstrap_DSI_OSI(im, shuffle)
 %
 %
 %
-if nargin == 2
+if nargin == 1
     shuffle = false;
 end
 
 n_bstrp = im.n_bstrp;
 n_ROIs = im.Num_ROIs;
+dFF_peak = im.dFF_peak_each_positive;
 
-%% Setting 
-switch type
-    case 'Direction'
-        dFF_peak = im.dFF_peak_each_positive;
-        stim = im.stim_directions;
-
-    case 'Orientation'
-        dFF_peak = im.dFF_peak_each_positive_orientation;
-        stim = im.stim_orientations;
-end
 
 %%
 % B: [DSI/OSI, Preferred Angle]
-B = zeros(n_bstrp, 2, n_ROIs);
+B_DS = zeros(n_bstrp, 2, n_ROIs);
+B_OS = zeros(n_bstrp*2, 2, n_ROIs);
 
 %
 tic;
 %
+
 n_col = size(dFF_peak, 2); %n_stim
 data_bstrp_ = zeros(n_bstrp, n_col, n_ROIs);
 
@@ -51,18 +44,24 @@ for roi = 1 : n_ROIs
 
     if shuffle
         data_bstrp = Shuffle(data_bstrp);
-        txt_sh = [type,'(shuffled)'];
+        txt_sh = ' (shuffled)';
     else
-        txt_sh = type;
+        txt_sh = [];
     end
-    data_bstrp_(:,:,roi) = data_bstrp;
+    data_bstrp_(:, :, roi) = data_bstrp;
     
     % Calculate DS/OS index and Preferred angle, using bootstrapped data
-    B(:, :, roi) = Get_Boot_selectivity(data_bstrp, stim, type);
-
+    B_DS(:, :, roi) = Get_Boot_selectivity(data_bstrp,...
+        im.stim_directions, 'Direction');
+    
+    data_bstrp_os = [data_bstrp(:, 1:size(data_bstrp, 2)/2);...
+        data_bstrp(:, (size(data_bstrp, 2)/2 + 1): end)];
+    B_OS(:, :, roi) = Get_Boot_selectivity(data_bstrp_os,...
+        im.stim_orientations, 'Orientation');
+    
     % Report progress
     if rem(roi, 10) == 0
-        fprintf('Running bootstrap %s, ROI#%d.\n', txt_sh, roi)
+        fprintf('Running bootstrap%s, ROI#%d...\n', txt_sh, roi)
         toc;
     end
 end
@@ -93,6 +92,7 @@ function d_shuffled = Shuffle(d) %(d, rois)
 % Make shuffled dataset
 d_shuffled = d;
 
+%Shufflingm within the same row
 for r = 1:size(d,1)
     i = randperm(size(d,2));
     d_shuffled(r, :) = d(r, i);

@@ -7,10 +7,8 @@ switch type
         Ang = wrapTo2Pi(angle(Z));
 
     case 'Orientation'
-
         Z = sum(y .* exp(2 * 1i * stim), 'omitnan')/sum(y, 'omitnan');
         L= abs(Z);
-        
         Ang = wrapToPi(angle(Z)/2 + pi/2);
 
         % Wrap tp [-pi/2:pi/2]
