@@ -20,13 +20,16 @@ switch type
         stim = im.stim_orientations;
 end
 
-%%
+
+%Shuffling should be applied to bootstrapped dataset.
+%{
 if shuffle
     dFF_peak = Shuffle(dFF_peak, n_ROIs);
     txt_sh = [type,'(shuffled)'];
 else
     txt_sh = type;
 end
+%}
 
 %%
 % B: [DSI/OSI, Preferred Angle]
@@ -56,9 +59,16 @@ for roi = 1 : n_ROIs
             data_bstrp(:, c) = repmat(d, n_bstrp, 1);
         end
     end
-    data_bstrp_(:,:,roi) = data_bstrp;
 
-    % Calculate bootstrapped DS/OS index, Preferred angle
+    if shuffle
+        data_bstrp = Shuffle(data_bstrp);
+        txt_sh = [type,'(shuffled)'];
+    else
+        txt_sh = type;
+    end
+    data_bstrp_(:,:,roi) = data_bstrp;
+    
+    % Calculate DS/OS index and Preferred angle, using bootstrapped data
     B(:, :, roi) = Get_Boot_selectivity(data_bstrp, stim, type);
 
     % Report progress
@@ -89,9 +99,30 @@ parfor i = 1: size(d_bstrp, 1)
 end
 
 end
-%% Shuffled dataset calculate p_value.
-function d_shuflled = Shuffle(d, rois)
+%% Shuffled dataset for calculating p_value.
+function d_shuffled = Shuffle(d) %(d, rois)
+% Make shuffled dataset
+i1 = size(d, 1); %n bootstrap
+i2 = size(d, 2); %n stim;
+d = reshape(d, [], 1);
 
+check = 1;
+while check
+    d = d(randperm(length(d)));
+    d = reshape(d, i1, i2);
+    %Check if all elements in the column are NaN.
+
+    if sum(sum(isnan(d)) == i1) ~= 0
+        fprintf('Re-generate shuffling data.')
+    else
+        check = 0;
+        d_shuffled = d;
+    end
+end
+
+
+
+%{
 d_shuflled = d * 0;
 for i = 1:rois
     ii = 1;
@@ -114,6 +145,7 @@ for i = 1:rois
         end
     end
 end
+%}
 
 end
 
