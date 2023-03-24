@@ -20,7 +20,7 @@ switch s.Pattern
 
         %%% DS %%%
         [P, data_bstrp] = Bootstrap_DSI_OSI(im, 'Direction');
-        P_shuffled = Bootstrap_DSI_OSI(im, 'Direction', 1);
+        [P_shuffled, data_bstrp_shuffled] = Bootstrap_DSI_OSI(im, 'Direction', 1);
 
         %compare DSI vs DSI_shuffle and define selective ROI.
         %im.roi_DS_positive = *******+
@@ -32,7 +32,7 @@ switch s.Pattern
             end
         end
 
-        % Save median and 95% range.
+        % Save median of L(DSI/OSI) and 95% range.
         L = squeeze(P(:,1,:));
         im.L_DS_bstrp = Get_Median_95Rabge(L);
         %im.L_DS_bstrp = squeeze(P(:,1,:));
@@ -90,7 +90,7 @@ switch s.Pattern
                 exp(b(3) * cos(2*x - 2*(b(5)+b(6)))) + b(4);
 
         %% Fit VM for selective cells
-        for roi = union(roi_DS, roi_OS)
+        for roi = union(roi_DS, roi_OS)'
             
             [beta, ci, f_select, R, Ja] = ...
                 Fit_vonMises(data_bstrp(:,:, roi), im.stim_directions,...
