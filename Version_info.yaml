@@ -1,11 +1,11 @@
 # Version info
 DAQ:
-    version: 0.4.1
-    date: 2022-3-22
+    version: 0.4.2
+    date: 2022-3-29
 
 PTB:
-    version: 0.4.0
-    date: 2022-3-20
+    version: 0.4.1
+    date: 2022-3-29
 
 Analysys:
     version: 0.2.0
