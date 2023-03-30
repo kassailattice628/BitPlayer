@@ -8,7 +8,7 @@ function Open_daq_mat(app)
 %% Clean up preloaded variables
 
 SaveData = [];
-mainvar = [];
+mainvar = app.mainvar;
 sobj = [];
 ParamsSave = [];
 
@@ -16,7 +16,11 @@ ParamsSave = [];
 %% Load Data
 if isfield(mainvar, 'dirname_daq')
     % If data directory is already exist.
-    [f, d] = uigetfile({[mainvar.dirname_daq, '*.mat']});   
+    [f, d] = uigetfile({[mainvar.dirname_daq, '*.mat']});
+    if ~strcmp(d, mainvar.dirname_daq) && isfield(mainvar, 'dirname_ptb')
+        clear mainvar
+    end
+
 else
     % If this is the first time to select daq data.
     % There is no information about location of the ,mat files.

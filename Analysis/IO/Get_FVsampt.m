@@ -28,14 +28,11 @@ function [params, f, d] = Get_metadata(fpath, keylist)
 %
 
 % Check input
-if isempty(fpath)
-    [f, d] = uigetfile({'*', 'All Files'}, 'Select OIF/OIB file');
-    fpath = [d, f];
-else
-    fpath = strrep(fpath, 'mat/', '/');
-    [f, d] = uigetfile({[fpath, '*.oif']}, 'Select OIF/OIB file');
-    fpath = [d, f];
-end
+%fpath = strrep(fpath, 'mat/', '/');
+%[f, d] = uigetfile({[fpath, '*.oif']}, 'Select OIF/OIB file');
+[f, d] = uigetfile({[fpath, '/*.oif']}, 'Select OIF/OIB file');
+fpath = [d, f];
+
 
 %% Extract metadata
 [d, f, e] = fileparts(fpath);

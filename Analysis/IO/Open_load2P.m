@@ -16,7 +16,10 @@ if isfield(app.mainvar, 'dirname_2p')
     % original dFF file location
     d = app.mainvar.dirname_2p;
 else
+    mouse = app.mainvar.mouse;
+    date = app.mainvar.date;
     d = '~/Share/s2p_working/';
+    d = fullfile(d, date, mouse);
 end
 
 [f, d] = uigetfile({[d, '*.mat']}, 'Select 2P data');
