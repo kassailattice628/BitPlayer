@@ -83,9 +83,6 @@ sobj.ISI_sec = 2;
 
 sobj.Blankloop_times = 2;
 
-% sobj.Blankloop_sec = 60;
-% sobj.Blankloop_times = ceil(sobj.Blankloop_sec/(sobj.Duration_sec + sobj.Delay_sec));
-
 %%%%%%
 sobj.StimSize_pix = round(ones(1,2) * Deg2Pix(1, sobj.MonitorDist, sobj.Pixelpitch)); %Defafult 1 deg
 sobj.StimSize_deg = 1;

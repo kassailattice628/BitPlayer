@@ -21,20 +21,23 @@ switch pattern
         app.Duration.Enable = 'off';
         app.Duration_Label.Enable = 'off';
 
-        app.BlankloopLabel.Text = ['loops = ',...
-            num2str(app.sobj.MovingDuration * app.sobj.Blankloop_times),...
-            ' sec'];
+        blank_duration = (app.sobj.MovingDuration + app.sobj.ISI_sec)*...
+            app.sobj.Blankloop_times;
+
+        
         
     otherwise
         app.DurationMoveStim_Label.Enable = 'off';
         app.Duration.Enable = 'on';
         app.Duration_Label.Enable = 'on';
 
-        app.BlankloopLabel.Text = ['loops = ',...
-                num2str((app.sobj.Duration_sec + app.sobj.ISI_sec)*app.sobj.Blankloop_times),...
-                ' sec'];
+        blank_duration = (app.sobj.Duration_sec + app.sobj.ISI_sec)*...
+            app.sobj.Blankloop_times;
 
         
 end
+
+%GUI
+app.BlankloopLabel.Text = ['loops = ', num2str(blank_duration),' sec'];
 
 end 
