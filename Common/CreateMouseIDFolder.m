@@ -1,43 +1,29 @@
 function savedir = CreateMouseIDFolder(app, mode)
-% mode: 'ptb' or 'daq'
+%
+% Generate folder(s) to save data of each experiment, trailas
+% mode: 'ptb', 'daq' or 'video
+%
+
+% Mouse ID
+mouseID =  app.EditFieldMouseID.Value;
 
 switch mode
     case 'ptb'
-        obj = app.sobj;
-    case {'daq', 'video'}
-        obj = app.recobj;
-end
+        d = app.sobj.SaveDir;
 
-%input Mouse ID
-mouseID =  app.EditFieldMouseID.Value;
-
-%Date Folder
-switch mode
-    case {'ptb', 'daq'}
-        d = obj.SaveDir;
+    case 'daq'
+        d = app.recobj.SaveDir;
+        
     case 'video'
-        d = obj.SaveMovieDir;
+        d = app.recobj.SaveMovieDir;
+
 end
 
-%Mouse Folder
+% Generate Mouse Folder
 savedir = [d, filesep, mouseID];
 if ~exist(savedir, 'dir')
     mkdir(savedir);
 end
 
-%output
-switch mode
-    case {'ptb', 'daq'}
-        obj.SaveDirMouse = savedir;
-    case 'video'
-        obj.SaveMovieDirMouse = savedir;
-end
-
-
-switch mode
-    case 'ptb'
-        app.sobj = obj;
-    case {'daq', 'video'}
-        app.recobj = obj;
-end
+%%%%%%%%%%
 end
