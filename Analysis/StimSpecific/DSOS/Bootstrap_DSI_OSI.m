@@ -28,7 +28,11 @@ for roi = 1 : n_ROIs
     data = dFF_peak(:,:,roi);
     data_bstrp = zeros(n_bstrp, n_col);
 
+    %%%%%%%%%
     % Remove NaN by column...
+    % Needo to fix this?
+    %%%%%%%%%
+
     for c = 1: n_col
         d = data(:, c);
         d = d(~isnan(d));
@@ -41,13 +45,16 @@ for roi = 1 : n_ROIs
             data_bstrp(:, c) = repmat(d, n_bstrp, 1);
         end
     end
+    %%%%%%%%%%%
 
+    % Shufflig
     if shuffle
         data_bstrp = Shuffle(data_bstrp);
         txt_sh = ' (shuffled)';
     else
         txt_sh = [];
     end
+
     data_bstrp_(:, :, roi) = data_bstrp;
     
     % Calculate DS/OS index and Preferred angle, using bootstrapped data
@@ -87,9 +94,13 @@ parfor i = 1: size(d_bstrp, 1)
 end
 
 end
+
 %% Shuffled dataset for calculating p_value.
-function d_shuffled = Shuffle(d) %(d, rois)
+function d_shuffled = Shuffle(d)
+%
 % Make shuffled dataset
+%
+
 d_shuffled = d;
 
 %Shufflingm within the same row

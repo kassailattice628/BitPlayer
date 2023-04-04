@@ -22,7 +22,7 @@ else
     d = fullfile(d, date, mouse);
 end
 
-[f, d] = uigetfile({[d, '*.mat']}, 'Select 2P data');
+[f, d] = uigetfile({[d, '/*.mat']}, 'Select 2P data');
 
 %file check
 if d == 0
