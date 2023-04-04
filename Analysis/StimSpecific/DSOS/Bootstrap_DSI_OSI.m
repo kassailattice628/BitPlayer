@@ -2,6 +2,45 @@ function [B_DS, B_OS, data_bstrp_]= Bootstrap_DSI_OSI(im, shuffle)
 %
 %
 %
+
+if nargin == 1
+    shuffle = false;
+end
+
+n_bstrp = im.n_bstrp;
+dFF_peak = im.dFF_peak_each_positive;
+n_stim = size(dFF_peak, 2);
+n_ROIs = im.Num_ROIs;
+
+%data_bstrp = zeros(n_bstrp, n_stim, n_ROIs);
+
+data_bstrp_ds = bootstrp(n_bstrp, @(x) [mean(x, 'omitnan')], dFF_peak);
+data_bstrp_ds = reshape(data_bstrp_ds,[n_bstrp, n_stim, n_ROIs]);
+
+
+for i = 1:n_ROIs
+    for ii = 1:n_stim/2
+        dFF_peak_os = [dFF_peak(:,ii,i); dFF_peak(:,ii+n_stim/2,i)];
+    end
+end
+data_bstrp_os = bootstrp(n_bstrp, @(x) [mean(x, 'omitnan')], dFF_peak_os);
+data_bstrp_os = reshape(data_bstrp_os,[n_bstrp, n_stim, n_ROIs]);
+
+B_DS = zeros(n_bstrp, 2, n_ROIs); %L, Ang
+B_OS = zeros(n_bstrp*2, 2, n_ROIs); %L, Ang
+
+directions = im.stim_directions;
+orientations = im.stim_orientations;
+
+parfor i = 1:n_ROIs
+    d = data_bstrp_ds(:,:,i)
+    do = data_bstrp_os(:,:,i)
+    B_DS(:,:,i) = VectorAveraging(d, directions, 'Direction')
+    B_OS(:,:,i) = VectorAveraging(do, orientations, 'Orientation')
+end
+
+%{
+%%%%%%
 if nargin == 1
     shuffle = false;
 end
@@ -72,7 +111,7 @@ for roi = 1 : n_ROIs
         toc;
     end
 end
-
+%}
 
 end
 
