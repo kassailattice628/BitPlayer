@@ -40,7 +40,7 @@ else
         load([d, f]);
     end
 
-    %% Success file load
+    %% Successfully load a daq file
     app.n_in_loop = 1;
     app.Trial_n.Value = 1;
 
