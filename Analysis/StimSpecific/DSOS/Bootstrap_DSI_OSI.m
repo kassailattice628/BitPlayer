@@ -1,42 +1,51 @@
-function [B_DS, B_OS, data_bstrp_]= Bootstrap_DSI_OSI(im, shuffle)
+function [B_DS, B_OS, data_bstrp_ds, data_bstrp_os] =...
+    Bootstrap_DSI_OSI(im, shuffle)
 %
 %
 %
-
-if nargin == 1
-    shuffle = false;
-end
 
 n_bstrp = im.n_bstrp;
 dFF_peak = im.dFF_peak_each_positive;
 n_stim = size(dFF_peak, 2);
 n_ROIs = im.Num_ROIs;
 
+if nargin == 1
+    shuffle = false;
+end
+
+
 %data_bstrp = zeros(n_bstrp, n_stim, n_ROIs);
+%% Resampling
+if shuffle
+    dFF_peak = Shuffle(dFF_peak);
+end
 
 data_bstrp_ds = bootstrp(n_bstrp, @(x) [mean(x, 'omitnan')], dFF_peak);
 data_bstrp_ds = reshape(data_bstrp_ds,[n_bstrp, n_stim, n_ROIs]);
 
-
 for i = 1:n_ROIs
     for ii = 1:n_stim/2
-        dFF_peak_os = [dFF_peak(:,ii,i); dFF_peak(:,ii+n_stim/2,i)];
+        dFF_peak_os(:,ii,i) = [dFF_peak(:,ii,i); dFF_peak(:,ii+n_stim/2,i)];
     end
 end
 data_bstrp_os = bootstrp(n_bstrp, @(x) [mean(x, 'omitnan')], dFF_peak_os);
-data_bstrp_os = reshape(data_bstrp_os,[n_bstrp, n_stim, n_ROIs]);
+data_bstrp_os = reshape(data_bstrp_os,[n_bstrp, n_stim/2, n_ROIs]);
 
+
+%% Vector Avaraging;
 B_DS = zeros(n_bstrp, 2, n_ROIs); %L, Ang
-B_OS = zeros(n_bstrp*2, 2, n_ROIs); %L, Ang
+B_OS = zeros(n_bstrp, 2, n_ROIs); %L, Ang
 
 directions = im.stim_directions;
 orientations = im.stim_orientations;
 
-parfor i = 1:n_ROIs
-    d = data_bstrp_ds(:,:,i)
-    do = data_bstrp_os(:,:,i)
-    B_DS(:,:,i) = VectorAveraging(d, directions, 'Direction')
-    B_OS(:,:,i) = VectorAveraging(do, orientations, 'Orientation')
+for i = 1:n_ROIs
+    d = data_bstrp_ds(:,:,i);
+    do = data_bstrp_os(:,:,i);
+    [B_DS(:,1,i), B_DS(:,2, i)] =...
+        VectorAveraging(d, directions, 'Direction');
+    [B_OS(:,1,i), B_OS(:,2, i)] =...
+        VectorAveraging(do, orientations, 'Orientation');
 end
 
 %{
@@ -115,37 +124,21 @@ end
 
 end
 
-%%
-function B_ = Get_Boot_selectivity(d_bstrp, stim, type)
-%
-% Calculate vectoraveraging
-% type: 'Direction' or 'Orientation'
-%
-
-%DSI/OSI, Preferred Angle
-B_ = zeros(size(d_bstrp, 1), 2);
-
-parfor i = 1: size(d_bstrp, 1)
-%for i = 1: size(d_bstrp, 1)
-    d = d_bstrp(i,:);
-    [L, Ang] = VectorAveraging(d, stim, type);
-    B_(i, :) = [L, Ang];
-end
-
-end
 
 %% Shuffled dataset for calculating p_value.
 function d_shuffled = Shuffle(d)
 %
-% Make shuffled dataset
+% Generate shuffled dataset
 %
 
 d_shuffled = d;
 
 %Shufflingm within the same row
-for r = 1:size(d,1)
-    i = randperm(size(d,2));
-    d_shuffled(r, :) = d(r, i);
+for ROI = 1: size(d, 3)
+    for row = 1:size(d, 1)
+        i_shuffle = randperm(size(d, 2));
+        d_shuffled(row, :, ROI) = d(row, i_shuffle, ROI);
+    end
 end
 
 

@@ -68,7 +68,7 @@ plot(x, y, '.', 'Color', Col);
 % for fitting
 if im.bstrpDone
     %DS or OS
-    peak_boot = im.dFF_peak_btsrp(1, :, roi);
+    peak_boot = im.dFF_peak_btsrp_direction(1, :, roi);
 
     if im.fit.f_select(roi)~=0
         x_fit = linspace(0, 2*pi, 500);
@@ -89,8 +89,8 @@ if im.bstrpDone
         boundedline(x_fit, Ypred, delta, 'alpha');
     elseif im.fit.f_select(roi)==0
         % Non selective, No response
-        error_neg = im.dFF_peak_btsrp(2, :, roi);
-        error_pos = im.dFF_peak_btsrp(3, :, roi);
+        error_neg = im.dFF_peak_btsrp_direction(2, :, roi);
+        error_pos = im.dFF_peak_btsrp_direction(3, :, roi);
         plot(stim, peak_boot, 'ro')
         errorbar(stim, peak_boot, error_neg, error_pos, 'ro')
     end

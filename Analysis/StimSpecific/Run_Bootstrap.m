@@ -7,7 +7,6 @@ function Run_Bootstrap(app)
 im = app.imgobj;
 s = app.sobj;
 im.n_bstrp = app.n_bootstrp.Value;
-n_bstrp = im.n_bstrp;
 
 %% Show progress bar
 % f = uifigure;
@@ -19,15 +18,32 @@ switch s.Pattern
     case {'Moving Bar', 'Shifting Grating'}
 
         % Generate bootstrapped data
-        [P_DS, P_OS, data_bstrp] = Bootstrap_DSI_OSI(im, 0);
+        [P_DS, P_OS, d_bstrp_ds, d_bstrp_os] = ...
+            Bootstrap_DSI_OSI(im, 0);
+
+        % with shuffling
         [P_DS_shuffle, P_OS_shuffle, ~] = ...
             Bootstrap_DSI_OSI(im, 1);
-%         %test plot
-%         roi = 21;
-%         figure, scatter(P_DS(:, 1, roi), P_DS_shuffle(:, 1, roi))
-%         line([0, 1], [0, 1])
-%         hold on
-%         scatter(P_OS(:, 1, roi), P_OS_shuffle(:, 1, roi))
+
+
+        %test plot
+        %{
+        n = 5;
+        rois = [10	16	20	23	32];
+        figure
+        for i = 1:n
+            roi = rois(i);
+            subplot(n, 1, i)
+            h1 = histogram(P_OS(:,1, roi));
+            h1.Normalization = 'probability';
+            h1.BinWidth = 0.01;
+            hold on
+            h2 = histogram(P_OS_shuffle(:,1, roi));
+            h2.Normalization = 'probability';
+            h2.BinWidth = 0.01;
+            title(['ROI:', num2str(roi)])
+        end
+        %}
 
         % Update ROI DS/OS
         roi_DS = [];
@@ -53,16 +69,14 @@ switch s.Pattern
         im.L_DS_bstrp = Get_Median_95Rabge(L);
         Ang = squeeze(P_DS(:,2,:));
         im.Ang_DS_bstrp = Get_Median_95Rabge(Ang);
-        im.dFF_peak_btsrp = Get_Median_95Rabge(data_bstrp);
+        im.dFF_peak_btsrp_direction = Get_Median_95Rabge(d_bstrp_ds);
 
         %% OS
         L = squeeze(P_OS(:,1,:));
         im.L_OS_bstrp = Get_Median_95Rabge(L);
         Ang = squeeze(P_OS(:,2,:));
         im.Ang_OS_bstrp = Get_Median_95Rabge(Ang);
-        
-        data_bstrp_os = Transform_D2O(data_bstrp);
-        im.dFF_peak_btsrp_orientation = Get_Median_95Rabge(data_bstrp_os);
+        im.dFF_peak_btsrp_orientation = Get_Median_95Rabge(d_bstrp_os);
 
         %% Update selective ROI
         im.roi_DS_positive = roi_DS;
@@ -85,6 +99,7 @@ switch s.Pattern
 
         f_select_ = zeros(1, im.Num_ROIs);
 
+        %% Define VM functions (single or double)
         %single peak
         F_VM1 = @(b, x) b(1) * exp(b(2) * cos(x - b(3))) + b(4);
 
@@ -93,11 +108,15 @@ switch s.Pattern
                 exp(b(3) * cos(2*x - 2*(b(5)+b(6)))) + b(4);
 
         %% Fit VM for selective cells
-        for roi = union(roi_DS, roi_OS)'
-            
+        rois = union(roi_DS, roi_OS);
+        directions = im.stim_directions;
+        Ang_DS = im.Ang_DS_bstrp(1,:);
+
+        for i = 1:length(rois)
+            roi = rois(i);
             [beta, ci, f_select, R, Ja] = ...
-                Fit_vonMises(data_bstrp(:,:, roi), im.stim_directions,...
-                im.Ang_DS_bstrp(roi), F_VM1, F_VM2);
+                Fit_vonMises(d_bstrp_ds(:,:, roi), directions,...
+                Ang_DS(roi), F_VM1, F_VM2);
 
             beta_(roi,:) = beta;
             Ci_(roi, :) = ci;
