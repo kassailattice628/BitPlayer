@@ -1,41 +1,49 @@
 function sobj = Set_Direction(direction, sobj)
-
+%
+%
+%
+%%
 i = sobj.n_in_loop - sobj.Blankloop_times;
 
 switch direction
     case 'Rand8'
-        [dir_list, list_size] = make_list(8);
-        %Randomize list
-        sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, 1);
-        sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
-        
+        n_directions = 8;
+        randomized = 1;
         
     case 'Rand12'
-        [dir_list, list_size] = make_list(12);
-        %Randomize list
-        sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, 1);
-        sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
+        n_directions = 12;
+        randomized = 1;
         
     case 'Rand16'
-        [dir_list, list_size] = make_list(16);
-        %Randomize list
-        sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, 1);
-        sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
+        n_directions = 16;
+        randomized = 1;
         
     case 'Ord8'
-        [dir_list, list_size] = make_list(8);
-        %Randomize list
-        sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, 0);
-        sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
+        n_directions = 8;
+        randomized = 0;
+
+    case 'Ord12'
+        n_directions = 12;
+        randomized = 0;
         
-    otherwise
-        sobj.MoveDir_i_in_list = 1;
-        
-        %Fixed irection: Set in GUI.
-        %sobj.MiveDirection, sobj.MoveDir_i_in_list
 end
 
+%%
+
+switch direction
+    case {'Rand8', 'Rand12', 'Rand16', 'Ord8', 'Ord12'}
+        [dir_list, list_size] = make_list(n_directions);
+        sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, randomized);
+        sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
+
+    otherwise
+        sobj.MoveDir_i_in_list = 1;
+
+        %Fixed direction: Set in GUI.
+        %sobj.MiveDirection, sobj.MoveDir_i_in_list
 end
+end
+
 
 %% Get Direction List
 function [dir_list, list_size] = make_list(n)
