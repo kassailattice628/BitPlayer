@@ -33,6 +33,8 @@ if ~Blank
             %Luminance & Color?
 
         case 'Fine Mapping'
+            % Center of fine map area
+            p.stim1.Center_position = sobj.FixPos;
             % Fine mapping index
             p.stim1.Center_position_in_FineMapArea = sobj.index_center_in_mat;
 
