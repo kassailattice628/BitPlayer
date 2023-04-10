@@ -5,15 +5,23 @@ function VisStimON(app, n_in_loop, n_blankloop)
 % Add blank loop 2023/02/16
 %
 %%%%%%%%%%
-
+%% 
 % Check parameters & Update GUI...
 % display total stim duration in sec
 
-% Presenting Visual Stimuli
 sobj = app.sobj;
 sobj.n_in_loop = n_in_loop;
 
+switch sobj.Shape
+    case 'FillRect'
+        dot_type = 4;
+    case 'FillOval'
+        dot_type= 2;
+end
 
+HideCursor; % Hide the mouse cursor
+
+%% Presenting Visual Stimuli
 if n_blankloop > app.Blankloop.Value
     disp('Vis Stim ON')
 
@@ -336,14 +344,16 @@ app.sobj = sobj;
 
 %setRTS(app.SerPort , false) %TTL low -> daq
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     function Prepare_stim_spot(Size)
+        flag = 1;
 
         sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
 
         maxDiameter = round(max(Size) * 1.5);
 
+        if flag == 0
         Rect = CenterRectOnPointd([0, 0, Size(1), Size(2)], ...
             sobj.StimCenterPos(1), sobj.StimCenterPos(2));
         
@@ -352,6 +362,22 @@ app.sobj = sobj;
         
         % Prepare Screen
         Screen(sobj.Shape, sobj.wPtr, sobj.stimColor, Rect, maxDiameter);
+
+        elseif flag == 1
+            %Screen('DrawDots', windowPtr, xy [,size] [,color] [,center] [,dot_type][, lenient]);
+            %Screen('DrawDots', window, [dotXpos dotYpos], dotSizePix, dotColor, [], 2);
+            % size: diameter in pixe;
+            % center: relative to center of the monitor([0, 0])
+            % dot_type:2 high quality anti-aliasing
+            %
+
+            X = sobj.StimCenterPos(1);
+            Y = sobj.StimCenterPos(2);
+
+            Screen('DrawDots', sobj.wPtr, [X, Y], Size(1), sobj.stimColor,...
+                [], dot_type);
+        end
+
     end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
