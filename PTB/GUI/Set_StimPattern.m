@@ -19,7 +19,7 @@ switch value
         app.Distance.Enable = 'on';
         app.Divide.Enable = 'on';
         
-    case {'Size Random'}
+    case 'Size Random'
         app.Size.Enable = 'off';
         
     case 'Moving Bar'
@@ -72,6 +72,8 @@ switch value
         app.Size.Enable = 'off';
         app.MonitorDiv.Enable = 'off';
         app.FixedPos.Enable = 'off';
+
+    case 'Random Dot Motion'
         
 end
 end
