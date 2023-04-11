@@ -46,8 +46,8 @@ switch value
         app.BarOrientation_Label.Enable = 'on';
 
     case 'Mosaic'
-        app.MosaicDensity.Enable = 'on';
-        app.MosaicDensity_Label.Enable = 'on';
+        app.DotDensity.Enable = 'on';
+        app.DotDensity_Label.Enable = 'on';
         
     case 'Images'
         app.NumImages.Enable = 'on';
@@ -74,6 +74,14 @@ switch value
         app.FixedPos.Enable = 'off';
 
     case 'Random Dot Motion'
+        app.Direction.Enable = 'on';
+        app.Direction_Label.Enable = 'on';
+        app.MoveSpd.Enable = 'on';
+        app.MoveSpd_Label.Enable = 'on';
+        app.Coherence.Enable = 'on';
+        app.DotDensity.Enable = 'on';
+        app.Distance.Enable = 'on';
+
         
 end
 end
@@ -95,8 +103,8 @@ app.FixedPos.Enable = 'on';
 app.Distance.Enable = 'off';
 app.Divide.Enable = 'off';
 
-app.MosaicDensity.Enable = 'off';
-app.MosaicDensity_Label.Enable = 'off';
+app.DotDensity.Enable = 'off';
+app.DotDensity_Label.Enable = 'off';
 
 app.NumImages.Enable = 'off';
 
@@ -122,4 +130,6 @@ app.ConcentricDirection.Enable = 'off';
 app.ConcentricDirection_Label.Enable = 'off';
 
 app.GetFinePos.Enable = 'off';
+
+app.Coherence.Enable = 'off';
 end

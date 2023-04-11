@@ -9,6 +9,7 @@ function Y = Deg2Pix(ang, dist, pixpitch)
 theta = deg2rad(ang/2);
 Y_mm = tan(theta) * dist * 2;
 Y = Y_mm / pixpitch;
+Y = round(Y);
 
 %Y = 2*dist*tan(ang/2*2*pi/360)/pixpitch;
 

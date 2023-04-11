@@ -19,6 +19,7 @@ function sobj = sobj_ini
 
 %% Get monitor info
 %sobj.MP = get(0, 'MonitorPosition'); %position matrix for malti monitors
+AssertOpenGL;
 sobj.Screens = Screen('Screens');
 %For Ubuntu, main display:=0, sub:= 1
 sobj.scr = Screen('ConfigureDisplay', 'Scanout', 1, 0);
@@ -127,7 +128,7 @@ sobj.LoomingMaxSize = 40; %deg
 
 %Concentric or Fine Mapping, 
 sobj.Div_grid = 5; %deg step
-sobj.Dist = 15; %deg
+sobj.Distance = 15; %deg
 
 %Images
 sobj.Img_i = 0; %# image;
@@ -135,9 +136,14 @@ sobj.ImageNum = 256;
 sobj.list_img = 1:sobj.ImageNum;
 
 %Mosaic
-sobj.DotsDensity = 30; % 30%
+sobj.DotDensity = 0.3; % 30%
+
+%RandomDotMotion
+sobj.CoherenceRDM = 0.5; %50%
+sobj.Coherence_list = [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1];
 
 %Concentric
+sobj.DotNum = 300;
 sobj.ConcentricDirection = 0;
 sobj.ConcentricDirection_i = 1;
 

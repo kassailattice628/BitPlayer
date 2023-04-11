@@ -2,14 +2,15 @@ function [distance, duration] = Set_MovingDuration(sobj)
 
 
 switch sobj.Pattern
-    case {'Moving Bar'}
+    case 'Moving Bar'
         %Change sobj.MoveSpd (deg/sec) -> pix/sec
         MoveSpd_pix = Deg2Pix(sobj.MoveSpd, sobj.MonitorDist, sobj.Pixelpitch);
         
+        % Need to fix size...
         distance = sobj.RECT(4) + sobj.StimSize_pix(1); %pix
         duration = distance / MoveSpd_pix; %sec
     
-    case 'Moving Spot'
+    case {'Moving Spot'}
         MoveSpd_pix = Deg2Pix(sobj.MoveSpd, sobj.MonitorDist, sobj.Pixelpitch);
         distance = Deg2Pix(sobj.Dist, sobj.MonitorDist, sobj.Pixelpitch); %pix
         duration = distance/MoveSpd_pix; %sec
@@ -24,6 +25,5 @@ switch sobj.Pattern
         duration = distance/MoveSpd_pix; %sec
         
     case {'Sine', 'Rect', 'Gabor'}
-
 
 end

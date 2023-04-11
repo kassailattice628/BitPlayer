@@ -1,7 +1,8 @@
 function sobj = Set_StimPos_Spot(mode, sobj)
 %%%%%%
 %if strcmp(sobj.Pattern, 'Uni')
-if contains(sobj.Pattern, {'Uni', 'Size Random', 'Moving Spot', 'Static Bar'})
+if contains(sobj.Pattern, {'Uni', 'Size Random',...
+        'Moving Spot', 'Static Bar','Random Dot Motion'})
     div = sobj.DivNum;
 elseif strcmp(sobj.Pattern, 'Fine Mapping')
     div = sobj.Div_grid;
@@ -13,12 +14,14 @@ switch mode
     case 'Random Matrix'
         %Randmize position center
         sobj.index_center_in_mat = Get_RandomCenterPosition(i, div^2, 1);
-        sobj.StimCenterPos = sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
+        sobj.StimCenterPos =...
+            sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
  
     case 'Ordered Matrix'
         %Present stim in order
         sobj.index_center_in_mat = Get_RandomCenterPosition(i, div^2, 0);
-        sobj.StimCenterPos = sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
+        sobj.StimCenterPos =...
+            sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
         
     case 'Fix Repeat'
         %Center pos is fixed i in n x n matrix.

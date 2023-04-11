@@ -23,7 +23,6 @@ switch pattern
 
         blank_duration = (app.sobj.MovingDuration + app.sobj.ISI_sec)*...
             app.sobj.Blankloop_times;
-
         
         
     otherwise

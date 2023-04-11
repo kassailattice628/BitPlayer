@@ -71,6 +71,16 @@ switch sobj.Pattern
 
         text_stim_info{5} = ['Max Size: ', num2str(sobj.LoomingMaxSize),' deg'];
     
+    case 'Random Dot Motion'
+        %moving direction, moving speed
+        text_stim_info{3} = [...
+            'Direction: ', num2str(sobj.MoveDirection),' deg'];
+
+        text_stim_info{4} = [...
+            'Speed: ', num2str(sobj.MoveSpd), ' deg/sec'];
+
+        text_stim_info{5} = ['Coherence: ', num2str(sobj.CoherenceRDM*100),' %'];
+
     case 'Images'
         %n x n matrix, position in matrix, size, image #
 
