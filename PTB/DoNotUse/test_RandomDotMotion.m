@@ -56,7 +56,7 @@ i_rand = setdiff(1:n_dots, i_coh);
 % hold on, scatter(xy(i_rand,1), xy(i_rand,2), 'r.')
 
 
-motion_angle = rand(n_dots, 1) * 2*pi; %deg
+motion_angle = rand(n_dots, 1) * 2*pi; %rad
 motion_angle(i_coh) = pi/4; % replace fixed angle for coherent dots
 cs_motion = [cos(motion_angle), sin(motion_angle)];
 % motion angle

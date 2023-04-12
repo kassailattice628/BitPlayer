@@ -317,59 +317,17 @@ if n_blankloop > app.Blankloop.Value
             %Stim center position
             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
-            
-            %Moving direction
+
+            %Moving Direction
             sobj = Set_Direction(app.Direction.Value, sobj);
-            
+            direction_list = [0, 180];
+            sobj.MoveDirection = direction_list(randperm(2,1));
+
             %Coherence
             sobj = Set_Coherence(app.Coherence, sobj);
 
-            %Patch size in pix(Maximum radius from patch center)
-            R_max = Deg2Pix(...
-                sobj.Distance/2 , sobj.MonitorDist, sobj.Pixelpitch);
-            %fraction kill dots
-            f_kill = 0.01;
-
-            % ---------------------------------------
-            % initialize dot positions and velocities
-            % ---------------------------------------
-            [xy, cs, theta, dxdy, r, dr] = Get_RandomDotPosition(sobj, R_max);
-
-
-            % ------------------------
-            % Start Stim
-            % ------------------------
-            [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
-
-            % Set the first frame
-            Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
-            Screen('DrawDots', sobj.wPtr, transpose(xy),...
-                sobj.StimSize_pix(1), sobj.stimlumi, sobj.StimCenterPos, 1);
-            % First flip
-            [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
-                Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
-            vbl = sobj.vbl_2;
-            ShowStimInfo(sobj, app.StiminfoTextArea);
-            drawnow;
-
-            %Mvoing flips
-            for i = 2:sobj.FlipNum
-                Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
-                
-                %Update position
-                xy = xy + dxdy;
-                r = r + dr;
-                %Check
-                [xy, cs, theta, r] =...
-                    Update_RandomDotPosition(xy, cs, theta, r, R_max, f_kill);
-                Screen('DrawDots', sobj.wPtr, transpose(xy),...
-                    sobj.StimSize_pix(1), sobj.stimlumi, sobj.StimCenterPos, 1);
-                %Flip
-                vbl = Screen('Flip', sobj.wPtr, vbl + (sobj.MonitorInterval/2));
-            end
-
-            %Stim OFF
-            sobj = MovingStim_off(sobj, app.StiminfoTextArea, vbl);
+            % Stim ON
+            sobj = RandomDotMotion(sobj, app.StiminfoTextArea);
 
     end
 

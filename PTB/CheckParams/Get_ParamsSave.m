@@ -80,6 +80,13 @@ if ~Blank
             p.stim1.Position_deg_mat = sobj.dot_position_deg;
             p.stim1.Size_deg_mat = sobj.dot_sizes_deg;
 
+        case 'Random Dot Motion'
+            % Dot motion
+            p.stim1.MoveSpd = sobj.MoveSpd;
+            p.stim1.MoveDirection_deg = sobj.MoveDirection;
+            p.stim1.Coherence = sobj.CoherenceRDM;
+            p.stim1.PatchSize_deg = sobj.Distance;
+
     end
 end
 end

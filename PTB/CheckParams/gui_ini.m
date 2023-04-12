@@ -44,7 +44,7 @@ app.ConcentricDirection.Items =...
     'Ord8', 'Rand8', 'Ord12', 'Rand12', 'Rand16'};
 
 app.Coherence.Items = ...
-    {'0%', '10%', '30%', '50%', '70%', '90', '100%', 'Random'};
+    {'Random', '1%', '10%', '30%', '50%', '70%', '90%', '99%'};
 
 
 %%
@@ -93,7 +93,7 @@ app.LoomingMax.Value = app.sobj.LoomingMaxSize;
 app.NumImages.Value = app.sobj.ImageNum;
 app.DotDensity.Value = app.sobj.DotDensity * 100;
 
-app.Coherence.Value = app.Coherence.Items(4);
+app.Coherence.Value = app.Coherence.Items(1);
 
 app.ConcentricDirection.Value = app.ConcentricDirection.Items(1);
 end

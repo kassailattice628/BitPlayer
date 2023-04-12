@@ -3,8 +3,10 @@ function [xy, cs, theta, dxdy, r, dr] = Get_RandomDotPosition(sobj, R_max)
 % Calculate position of dots and moving distance in each frame
 %
 
-%number of dots in the pathc
-n_dots = sobj.DotNum;
+%number of dots in the patch, 30 dots/deg^2,
+area = pi * (sobj.Distance/2)^2;
+n_dots = 30 * area;
+%n_dots = sobj.DotNum;
 
 %dot_speed (pixels/frame)
 dot_speed_ppfs = Deg2Pix(sobj.MoveSpd, sobj.MonitorDist,...
