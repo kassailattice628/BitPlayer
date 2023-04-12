@@ -1,6 +1,6 @@
 function sobj = Set_Direction(direction, sobj)
 %
-%
+% Select stim moving direction in degree
 %
 %%
 i = sobj.n_in_loop - sobj.Blankloop_times;
@@ -25,6 +25,7 @@ switch direction
     case 'Ord12'
         n_directions = 12;
         randomized = 0;
+
         
 end
 
@@ -36,12 +37,16 @@ switch direction
         sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, randomized);
         sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
 
-    otherwise
-        sobj.MoveDir_i_in_list = 1;
+    case '0 vs 180'
+        sobj.MoveDir_i_in_list = [0, 180];
+        sobj.MoveDirection = sobj.MoveDir_i_in_list(randperm(2, 1));
+    case '90 vs 270'
+        sobj.MoveDir_i_in_list = [90, 270];
+        sobj.MoveDirection = sobj.MoveDir_i_in_list(randperm(2, 1));
 
-        %Fixed direction: Set in GUI.
-        %sobj.MiveDirection, sobj.MoveDir_i_in_list
-end
+    otherwise %Fixed direction
+        sobj.MoveDir_i_in_list = 1;
+        %sobj.MoveDirection is set in GUI callback.
 end
 
 

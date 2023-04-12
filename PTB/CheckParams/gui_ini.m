@@ -44,7 +44,7 @@ app.ConcentricDirection.Items =...
     'Ord8', 'Rand8', 'Ord12', 'Rand12', 'Rand16'};
 
 app.Coherence.Items = ...
-    {'Random', '1%', '10%', '30%', '50%', '70%', '90%', '99%'};
+    {'Random', '1%', '3%', '5%', '10%', '30%', '50%', '70%'};
 
 
 %%

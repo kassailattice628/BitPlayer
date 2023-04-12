@@ -10,31 +10,26 @@ function sobj = RandomDotMotion(sobj, INFO)
 % dot density
 
 %%
-% ------------------------
+% -----------------------------------------------
 % from Gold & Shadlen, 2003
 % aperture = 5 deg
 % dot size = 0.069 deg in diameter
 % number of dots: 16.7 dots/deg^2/s
-% -> round(16.7 * pi*(5/2)^2)/n_set = 328/3
-% area density(%): (pi*(0.069/2)^2) * 16.7 = 0.0624
-% ---------------------------------------------------------------------
+% -> round(16.7 * pi*(5/2)^2)/n_set = 328/3 = 110
+%
+% But this dot size is too small for mice?
+% So I use 0.5 deg as a single dot size.
+% -----------------------------------------------
 
 n_dots = 100;
 
 %Patch size in pix(Maximum radius from patch center)
 R_max = Deg2Pix(sobj.Distance/2 , sobj.MonitorDist, sobj.Pixelpitch);
-area = pi * (sobj.Distance/2)^2; %pix^2
+%area = pi * (sobj.Distance/2)^2; %pix^2
 
-%s_dot = pi*(dot_r_deg)^2;
-%s_dots = s_dot * n_dots;
-%s_dots/area = 0.0624
-
-s_dots = 0.0624 * area;
-s_dot = s_dots/n_dots;
-dot_r_deg = sqrt(s_dot/pi);
-
-%dot_r_deg = 0.05;
-%dot_size = sobj.StimSize_pix(1);
+%s_dot = pi*(dot_r_deg)^2 -> s_dots = s_dot * n_dots -> s_dots/area = 0.0624
+%dot_r_deg = sqrt(0.0624 * area/n_dots/pi);
+dot_r_deg = 0.5;
 dot_size = Deg2Pix(dot_r_deg, sobj.MonitorDist, sobj.Pixelpitch);
 
 % speed
@@ -68,7 +63,10 @@ i_list = repmat(i_list, [1, ceil(sobj.FlipNum/length(i_list))]);
 i_list = i_list(1:sobj.FlipNum);
 
 
-%%
+% ----------
+% Stim Start
+% ----------
+
 % Set the first frame
 Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
 Screen('DrawDots', sobj.wPtr, transpose(xy(:,:,1)),...
