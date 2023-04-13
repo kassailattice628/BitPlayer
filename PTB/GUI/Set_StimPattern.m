@@ -147,6 +147,6 @@ app.Coherence.Enable = 'off';
 
 app.Direction.Items =...
     {'0', '45', '90', '135', '180', '225', '270', '315',...
-    'Ord8', 'Rand8', 'Ord12', 'Rand12', 'Rand16', 'Free'};
-app.Direction.Value = app.Direction.Items(12);
+    'Ord12', 'Rand12', 'Rand16', 'Free', 'Ord12+jump', 'Ord16+jump'};
+app.Direction.Value = app.Direction.Items(10);
 end
