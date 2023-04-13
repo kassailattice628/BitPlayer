@@ -228,7 +228,7 @@ if n_blankloop > app.Blankloop.Value
             drawnow;
 
             %Grating stimuli
-            for count = 1:sobj.FlipNum-1
+            for count = 2:sobj.FlipNum
                 phase = count * 360/sobj.FrameRate * sobj.TemporalFreq;
                 Screen('DrawTexture', sobj.wPtr, gratingtex, [], stimRect, angle,...
                     [], [], [], [], [], [phase, cycles_per_pix, sobj.GratingContrast, 0]);
@@ -247,7 +247,6 @@ if n_blankloop > app.Blankloop.Value
             %sc = sobj.StimSize_pix(1) * 0.16; %what is 0.16??
             sigma = sobj.StimSize_pix(1) /6;
             contrast = 100;
-
 
             %Moving Direction
             sobj = Set_Direction(app.Direction.Value, sobj);
@@ -286,7 +285,7 @@ if n_blankloop > app.Blankloop.Value
             drawnow;
 
             %Grating stimuli
-            for count = 1:sobj.FlipNum-1
+            for count = 2:sobj.FlipNum
                 phase = count * 360/sobj.FrameRate * sobj.TemporalFreq;
                 Screen('DrawTexture', sobj.wPtr, gratingtex, [], stimRect,...
                     angle, [], [], [], [], kPsychDontDoRotation,...
@@ -320,8 +319,6 @@ if n_blankloop > app.Blankloop.Value
 
             %Moving Direction
             sobj = Set_Direction(app.Direction.Value, sobj);
-            direction_list = [0, 180];
-            sobj.MoveDirection = direction_list(randperm(2,1));
 
             %Coherence
             sobj = Set_Coherence(app.Coherence, sobj);

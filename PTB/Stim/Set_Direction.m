@@ -37,18 +37,19 @@ switch direction
         sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, randomized);
         sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
 
+    % for rondom-dot stim
     case '0 vs 180'
         sobj.MoveDir_i_in_list = [0, 180];
         sobj.MoveDirection = sobj.MoveDir_i_in_list(randperm(2, 1));
+
     case '90 vs 270'
         sobj.MoveDir_i_in_list = [90, 270];
         sobj.MoveDirection = sobj.MoveDir_i_in_list(randperm(2, 1));
 
-    otherwise %Fixed direction
+    otherwise %Fixed direction is set in GUI(appdesigner)
         sobj.MoveDir_i_in_list = 1;
-        %sobj.MoveDirection is set in GUI callback.
 end
-
+end
 
 %% Get Direction List
 function [dir_list, list_size] = make_list(n)

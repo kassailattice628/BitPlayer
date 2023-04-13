@@ -12,7 +12,7 @@ switch sobj.Pattern
     
     case {'Moving Spot'}
         MoveSpd_pix = Deg2Pix(sobj.MoveSpd, sobj.MonitorDist, sobj.Pixelpitch);
-        distance = Deg2Pix(sobj.Dist, sobj.MonitorDist, sobj.Pixelpitch); %pix
+        distance = Deg2Pix(sobj.Distance, sobj.MonitorDist, sobj.Pixelpitch); %pix
         duration = distance/MoveSpd_pix; %sec
         
     case 'Looming'

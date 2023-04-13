@@ -86,6 +86,7 @@ if ~Blank
             p.stim1.MoveDirection_deg = sobj.MoveDirection;
             p.stim1.Coherence = sobj.CoherenceRDM;
             p.stim1.PatchSize_deg = sobj.Distance;
+            p.stim1.DotSize_deg = sobj.dot_RDM_deg;
 
     end
 end

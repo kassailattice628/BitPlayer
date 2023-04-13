@@ -30,11 +30,8 @@ switch value
         app.MoveSpd.Enable = 'on';
         app.MoveSpd_Label.Enable = 'on';
         app.DurationMoveStim_Label.Enable = 'on';
-
-        app.Direction.Items =...
-            {'0', '45', '90', '135', '180', '225', '270', '315',...
-            'Ord8', 'Rand8', 'Ord12', 'Rand12', 'Rand16'};
-        app.Direction.Value = app.Direction.Items(12);
+        app.MoveSpd.Items = {'5', '10', '20', '40'};
+        app.MoveSpd.Value = app.MoveSpd.Items(2);
         
     case 'Moving Spot'
         app.Direction.Enable = 'on';
@@ -84,7 +81,6 @@ switch value
         app.MoveSpd.Enable = 'on';
         app.MoveSpd_Label.Enable = 'on';
         app.Coherence.Enable = 'on';
-        %app.DotDensity.Enable = 'on';
         app.Distance.Enable = 'on';
         app.Size.Enable = 'off';
         app.Size_Label.Enable = 'off';
@@ -95,11 +91,13 @@ switch value
             'Rand12'};
         app.Direction.Value = app.Direction.Items(1);
 
+        app.MoveSpd.Items = {'1', '3', '5', '10'};
+        app.MoveSpd.Value = app.MoveSpd.Items(3);
         
 end
 end
 
-%%%%%%
+%% %%%%
 function EnableOffAll(app)
 %
 % All off other than Size, MonitorDiv, Fixed Pos
@@ -110,7 +108,7 @@ app.PositionOrderDropDown.Enable = 'on';
 app.ShapeDropDown.Enable = 'on';
 
 app.Size.Enable = 'on';
-app.Size_Lable.Enable = 'on';
+app.Size_Label.Enable = 'on';
 app.MonitorDiv.Enable = 'on';
 app.FixedPos.Enable = 'on';
 
@@ -146,4 +144,9 @@ app.ConcentricDirection_Label.Enable = 'off';
 app.GetFinePos.Enable = 'off';
 
 app.Coherence.Enable = 'off';
+
+app.Direction.Items =...
+    {'0', '45', '90', '135', '180', '225', '270', '315',...
+    'Ord8', 'Rand8', 'Ord12', 'Rand12', 'Rand16'};
+app.Direction.Value = app.Direction.Items(12);
 end
