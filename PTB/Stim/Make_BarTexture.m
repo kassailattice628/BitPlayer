@@ -4,9 +4,9 @@ tf = round(dist/flipnum);
 
 %% Prepare Bar
 
-%bar_h = sobj.RECT(4);
-bar_h = round(Deg2Pix(65, sobj.MonitorDist, sobj.Pixelpitch)); %Fixed to 65deg
-bar_w = sobj.StimSize_pix(1);
+%bar_h = sobj.RECT(4); -> fixed bar height as 65 deg;
+bar_h = sobj.Bar_heigth_pix;
+bar_w = sobj.Bar_width_pix;
 
 %Texture objext
 im_matrix = ones(bar_h, bar_w) * sobj.stimlumi;

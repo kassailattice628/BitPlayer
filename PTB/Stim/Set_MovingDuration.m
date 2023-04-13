@@ -6,8 +6,10 @@ switch sobj.Pattern
         %Change sobj.MoveSpd (deg/sec) -> pix/sec
         MoveSpd_pix = Deg2Pix(sobj.MoveSpd, sobj.MonitorDist, sobj.Pixelpitch);
         
-        % Need to fix size...
-        distance = sobj.RECT(4) + sobj.StimSize_pix(1); %pix
+        %distance = sobj.RECT(4) + sobj.StimSize_pix(1); %pix
+        distance = ...
+            Deg2Pix(sobj.bar_height, sobj.MonitorDist, sobj.Pixelpitch) + ...
+            sobj.StimSize_pix(1);
         duration = distance / MoveSpd_pix; %sec
     
     case {'Moving Spot'}

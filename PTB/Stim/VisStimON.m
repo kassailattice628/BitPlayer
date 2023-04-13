@@ -69,6 +69,11 @@ if n_blankloop > app.Blankloop.Value
                 Stim_spot2(sobj, app.StiminfoTextArea);
 
         case 'Moving Bar'
+
+            %Bar width and height in deg;
+            sobj.bar_height = 65; %fixed height
+            sobj.bar_witdh = sobj.StimSize_deg(1);
+
             %Moving direction
             sobj = Set_Direction(app.Direction.Value, sobj);
             [dist, duration] = Set_MovingDuration(sobj);

@@ -87,6 +87,8 @@ sobj.Blankloop_times = 2;
 %%%%%%
 sobj.StimSize_pix = round(ones(1,2) * Deg2Pix(1, sobj.MonitorDist, sobj.Pixelpitch)); %Defafult 1 deg
 sobj.StimSize_deg = 1;
+sobj.Bar_width = sobj.StimSize_deg;
+sobj.Bar_width_pix = sobj.StimSize_pix(1);
 
 %Size Random
 sobj.StimSize_deg_list = [0.5; 1; 3; 5; 10; 20; 30]; %for Size_radom stim
@@ -104,6 +106,9 @@ sobj.MoveDirection_i = 1;
 %Moving speed
 sobj.MoveSpd = 10; %deg/sec
 
+sobj.Bar_height = 65; %deg
+sobj.Bar_heigth_pix = ...
+    round(Deg2Pix(sobj.Bar_height, sobj.MonitorDist, sobj.Pixelpitch));
 
 %Grating contras (cannot change from GUI)
 sobj.GratingContrast = 100;
@@ -113,10 +118,6 @@ sobj.TemporalFreq_i = 3;
 %Grating spatial frequency
 sobj.SpatialFreq = 0.08; %cpd (cycle per degree)
 sobj.SpatialFreq_i = 4;
-
-%Grating move direction -> MoveDirection
-% sobj.ShiftDirection = 0;%rightward
-% sobj.ShiftDirection_i = 1;
 
 %Bar angle
 sobj.BarOrientation = 0;
