@@ -18,8 +18,9 @@ switch mode
             sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
  
     case 'Ordered Matrix'
-        %Present stim in order
-        sobj.index_center_in_mat = Get_RandomCenterPosition(i, div^2, 0);
+        %Present stim in order (start from FixPos in GUI)
+        sobj.index_center_in_mat =...
+            Get_RandomCenterPosition(i, div^2, 0) + sobj.FixPos - 1;
         sobj.StimCenterPos =...
             sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
         
