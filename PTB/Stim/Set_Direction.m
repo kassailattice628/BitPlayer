@@ -25,8 +25,6 @@ switch direction
     case 'Ord12'
         n_directions = 12;
         randomized = 0;
-
-        
 end
 
 %%
@@ -36,6 +34,10 @@ switch direction
         [dir_list, list_size] = make_list(n_directions);
         sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, randomized);
         sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
+    
+    case 'Free'
+        % Set direction not using fixed list
+        sobj.MoveDirection = rand * 360;
 
     % for rondom-dot stim
     case '0 vs 180'
