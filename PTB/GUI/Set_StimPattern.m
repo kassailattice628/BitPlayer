@@ -32,6 +32,9 @@ switch value
         app.DurationMoveStim_Label.Enable = 'on';
         app.MoveSpd.Items = {'5', '10', '20', '40'};
         app.MoveSpd.Value = app.MoveSpd.Items(2);
+        app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
+        app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
+        Check_Stim_Duration(app);
         
     case 'Moving Spot'
         app.Direction.Enable = 'on';
@@ -81,6 +84,7 @@ switch value
         app.MoveSpd.Enable = 'on';
         app.MoveSpd_Label.Enable = 'on';
         app.Coherence.Enable = 'on';
+        app.Coherence_Mode.Enable = 'on';
         app.Distance.Enable = 'on';
         app.Size.Enable = 'off';
         app.Size_Label.Enable = 'off';
@@ -93,6 +97,9 @@ switch value
 
         app.MoveSpd.Items = {'1', '3', '5', '10'};
         app.MoveSpd.Value = app.MoveSpd.Items(3);
+        app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
+        app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
+
         
 end
 end
@@ -144,6 +151,7 @@ app.ConcentricDirection_Label.Enable = 'off';
 app.GetFinePos.Enable = 'off';
 
 app.Coherence.Enable = 'off';
+app.Coherence_Mode.Enable = 'off';
 
 app.Direction.Items =...
     {'0', '45', '90', '135', '180', '225', '270', '315',...

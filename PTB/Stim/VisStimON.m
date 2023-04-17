@@ -326,7 +326,8 @@ if n_blankloop > app.Blankloop.Value
             sobj = Set_Direction(app.Direction.Value, sobj);
 
             %Coherence
-            sobj = Set_Coherence(app.Coherence, sobj);
+            sobj = Set_Coherence(app.Coherence, app.Coherence_Mode.Text,...
+                sobj);
 
             % Stim ON
             sobj = RandomDotMotion(sobj, app.StiminfoTextArea);

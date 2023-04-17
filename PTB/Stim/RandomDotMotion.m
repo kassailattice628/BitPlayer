@@ -27,22 +27,31 @@ function sobj = RandomDotMotion(sobj, INFO)
 R_max = Deg2Pix(sobj.Distance/2 , sobj.MonitorDist, sobj.Pixelpitch);
 %area = pi * (sobj.Distance/2)^2; %pix^2
 
-density = 0.8;
 
-if sobj.Distance < 10 %Small patch
-    %Fix the number of dots;
-    n_dots = 100;
-    
-    %sobj.dot_RDM_deg = 0.4;
-    sobj.dot_RDM_deg = sqrt(density * (sobj.Distance/2)^2 / n_dots);
+% -----------------------------------------
+% Generate "n_set = 3" sets of dot location
+% -----------------------------------------
+n_set = 3;
+
+if sobj.Distance < 5 %Small patch
+    density = 16.7;
+    n_dots = round(density * (sobj.Distance/2)^2 * pi);
+    sobj.dot_RDM_deg = 0.069;
+
+elseif sobj.Distance <= 5
+    density = 16.7/2;
+    n_dots = round(density * (sobj.Distance/2)^2 * pi);
+    sobj.dot_RDM_deg = 0.12;
 else
     %Fix the size of dot
-    sobj.dot_RDM_deg = 0.4;
+    density = 0.1;
+    sobj.dot_RDM_deg = 0.2;
     n_dots = density * (sobj.Distance/sobj.dot_RDM_deg)^2;
     n_dots = round(n_dots);
 end
     
 dot_size = Deg2Pix(sobj.dot_RDM_deg, sobj.MonitorDist, sobj.Pixelpitch);
+disp(dot_size)
 
 % speed
 dot_speed_ppfs = Deg2Pix(sobj.MoveSpd, sobj.MonitorDist,...
@@ -53,10 +62,7 @@ dot_speed_ppfs = Deg2Pix(sobj.MoveSpd, sobj.MonitorDist,...
 n_coh = round(n_dots * sobj.CoherenceRDM);
 n_incoh = n_dots - n_coh;
 
-% -----------------------------------------
-% Generate "n_set = 3" sets of dot location
-% -----------------------------------------
-n_set = 3;
+
 
 % Distnce and angle from cente of each dots (xy) pixel
 r = R_max .* sqrt(rand(n_dots, n_set));
@@ -119,13 +125,15 @@ for i_set = i_flip(2:end)
         i_rand = i_out';
     end
 
-    % Relocat incoherent + leaving dots at random position 
-    r(i_rand, i_set) = R_max * sqrt(rand(n_rand, 1));
-    theta(i_rand, i_set) = 2*pi * rand(n_rand, 1);
-    cs(i_rand, :, i_set) = ...
-        [cos(theta(i_rand, i_set)), sin(theta(i_rand, i_set))];
-    xy(i_rand, :, i_set) =...
-        [r(i_rand, i_set), r(i_rand, i_set)] .* cs(i_rand, :, i_set);
+    % Relocat incoherent + leaving dots at random position
+    if n_rand > 0
+        r(i_rand, i_set) = R_max * sqrt(rand(n_rand, 1));
+        theta(i_rand, i_set) = 2*pi * rand(n_rand, 1);
+        cs(i_rand, :, i_set) = ...
+            [cos(theta(i_rand, i_set)), sin(theta(i_rand, i_set))];
+        xy(i_rand, :, i_set) =...
+            [r(i_rand, i_set), r(i_rand, i_set)] .* cs(i_rand, :, i_set);
+    end
 
     % Draw
     Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);

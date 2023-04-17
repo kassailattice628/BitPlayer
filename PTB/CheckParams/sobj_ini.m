@@ -139,9 +139,9 @@ sobj.list_img = 1:sobj.ImageNum;
 %Mosaic
 sobj.DotDensity = 0.3; % 30%
 
-%RandomDotMotion
-sobj.CoherenceRDM = 0.5; %50%
-sobj.Coherence_list = [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1];
+%RandomDotMotion -> Set_Coherence
+% sobj.CoherenceRDM = 0.5; %50%
+% sobj.Coherence_list = [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1];
 
 %Concentric
 sobj.DotNum = 300;
