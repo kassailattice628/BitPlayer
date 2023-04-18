@@ -84,6 +84,9 @@ for i = 1:size(p, 2) % Extract stimulus
             case {'Sinusoidal', 'Shifting Grating', 'Gabor'}
                 stim(i) = p{i}.stim1.Grating_Angle_deg;
             
+            case 'Random Dot Motion'
+                stim(i) = p{i}.stim1.MoveDirection_deg;
+                
             otherwise
                 stim(1) = 1;
         end
