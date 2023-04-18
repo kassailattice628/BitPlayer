@@ -25,8 +25,10 @@ switch direction
         sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
     
     case 'Free'
-        % Set direction not using fixed list
-        sobj.MoveDirection = rand * 360;
+        % Set direction randomly.
+        % Do not choose angles that in changes of less than 1 pixel.
+        % 0.1 deg ~ 1 pix -> Round to the first decimal place.
+        sobj.MoveDirection = round(rand * 360, 1);
 
     case {'Ord12+jump', 'Ord16+jump'}
         % after 5 to 9 rotation unexpected jump of direction was 
