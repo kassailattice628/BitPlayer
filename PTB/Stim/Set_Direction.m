@@ -29,13 +29,14 @@ switch direction
         % Do not choose angles that in changes of less than 1 pixel.
         % 0.1 deg ~ 1 pix -> Round to the first decimal place.
         sobj.MoveDirection = round(rand * 360, 1);
+        sobj.Stim_valiation_type = 'Free';
 
     case {'Ord12+jump', 'Ord16+jump'}
         % after 5 to 9 rotation unexpected jump of direction was 
         [dir_list, list_size] = make_list(n_directions);
         sobj.MoveDir_i_in_list = Get_RotationJumpDirection(i, list_size);
         sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
-        disp(sobj.MoveDirection)
+        %disp(sobj.MoveDirection)
 
     % for rondom-dot stim
     case '0 vs 180'
