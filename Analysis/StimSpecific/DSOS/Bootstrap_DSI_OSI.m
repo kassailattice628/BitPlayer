@@ -41,11 +41,11 @@ orientations = im.stim_orientations;
 
 for i = 1:n_ROIs
     d = data_bstrp_ds(:,:,i);
-    do = data_bstrp_os(:,:,i);
+    %do = data_bstrp_os(:,:,i);
     [B_DS(:,1,i), B_DS(:,2, i)] =...
         VectorAveraging(d, directions, 'Direction');
     [B_OS(:,1,i), B_OS(:,2, i)] =...
-        VectorAveraging(do, orientations, 'Orientation');
+        VectorAveraging(d, orientations, 'Orientation');
 end
 
 %{

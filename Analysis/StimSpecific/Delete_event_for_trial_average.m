@@ -18,9 +18,10 @@ end
 
 %% Detect outliers
 for i = selectedROI
+
     a = dFF_each(:,:,i);
     i_out = isoutlier(a);
-
+    
     if show
         % Check if detected outliers are valid
         figure, 

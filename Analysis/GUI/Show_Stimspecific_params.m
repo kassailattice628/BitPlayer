@@ -18,7 +18,8 @@ if ~p.stim1.Blank
             div = num2str(s.Div_grid);
             pos = p.stim1.Center_position;
             fpos = p.stim1.Center_position_in_FineMapArea;
-            t1 = ['Center: ',pos, ' FineMapPosition: ', div, 'x', div, '=', fpos];
+            t1 = ['Center: ',pos, ' FineMapPosition: ',...
+                div, 'x', div, '=', num2str(fpos)];
             t2 = ['Size: ' , num2str(s.StimSize_deg), 'deg'];
 
         case 'Moving Bar'

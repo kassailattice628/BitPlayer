@@ -30,7 +30,7 @@ for i = im.selected_ROIs
     xlabel('Time (s)')
     xlim([T(1), T(end)])
     ylabel('dF/F, Stim#')
-    ylim([min(Y(:,1)), max(Y(:,i2))*1.1])
+    %ylim([min(Y(:,1), 'omitnan'), max(Y(:,i2), 'omitnan')*1.1])
 
 
     %% Color map
