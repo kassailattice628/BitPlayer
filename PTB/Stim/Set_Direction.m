@@ -18,6 +18,8 @@ end
 
 %%
 
+sobj.Stim_valiation_type = 'Fixed';
+
 switch direction
     case {'Rand12', 'Rand16', 'Ord12', 'Ord16'}
         [dir_list, list_size] = make_list(n_directions);
@@ -49,6 +51,7 @@ switch direction
 
     otherwise %Fixed direction is set in GUI(appdesigner)
         sobj.MoveDir_i_in_list = 1;
+
 end
 end
 
