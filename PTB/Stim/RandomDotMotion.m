@@ -58,16 +58,15 @@ dot_speed_ppfs = Deg2Pix(sobj.MoveSpd, sobj.MonitorDist,...
     sobj.Pixelpitch) / sobj.FrameRate;
 
 %%
-
+% the number of coherent/incohenret dots
 n_coh = round(n_dots * sobj.CoherenceRDM);
 n_incoh = n_dots - n_coh;
-
-
 
 % Distnce and angle from cente of each dots (xy) pixel
 r = R_max .* sqrt(rand(n_dots, n_set));
 theta = 2*pi .* rand(n_dots, n_set);
 
+% Location of dots are defined by polar -> cartesian
 cs = zeros(n_dots, 2, n_set);
 xy = cs;
 for i = 1:n_set

@@ -51,6 +51,7 @@ switch direction
 
     otherwise %Fixed direction is set in GUI(appdesigner)
         sobj.MoveDir_i_in_list = 1;
+        sobj.MoveDirection = str2double(direction);
 
 end
 end
@@ -123,10 +124,5 @@ if index_list > list_size
 elseif index_list < 1
     index_list = list_size;
 end
-
-
-
-
-
 
 end
