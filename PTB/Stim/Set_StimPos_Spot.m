@@ -19,8 +19,10 @@ switch mode
  
     case 'Ordered Matrix'
         %Present stim in order (start from FixPos in GUI)
-        sobj.index_center_in_mat =...
-            Get_RandomCenterPosition(i, div^2, 0) + sobj.FixPos - 1;
+        %Start from sobj.FixPos
+        i_center = Get_RandomCenterPosition(i, div^2, 0);
+        sobj.index_center_in_mat = Sfhit_position(i_center, sobj.FixPos, div);
+
         sobj.StimCenterPos =...
             sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
         
@@ -44,7 +46,8 @@ end
 end
 
 %% Position Randomization
-function index_list = Get_RandomCenterPosition(i_in_mainloop, list_size, randomize)
+function index_list = Get_RandomCenterPosition(...
+    i_in_mainloop, list_size, randomize)
 %
 % Generate randomized order
 %
@@ -73,5 +76,16 @@ end
 
 index_list = list_order(i_in_cycle);
 %
+
+end
+
+%%
+function shifted_i_center = Sfhit_position(i_center, FixPos, div)
+
+shifted_i_center = i_center + FixPos -1;
+if shifted_i_center > div^2
+    shifted_i_center = shifted_i_center - div^2;
+end
+disp(shifted_i_center)
 
 end
