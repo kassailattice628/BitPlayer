@@ -64,7 +64,7 @@ switch value
         app.TemporalFreq_Label.Enable = 'on';
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
-        app.PositionOrderDropDown.Value = 'Fix Repeat';
+        %app.PositionOrderDropDown.Value = 'Fix Repeat';
         
     case {'Looming'}
         app.LoomingMax.Enable = 'on';
@@ -100,7 +100,45 @@ switch value
         app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
         app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
 
-        
+    case 'Search V1_Coarse'
+        % reffered from Yoshida & Ohki 2019 NatCommun
+        app.Direction.Enable = 'on';
+        app.Direction_Label.Enable = 'on';
+        app.SpatialFreq.Enable = 'on';
+        app.SpatialFreq_Label.Enable = 'on';
+        app.SpatialFreq.Value = app.SpatialFreq.Items(3); %0.04 cpd
+        app.TemporalFreq.Enable = 'on';
+        app.TemporalFreq_Label.Enable = 'on';
+        app.TemporalFreq.Value = app.TemporalFreq.Items(3); %2Hz
+        app.Direction.Enable = 'on';
+        app.Direction_Label.Enable = 'on';
+        app.Size.Value = 50; %50deg
+        app.MonitorDiv.Value = 4;
+        app.Direction.Items = {'Rand12'};
+        app.Direction.Value = app.Direction.Items(1);
+
+    case 'Search V1_Fine'
+        % reffered from Yoshida & Ohki 2019 NatCommun
+        app.Direction.Enable = 'on';
+        app.Direction_Label.Enable = 'on';
+        app.SpatialFreq.Enable = 'on';
+        app.SpatialFreq_Label.Enable = 'on';
+        app.SpatialFreq.Value = app.SpatialFreq.Items(3); %0.04 cpd
+        app.TemporalFreq.Enable = 'on';
+        app.TemporalFreq_Label.Enable = 'on';
+        app.TemporalFreq.Value = app.TemporalFreq.Items(3); %2Hz
+        app.Direction.Enable = 'on';
+        app.Direction_Label.Enable = 'on';
+        app.MonitorDiv.Value = 4;
+        app.Direction.Items = {'Rand12'};
+        app.Direction.Value = app.Direction.Items(1);
+
+        app.GetFinePos.Enable = 'on';
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 80;
+        app.Divide.Enable = 'on';
+        app.Divide.Value = 4;
+        app.Size.Value = 20; %20deg
 end
 end
 
