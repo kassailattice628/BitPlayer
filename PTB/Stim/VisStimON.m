@@ -332,6 +332,35 @@ if n_blankloop > app.Blankloop.Value
             % Stim ON
             sobj = RandomDotMotion(sobj, app.StiminfoTextArea);
 
+        case 'Search V1_Coarse'
+            % Define position of the stimulus
+            sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+            sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
+
+            % Stim ON
+            sobj = Sinusoidal_and_Grating(sobj, app.StiminfoTextArea);
+
+       
+        case 'Search V1_Fine'
+
+            %Stim position
+            FineMapArea_deg = [0, 0, sobj.Distance, sobj.Distance];
+            FineMapArea = Deg2Pix(FineMapArea_deg, sobj.MonitorDist, sobj.Pixelpitch);
+
+            %Define center of the subarea (fix pos in DivNum^2 matrix)
+            Pos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+            C = Pos_list(sobj.FixPos, :);
+
+            %Corner position in pix
+            AREA = CenterRectOnPointd(FineMapArea, C(1), C(2));
+
+            %Define CenterPos_list for fine mapping
+            sobj.CenterPos_list = Get_StimCenter_in_matrix(AREA, sobj.Div_grid);
+            sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
+
+            % Stim ON
+            sobj = Sinusoidal_and_Grating(sobj, app.StiminfoTextArea);
+
     end
 
 
