@@ -45,13 +45,20 @@ else
     app.Trial_n.Value = 1;
 
     mainvar.dirname_daq = d;
-    if ~isfield(mainvar, 'mouse')
+    if ~isfield(mainvar, 'PhotoSensorloaded') ||...
+        ~mainvar.PhotoSensorloaded
         a = split(d, filesep);
         mainvar.mouse = a{end-1};
         mainvar.date = a{end-2}(1:end-3);
 
         %Photo sensor V -> mV
         SaveData(:,3,:) =  SaveData(:,3,:)* 1000;
+        mainvar.PhotoSensorloaded = true;
+
+    elseif mainvar.PhotoSensorloaded
+        
+    else
+        mainvar.PhotoSensorloaded = false;
     end
     app.Mouse.Text = ['Mouse: ', mainvar.mouse];
     app.Date.Text = ['Date: ', mainvar.date];

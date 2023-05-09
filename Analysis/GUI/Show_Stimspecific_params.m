@@ -11,7 +11,7 @@ if ~p.stim1.Blank
     switch s.Pattern
         case 'Uni'
             div = num2str(s.DivNum);
-            pos = p.stim1.Center_position;
+            pos = num2str(p.stim1.Center_position);
             t1 = ['Position: ', div, 'x', div, '=', pos];
             t2 = ['Size: ' , num2str(s.StimSize_deg), 'deg'];
         case 'Fine Mapping'
@@ -22,6 +22,13 @@ if ~p.stim1.Blank
                 div, 'x', div, '=', num2str(fpos)];
             t2 = ['Size: ' , num2str(s.StimSize_deg), 'deg'];
 
+        case 'Size Random'
+            div = num2str(s.DivNum);
+            pos = num2str(p.stim1.Center_position);
+            t1 = ['Position: ', div, 'x', div, '=', pos];
+            sz = p.stim1.Size_deg;
+            t2 = ['Size: ' , num2str(sz), 'deg'];
+
         case 'Moving Bar'
             t1 = ['Direction: ',...
                 num2str(p.stim1.Movebar_Direction_angle_deg), 'deg'];
@@ -31,6 +38,17 @@ if ~p.stim1.Blank
             t1 = ['Direction: ',...
                 num2str(p.stim1.MoveDirection_deg), 'deg'];
             t2 = ['Coherence: ', num2str(p.stim1.Coherence*100), '%'];
+
+        case 'Shifting Grating'
+            t1 = ['Direction: ',...
+                num2str(p.stim1.Grating_Angle_deg), 'deg'];
+            div = num2str(s.DivNum);
+            pos = num2str(p.stim1.Center_position);
+            sz = num2str(p.stim1.Size_deg);
+            t2 = ['Position: ', div 'x', div, '=', pos,...
+                '; Size: ', sz, 'deg'];
+
+
     end
 
 else
