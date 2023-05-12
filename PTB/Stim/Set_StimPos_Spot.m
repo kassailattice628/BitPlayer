@@ -2,9 +2,10 @@ function sobj = Set_StimPos_Spot(mode, sobj)
 %%%%%%
 %if strcmp(sobj.Pattern, 'Uni')
 if contains(sobj.Pattern, {'Uni', 'Size Random',...
-        'Moving Spot', 'Static Bar','Random Dot Motion'})
+        'Moving Spot', 'Static Bar','Random Dot Motion'...
+        'Shifting Grating', 'Search V1_Coarse'})
     div = sobj.DivNum;
-elseif strcmp(sobj.Pattern, 'Fine Mapping')
+elseif contains(sobj.Pattern, {'Fine Mapping', 'Search V1_Fine'})
     div = sobj.Div_grid;
 end
 

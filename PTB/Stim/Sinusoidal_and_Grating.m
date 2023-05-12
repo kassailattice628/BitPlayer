@@ -1,4 +1,4 @@
-function sobj = Sinusoidal_and_Grating(sobj, INFO)
+function sobj = Sinusoidal_and_Grating(Direction, sobj, INFO)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -10,7 +10,7 @@ function sobj = Sinusoidal_and_Grating(sobj, INFO)
 
 
 %Define moving direction
-sobj = Set_Direction(app.Direction.Value, sobj);
+sobj = Set_Direction(Direction, sobj);
 angle = 180 - sobj.MoveDirection;
 
 
@@ -22,7 +22,7 @@ stimRect = CenterRectOnPointd(base_stimRect,...
 cycles_per_pix = CPD2CPP(sobj.SpatialFreq, sobj.MonitorDist, sobj.Pixelpitch);
 
 %Generate grating texture;
-gratingtex = Make_GratingTexture(app);
+[gratingtex, sobj] = Make_GratingTexture(sobj);
 
 %Prep Delay %%%%%%%%%%%%%%%%%
 [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
@@ -50,6 +50,6 @@ for count = 2:sobj.FlipNum
 end
 
 %Stim OFF
-sobj = MovingStim_off(sobj, app.StiminfoTextArea, vbl);
+sobj = MovingStim_off(sobj, INFO, vbl);
 
 end

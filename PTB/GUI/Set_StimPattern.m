@@ -112,10 +112,33 @@ switch value
         app.TemporalFreq.Value = app.TemporalFreq.Items(3); %2Hz
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
-        app.Size.Value = 50; %50deg
+        app.Size.Value = 40; %50deg
+        stimsz = round(ones(1,2) *...
+            Deg2Pix(app.Size.Value, app.sobj.MonitorDist, app.sobj.Pixelpitch));
+        app.sobj.StimSize_pix = stimsz;
+        app.sobj.Bar_width_pix = stimsz(1);
+        app.sobj.StimSize_deg = app.Size.Value;
+        app.sobj.Bar_width = app.Size.Value;
+
         app.MonitorDiv.Value = 4;
+        app.sobj.DivNum = app.MonitorDiv.Value;
+        app.MonitorDiv_Label.Text =...
+            [num2str(app.MonitorDiv.Value), 'x',...
+            num2str(app.MonitorDiv.Value), ' Matrix'];
+        app.FixedPos_Label.Text = ['in ', num2str(app.MonitorDiv.Value),...
+            'x', num2str(app.MonitorDiv.Value), ' Matrix'];
+
         app.Direction.Items = {'Rand12'};
         app.Direction.Value = app.Direction.Items(1);
+
+        app.FixedPos.Value = 1;
+        app.sobj.FixPos = app.FixedPos.Value;
+        app.FixedPos_Label.Text = ['in ', num2str(app.sobj.DivNum),...
+            'x', num2str(app.sobj.DivNum), ' Matrix'];
+
+        app.ShapeDropDown.Value = 'Square';
+        app.sobj.Shape = 'FillRect';
+
 
     case 'Search V1_Fine'
         % reffered from Yoshida & Ohki 2019 NatCommun
@@ -129,16 +152,38 @@ switch value
         app.TemporalFreq.Value = app.TemporalFreq.Items(3); %2Hz
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
-        app.MonitorDiv.Value = 4;
+        
         app.Direction.Items = {'Rand12'};
         app.Direction.Value = app.Direction.Items(1);
 
         app.GetFinePos.Enable = 'on';
         app.Distance.Enable = 'on';
-        app.Distance.Value = 80;
+        
+        app.MonitorDiv.Value = 4;
+        app.sobj.DivNum = app.MonitorDiv.Value;
+        app.MonitorDiv_Label.Text =...
+            [num2str(app.MonitorDiv.Value), 'x',...
+            num2str(app.MonitorDiv.Value), ' Matrix'];
+        app.FixedPos_Label.Text = ['in ', num2str(app.MonitorDiv.Value),...
+            'x', num2str(app.MonitorDiv.Value), ' Matrix'];
+
+        app.Distance.Value = 40;
+        app.sobj.Distance = app.Distance.Value;
+
         app.Divide.Enable = 'on';
         app.Divide.Value = 4;
+        app.sobj.Div_grid = app.Divide.Value;
+
         app.Size.Value = 20; %20deg
+        stimsz = round(ones(1,2) *...
+            Deg2Pix(app.Size.Value, app.sobj.MonitorDist, app.sobj.Pixelpitch));
+        app.sobj.StimSize_pix = stimsz;
+        app.sobj.Bar_width_pix = stimsz(1);
+        app.sobj.StimSize_deg = app.Size.Value;
+        app.sobj.Bar_width = app.Size.Value;
+
+        app.ShapeDropDown.Value = 'Square';
+        app.sobj.Shape = 'FillRect';
 end
 end
 
@@ -195,4 +240,7 @@ app.Direction.Items =...
     {'0', '45', '90', '135', '180', '225', '270', '315',...
     'Ord12', 'Rand12', 'Rand16', 'Free', 'Ord12+jump', 'Ord16+jump'};
 app.Direction.Value = app.Direction.Items(10);
+
+app.ShapeDropDown.Value = 'Circle';
+app.sobj.Shape = 'FillOval';
 end

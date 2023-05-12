@@ -217,7 +217,7 @@ if n_blankloop > app.Blankloop.Value
             cycles_per_pix = CPD2CPP(sobj.SpatialFreq, sobj.MonitorDist, sobj.Pixelpitch);
 
             %Generate Grating texture;
-            gratingtex = Make_GratingTexture(app);
+            [gratingtex, sobj] = Make_GratingTexture(sobj);
 
             %Prep Delay %%%%%%%%%%%%%%%%%
             [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
@@ -338,7 +338,8 @@ if n_blankloop > app.Blankloop.Value
             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
 
             % Stim ON
-            sobj = Sinusoidal_and_Grating(sobj, app.StiminfoTextArea);
+            sobj = Sinusoidal_and_Grating(app.Direction.Value,...
+                sobj, app.StiminfoTextArea);
 
        
         case 'Search V1_Fine'
@@ -359,7 +360,8 @@ if n_blankloop > app.Blankloop.Value
             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
 
             % Stim ON
-            sobj = Sinusoidal_and_Grating(sobj, app.StiminfoTextArea);
+            sobj = Sinusoidal_and_Grating(app.Direction.Value,...
+                sobj, app.StiminfoTextArea);
 
     end
 
