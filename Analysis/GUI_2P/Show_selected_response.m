@@ -37,7 +37,13 @@ for i = im.selected_ROIs
     nexttile([2, 1])
     Y = im.dFF_stim_average(:,:,i);
     img_x = 1:size(Y, 2);
+
     imagesc(T, img_x, Y')
+    if app.Zscore.Value
+        clim([-4, 15]);
+    else
+        clim([-1, 5]);
+    end
 
     line([T(on), T(on)], [0, size(Y,2)+0.5], 'Color', 'w', 'LineWidth', 1)
     line([T(off), T(off)], [0, size(Y,2)+0.5], 'Color', 'w', 'LineWidth', 1)

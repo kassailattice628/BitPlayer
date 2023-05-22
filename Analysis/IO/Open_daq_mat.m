@@ -9,6 +9,9 @@ function Open_daq_mat(app)
 
 SaveData = [];
 mainvar = app.mainvar;
+if isfield(mainvar, 'PhotoSensorloaded')
+    mainvar = rmfield(mainvar, 'PhotoSensorloaded');
+end
 sobj = [];
 ParamsSave = [];
 
