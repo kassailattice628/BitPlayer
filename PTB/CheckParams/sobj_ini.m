@@ -23,7 +23,7 @@ AssertOpenGL;
 sobj.Screens = Screen('Screens');
 %For Ubuntu, main display:=0, sub:= 1
 sobj.scr = Screen('ConfigureDisplay', 'Scanout', 1, 0);
-disp(['Frame Rate of Stim Monitor: ', num2str(sobj.scr.hz), 'hz.']);
+disp(['Current Frame Rate of Stim Monitor: ', num2str(sobj.scr.hz), 'hz.']);
 
 if sobj.scr.hz < 100
     %Screen('ConfigureDisplasy', 'Scaanout') failed to change setting
@@ -34,7 +34,7 @@ if sobj.scr.hz < 100
     sobj.scr = Screen('ConfigureDisplay', 'Scanout', 1, 0);
     %disp(['Frame Rate of Stim Monitor was updated to: ', num2str(sobj.scr.hz), 'hz.'])
     
-    disp(['Frame rate of stim monitor is set as **', num2str(sobj.scr.hz), ' hz** from ',...
+    disp(['Change to **', num2str(sobj.scr.hz), ' hz** from ',...
        num2str(oldsetting.hz), ' hz.'])
 end
 
