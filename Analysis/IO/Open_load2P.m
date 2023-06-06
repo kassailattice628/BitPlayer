@@ -1,10 +1,16 @@
 function Open_load2P(app)
 %
-% Load extracted fluprescnce changes of etracted ROIs.
+% Load dFF from etracted ROIs.
 %
 
 im = app.imgobj;
 im.imgsz = app.ImageSize.Value;
+
+if isfield(app.sobj, 'Stim_valiation_type')
+    stimval = app.sobj.Stim_valiation_type;
+else
+    stimval = "none";
+end
 
 if ~isfield(im, 'FVsampt')
     im.FVsampt = app.FVsampt.Value;
@@ -33,12 +39,28 @@ else
     app.mainvar.fname_2p = f;
     app.FileName.Text = {['File: ', d], f};
     % Load data 
-    app.imgobj = Load_imaging_data(im, d, f, app.sobj.Pattern);
+    app.imgobj = Load_imaging_data(im, d, f, app.sobj.Pattern, stimval);
     
+    %Reset buttons
     app.mainvar.Detrend = 0;
-    app.mainvar.Lowcutfilter = 0;
+    Change_button_color(app.Detrend, 0);
+    app.Detrend.Value = 0;
+
+%     app.mainvar.Lowcutfilter = 0;
+%     Change_button_color(app.Detrend, 0);
+%     app.Detrend.Value = 0;
+
     app.mainvar.Offset = 0;
+    Change_button_color(app.Offset, 0);
+    app.Offset.Value = 0;
+
     app.mainvar.Zscore = 0;
+    Change_button_color(app.Zscore, 0);
+    app.Zscore.Value = 0;
+
+    app.mainvar.ApplydFF = 0;
+    Change_button_color(app.ApplyChanges, 0);
+    app.ApplyChanges.Value = 0;
 
     app.SaveFileName.Value = app.mainvar.fname_daq;
 end
@@ -47,7 +69,7 @@ end
 end
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function im = Load_imaging_data(im, d, f, pattern)
+function im = Load_imaging_data(im, d, f, pattern, stimval)
 
 if contains(f, 'Fall')
     % Extracted by suite2P
@@ -89,10 +111,15 @@ im.Mask_ROIs = Mask_ROIs;
 im.Centroid = centroid;
 im.f0 = 1:100; %default f0 frames;
 
-% Remove colorap data
+% Remove colormap data
 if isfield(im, 'mat2D')
     if strcmp(pattern, 'Moving Bar')
-        fields = {'mat2D', 'mat2Dori', 'mat2D_i_sort', 'mat2Dori_i_sort'};
+        if strcmp(stimval, 'Free')
+            fields = {'mat2D'};
+        else
+            fields = {'mat2D', 'mat2Dori', 'mat2D_i_sort', 'mat2Dori_i_sort'};
+        end
+
     else
         if isfield(im, 'mat2D_i_sort')
             fields = {'mat2D', 'mat2D_i_sort'};
@@ -100,7 +127,7 @@ if isfield(im, 'mat2D')
             fields = {'mat2D'};
         end
     end
-    im = rmfiled(im, fields);
+    im = rmfield(im, fields);
 end
 
 % Remove bootstrapping data

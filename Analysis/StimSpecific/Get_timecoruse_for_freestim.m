@@ -106,10 +106,11 @@ for i_ROI = 1:im.Num_ROIs
             % Inverted dFF
             inverted = max(-dFF_extracted) - mean(-dFF_extracted(p_prestim));
             Peak_each_inverted(1, i_stim, i_ROI) = - inverted;
+            %end
+
+            % individual extraced traces
+            dFF_stim_average(:, i_stim, i_ROI) = dFF_extracted - dFF_extracted(1);
         end
-        
-        % individual extraced traces
-        dFF_stim_average(:, i_stim, i_ROI) = dFF_extracted - dFF_extracted(1);
     end
 
 %% Classify ROIs into roi_positive or roi_negative
