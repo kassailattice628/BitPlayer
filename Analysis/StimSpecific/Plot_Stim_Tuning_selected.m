@@ -41,7 +41,7 @@ switch s.Pattern
         stim = im.stim_directions;
 
         for roi = im.selected_ROIs
-            Plot_DSOS(im, stim, roi)
+            Plot_DSOS(im, s, stim, roi)
         end
 
     case ''

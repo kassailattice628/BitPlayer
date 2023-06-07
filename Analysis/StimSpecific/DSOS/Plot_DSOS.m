@@ -1,4 +1,4 @@
-function Plot_DSOS(im, stim, roi)
+function Plot_DSOS(im, s, stim, roi)
 %
 % plot simple DSOS properties 
 %
@@ -95,7 +95,11 @@ if im.bstrpDone
         errorbar(stim, peak_boot, error_neg, error_pos, 'ro')
     end
 else
-    plot(stim, peak_ave, 'bo');
+    if isfield(s, 'Stim_valiation_type')  &&...
+            strcmp(s.Stim_valiation_type, 'Free')
+    else
+        plot(stim, peak_ave, 'bo');
+    end
 end
 
 xlim([-0.1, 2*pi+0.1])
@@ -107,7 +111,7 @@ xlabel('Move Angle (deg)');
 %% Polar plot
 subplot(1,2,2)
 
-polarplot([stim, stim(1)], [peak_ave; peak_ave(1)], 'o-', 'Color', Col);
+polarplot([stim, stim(1)], [peak_ave; peak_ave(1)], '.-', 'Color', Col);
 
 
 if im.bstrpDone
