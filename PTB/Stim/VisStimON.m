@@ -305,17 +305,26 @@ if n_blankloop > app.Blankloop.Value
             sobj = MovingStim_off(sobj, app.StiminfoTextArea, vbl);
 
 
-        case 'Images'
+        case 'Image Presentation'
             %Stim position
             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
-            %Set Image
-            %Randomize image order
 
-        case 'Mosaic'
-            %Stim position
-            sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
-            sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
+            %Set Image (from image list)
+            sobj = SelectImage;
+
+            % Delay %
+            [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+
+            % Present three consecutive stimuli at intervals of 200ms.
+            Prepare_stim_spot(sobj.StimSize_pix);
+            [sobj.vbl_2, sobj.BeamposON, sobj.vbl_3, sobj.BeamposOFF] =...
+                Stim_spot2(sobj, app.StiminfoTextArea);
+
+%         case 'Mosaic'
+%             %Stim position
+%             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+%             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
 
         case 'Random Dot Motion'
             %Stim center position

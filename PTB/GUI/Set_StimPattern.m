@@ -116,9 +116,9 @@ switch value
         stimsz = round(ones(1,2) *...
             Deg2Pix(app.Size.Value, app.sobj.MonitorDist, app.sobj.Pixelpitch));
         app.sobj.StimSize_pix = stimsz;
-        app.sobj.Bar_width_pix = stimsz(1);
+%         app.sobj.Bar_width_pix = stimsz(1);
         app.sobj.StimSize_deg = app.Size.Value;
-        app.sobj.Bar_width = app.Size.Value;
+%         app.sobj.Bar_width = app.Size.Value;
 
         app.MonitorDiv.Value = 4;
         app.sobj.DivNum = app.MonitorDiv.Value;
@@ -178,12 +178,27 @@ switch value
         stimsz = round(ones(1,2) *...
             Deg2Pix(app.Size.Value, app.sobj.MonitorDist, app.sobj.Pixelpitch));
         app.sobj.StimSize_pix = stimsz;
+%         app.sobj.Bar_width_pix = stimsz(1);
+        app.sobj.StimSize_deg = app.Size.Value;
+%         app.sobj.Bar_width = app.Size.Value;
+
+        app.ShapeDropDown.Value = 'Square';
+        app.sobj.Shape = 'FillRect';
+
+    case 'Image Presentation'
+        % reffered from Yoshida & Ohki 2019 NatCommun
+
+        app.Size.Value = 20; %20deg
+        stimsz = round(ones(1,2) *...
+            Deg2Pix(app.Size.Value, app.sobj.MonitorDist, app.sobj.Pixelpitch));
+        app.sobj.StimSize_pix = stimsz;
         app.sobj.Bar_width_pix = stimsz(1);
         app.sobj.StimSize_deg = app.Size.Value;
         app.sobj.Bar_width = app.Size.Value;
 
         app.ShapeDropDown.Value = 'Square';
         app.sobj.Shape = 'FillRect';
+
 end
 end
 
