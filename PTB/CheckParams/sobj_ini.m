@@ -19,10 +19,11 @@ function sobj = sobj_ini
 
 %% Get monitor info
 %sobj.MP = get(0, 'MonitorPosition'); %position matrix for malti monitors
+AssertOpenGL;
 sobj.Screens = Screen('Screens');
 %For Ubuntu, main display:=0, sub:= 1
 sobj.scr = Screen('ConfigureDisplay', 'Scanout', 1, 0);
-disp(['Frame Rate of Stim Monitor: ', num2str(sobj.scr.hz), 'hz.']);
+disp(['Current Frame Rate of Stim Monitor: ', num2str(sobj.scr.hz), 'hz.']);
 
 if sobj.scr.hz < 100
     %Screen('ConfigureDisplasy', 'Scaanout') failed to change setting
@@ -33,7 +34,7 @@ if sobj.scr.hz < 100
     sobj.scr = Screen('ConfigureDisplay', 'Scanout', 1, 0);
     %disp(['Frame Rate of Stim Monitor was updated to: ', num2str(sobj.scr.hz), 'hz.'])
     
-    disp(['Frame rate of stim monitor is set as **', num2str(sobj.scr.hz), ' hz** from ',...
+    disp(['Change to **', num2str(sobj.scr.hz), ' hz** from ',...
        num2str(oldsetting.hz), ' hz.'])
 end
 
@@ -86,6 +87,8 @@ sobj.Blankloop_times = 2;
 %%%%%%
 sobj.StimSize_pix = round(ones(1,2) * Deg2Pix(1, sobj.MonitorDist, sobj.Pixelpitch)); %Defafult 1 deg
 sobj.StimSize_deg = 1;
+sobj.Bar_width = sobj.StimSize_deg;
+sobj.Bar_width_pix = sobj.StimSize_pix(1);
 
 %Size Random
 sobj.StimSize_deg_list = [0.5; 1; 3; 5; 10; 20; 30]; %for Size_radom stim
@@ -103,6 +106,9 @@ sobj.MoveDirection_i = 1;
 %Moving speed
 sobj.MoveSpd = 10; %deg/sec
 
+sobj.Bar_height = 65; %deg
+sobj.Bar_heigth_pix = ...
+    round(Deg2Pix(sobj.Bar_height, sobj.MonitorDist, sobj.Pixelpitch));
 
 %Grating contras (cannot change from GUI)
 sobj.GratingContrast = 100;
@@ -112,10 +118,6 @@ sobj.TemporalFreq_i = 3;
 %Grating spatial frequency
 sobj.SpatialFreq = 0.08; %cpd (cycle per degree)
 sobj.SpatialFreq_i = 4;
-
-%Grating move direction -> MoveDirection
-% sobj.ShiftDirection = 0;%rightward
-% sobj.ShiftDirection_i = 1;
 
 %Bar angle
 sobj.BarOrientation = 0;
@@ -127,7 +129,7 @@ sobj.LoomingMaxSize = 40; %deg
 
 %Concentric or Fine Mapping, 
 sobj.Div_grid = 5; %deg step
-sobj.Dist = 15; %deg
+sobj.Distance = 15; %deg
 
 %Images
 sobj.Img_i = 0; %# image;
@@ -135,9 +137,12 @@ sobj.ImageNum = 256;
 sobj.list_img = 1:sobj.ImageNum;
 
 %Mosaic
-sobj.DotsDensity = 30; % 30%
+sobj.DotDensity = 0.3; % 30%
+
+%RandomDotMotion -> Set_Coherence
 
 %Concentric
+sobj.DotNum = 300;
 sobj.ConcentricDirection = 0;
 sobj.ConcentricDirection_i = 1;
 

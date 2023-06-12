@@ -1,9 +1,11 @@
 function sobj = Set_StimPos_Spot(mode, sobj)
 %%%%%%
 %if strcmp(sobj.Pattern, 'Uni')
-if contains(sobj.Pattern, {'Uni', 'Size Random', 'Moving Spot', 'Static Bar'})
+if contains(sobj.Pattern, {'Uni', 'Size Random',...
+        'Moving Spot', 'Static Bar','Random Dot Motion'...
+        'Shifting Grating', 'Search V1_Coarse'})
     div = sobj.DivNum;
-elseif strcmp(sobj.Pattern, 'Fine Mapping')
+elseif contains(sobj.Pattern, {'Fine Mapping', 'Search V1_Fine'})
     div = sobj.Div_grid;
 end
 
@@ -13,12 +15,17 @@ switch mode
     case 'Random Matrix'
         %Randmize position center
         sobj.index_center_in_mat = Get_RandomCenterPosition(i, div^2, 1);
-        sobj.StimCenterPos = sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
+        sobj.StimCenterPos =...
+            sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
  
     case 'Ordered Matrix'
-        %Present stim in order
-        sobj.index_center_in_mat = Get_RandomCenterPosition(i, div^2, 0);
-        sobj.StimCenterPos = sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
+        %Present stim in order (start from FixPos in GUI)
+        %Start from sobj.FixPos
+        i_center = Get_RandomCenterPosition(i, div^2, 0);
+        sobj.index_center_in_mat = Sfhit_position(i_center, sobj.FixPos, div);
+
+        sobj.StimCenterPos =...
+            sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
         
     case 'Fix Repeat'
         %Center pos is fixed i in n x n matrix.
@@ -40,7 +47,8 @@ end
 end
 
 %% Position Randomization
-function index_list = Get_RandomCenterPosition(i_in_mainloop, list_size, randomize)
+function index_list = Get_RandomCenterPosition(...
+    i_in_mainloop, list_size, randomize)
 %
 % Generate randomized order
 %
@@ -69,5 +77,16 @@ end
 
 index_list = list_order(i_in_cycle);
 %
+
+end
+
+%%
+function shifted_i_center = Sfhit_position(i_center, FixPos, div)
+
+shifted_i_center = i_center + FixPos -1;
+if shifted_i_center > div^2
+    shifted_i_center = shifted_i_center - div^2;
+end
+disp(shifted_i_center)
 
 end
