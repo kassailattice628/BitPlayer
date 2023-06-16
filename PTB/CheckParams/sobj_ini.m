@@ -132,9 +132,7 @@ sobj.Div_grid = 5; %deg step
 sobj.Distance = 15; %deg
 
 %Images
-sobj.Img_i = 0; %# image;
-sobj.ImageNum = 256;
-sobj.list_img = 1:sobj.ImageNum;
+sobj.Img_fname = '';
 
 %Mosaic
 sobj.DotDensity = 0.3; % 30%

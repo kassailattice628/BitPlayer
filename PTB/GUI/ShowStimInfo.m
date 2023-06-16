@@ -81,7 +81,7 @@ switch sobj.Pattern
 
         text_stim_info{5} = ['Coherence: ', num2str(sobj.CoherenceRDM*100),' %'];
 
-    case 'Image Presentaions'
+    case 'Image Presentation'
         %n x n matrix, position in matrix, size, image
         text_stim_info{3} = [...
             'Position: ', num2str(sobj.index_center_in_mat),...

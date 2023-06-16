@@ -1,6 +1,6 @@
 function Set_StimPattern(app)
 
-EnableOffAll(app);
+ResetAll(app);
 
 value = app.PatternDropDown.Value;
 
@@ -54,9 +54,6 @@ switch value
         app.DotDensity.Enable = 'on';
         app.DotDensity_Label.Enable = 'on';
         
-    case 'Images'
-        app.NumImages.Enable = 'on';
-        
     case {'Sinusoidal', 'Shifting Grating', 'Gabor'}
         app.SpatialFreq.Enable = 'on';
         app.SpatialFreq_Label.Enable = 'on';
@@ -101,7 +98,7 @@ switch value
         app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
 
     case 'Search V1_Coarse'
-        % reffered from Yoshida & Ohki 2019 NatCommun
+        % Yoshida & Ohki 2019 NatCommun
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
         app.SpatialFreq.Enable = 'on';
@@ -113,12 +110,7 @@ switch value
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
         app.Size.Value = 40; %50deg
-        stimsz = round(ones(1,2) *...
-            Deg2Pix(app.Size.Value, app.sobj.MonitorDist, app.sobj.Pixelpitch));
-        app.sobj.StimSize_pix = stimsz;
-%         app.sobj.Bar_width_pix = stimsz(1);
-        app.sobj.StimSize_deg = app.Size.Value;
-%         app.sobj.Bar_width = app.Size.Value;
+
 
         app.MonitorDiv.Value = 4;
         app.sobj.DivNum = app.MonitorDiv.Value;
@@ -141,7 +133,7 @@ switch value
 
 
     case 'Search V1_Fine'
-        % reffered from Yoshida & Ohki 2019 NatCommun
+        % Yoshida & Ohki 2019 NatCommun
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
         app.SpatialFreq.Enable = 'on';
@@ -175,26 +167,20 @@ switch value
         app.sobj.Div_grid = app.Divide.Value;
 
         app.Size.Value = 20; %20deg
-        stimsz = round(ones(1,2) *...
-            Deg2Pix(app.Size.Value, app.sobj.MonitorDist, app.sobj.Pixelpitch));
-        app.sobj.StimSize_pix = stimsz;
-%         app.sobj.Bar_width_pix = stimsz(1);
-        app.sobj.StimSize_deg = app.Size.Value;
-%         app.sobj.Bar_width = app.Size.Value;
 
         app.ShapeDropDown.Value = 'Square';
         app.sobj.Shape = 'FillRect';
 
     case 'Image Presentation'
         % reffered from Yoshida & Ohki 2019 NatCommun
+        app.NumImages.Enable = 'off';
+
+        app.Delay.Enable = 'off';
+        
+        app.ISI.Value = 0.2;
+        app.sobj.ISI_sec = app.ISI.Value;
 
         app.Size.Value = 20; %20deg
-        stimsz = round(ones(1,2) *...
-            Deg2Pix(app.Size.Value, app.sobj.MonitorDist, app.sobj.Pixelpitch));
-        app.sobj.StimSize_pix = stimsz;
-        app.sobj.Bar_width_pix = stimsz(1);
-        app.sobj.StimSize_deg = app.Size.Value;
-        app.sobj.Bar_width = app.Size.Value;
 
         app.ShapeDropDown.Value = 'Square';
         app.sobj.Shape = 'FillRect';
@@ -203,10 +189,15 @@ end
 end
 
 %% %%%%
-function EnableOffAll(app)
+function ResetAll(app)
 %
 % All off other than Size, MonitorDiv, Fixed Pos
 %
+app.NumImages.Enable = 'on';
+app.Duration.Enable = 'on';
+app.Delay.Enable = 'on';
+app.ISI.Enable = 'on';
+
 app.DurationMoveStim_Label.Enable = 'off';
 
 app.PositionOrderDropDown.Enable = 'on';

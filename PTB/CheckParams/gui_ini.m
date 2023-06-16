@@ -92,7 +92,7 @@ app.BarOrientation.Value = app.BarOrientation.Items(1);
 
 app.LoomingSpd.Value = app.LoomingSpd.Items(1);
 app.LoomingMax.Value = app.sobj.LoomingMaxSize;
-app.NumImages.Value = app.sobj.ImageNum;
+%app.NumImages.Value = app.sobj.ImageNum;
 app.DotDensity.Value = app.sobj.DotDensity * 100;
 
 app.Coherence.Value = app.Coherence.Items(1);
