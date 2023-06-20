@@ -12,12 +12,13 @@ for i = im.selected_ROIs
         case 'Uni'
 
             divnum = s.DivNum;
-            Plot_on_stim_location(i, im, s, divnum);
+            Plot_on_stim_location(i, im, divnum, app.Zscore.Value);
         case 'Fine Mapping'
 
             divnum = s.Div_grid;
 
-            Plot_on_stim_location(i, im, s, divnum);
+            
+            Plot_on_stim_location(i, im, divnum, app.Zscore.Value);
 
         otherwise
             Plot_stacked_time_series(i, im);
@@ -28,7 +29,7 @@ end
 
 %% Sub function for plot selected ROI
 %%
-function Plot_on_stim_location(i, im, s, divnum)
+function Plot_on_stim_location(i, im, divnum, Z)
 
 Y = im.dFF_stim_average(:,:,i);
 
@@ -57,6 +58,33 @@ for n = tile_order
 end
 
 title(tlo, ['ROI: #', num2str(i)])
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Color Map in 2D stim location 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+figure
+% reshape Y
+Y_reshape = zeros(divnum, size(Y,1)*divnum);
+
+for n1 = 1:divnum
+
+    Y_sub = [];
+    for n2 = 1:divnum
+        n3 = n1+divnum*(n2-1);
+        %n3 = tile_order(n1+divnum*(n2-1));
+        Y_sub = [Y_sub, Y(:,n3)'];
+    end
+
+    Y_reshape(n1, :) = Y_sub;
+end
+
+imagesc(Y_reshape)
+%%% Color range %%%%%
+if Z
+    clim([-2, 8]);
+else
+    clim([-1, 5]);
+end
 
 end
 
