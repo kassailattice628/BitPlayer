@@ -30,7 +30,7 @@ if ~Blank
     %%% Pattern Specific, & trial specific Parameters %%%
     switch sobj.Pattern
         case {'Uni', 'Size Random'}
-            %Luminance & Color?
+            % Luminance & Color?
 
         case 'Fine Mapping'
             % Center of fine map area
@@ -38,36 +38,42 @@ if ~Blank
             % Fine mapping index
             p.stim1.Center_position_in_FineMapArea = sobj.index_center_in_mat;
 
-            %Luminance & Color?
+            % Luminance & Color?
 
         case {'Moving Bar'}
-            % Mogving direction and speed.
+            % Mogving direction (and speed).
             %p.stim1.Movebar_Spd_deg_per_s = sobj.MoveSpd;
             p.stim1.Movebar_Direction_angle_deg = sobj.MoveDirection;
 
         case 'Moving Spot'
-            %Moving direction and speed.
+            % Moving direction (and speed).
             %p.stim1.Movespot_Spd_deg_per_sec = sobj.MoveSpd;
             p.stim1.Movespot_Direction_angle_deg = sobj.MoveDirection;
 
         case 'Static Bar'
-            %Orientation, Bar length
+            % Orientation (and length of the bar)
             p.stim1.Bar_Orientation_angle_deg = sobj.BarOrientation;
-            %bar legnth => sobj.stim_length
+            % Bar legnth => sobj.stim_length
 
-        case '2P'
-
-        case 'B/W'
-
-        case 'Looming'
-
-        case {'Sinusoidal', 'Shifting Grating', 'Gabor'}
-
+        case {'Sinusoidal', 'Shifting Grating', 'Gabor', 'V1 search_Coarse'}
+            % Stim angle
             p.stim1.Grating_Angle_deg = sobj.MoveDirection;
 
-        case 'Images'
+        case 'Image Presentation'
+            % Selected image
+            p.stim1.Image_i = sobj.img_i;
+            p.stim1.Image_fname = sobj.img_fname;
+            % List of images: sobj.list_iomages
 
-            p.stim1.Image_index = sobj.img_i;
+        case {'V1 search_Fine'}
+            % Stim angle
+            p.stim1.Grating_Angle_deg = sobj.MoveDirection;
+            
+            % Fine position
+            % Center of fine map area
+            p.stim1.Center_position = sobj.FixPos;
+            % Fine mapping index
+            p.stim1.Center_position_in_FineMapArea = sobj.index_center_in_mat;
 
         case {'Mosaic'}
             % Mosaic Dot pattern
@@ -79,6 +85,14 @@ if ~Blank
             % dots, following prams dose'nt need to be saved.
             p.stim1.Position_deg_mat = sobj.dot_position_deg;
             p.stim1.Size_deg_mat = sobj.dot_sizes_deg;
+
+        case 'Random Dot Motion'
+            % Dot motion
+            p.stim1.MoveSpd = sobj.MoveSpd;
+            p.stim1.MoveDirection_deg = sobj.MoveDirection;
+            p.stim1.Coherence = sobj.CoherenceRDM;
+            p.stim1.PatchSize_deg = sobj.Distance;
+            p.stim1.DotSize_deg = sobj.dot_RDM_deg;
 
     end
 end

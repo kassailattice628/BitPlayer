@@ -11,7 +11,7 @@ BitPlayer is the Matlab app for
 
 ## Requirements
 - Matlab R2022a
-    - GUIs were created using appdesigner
+    - GUIs are created using appdesigner
 - Windows PC for BitPlayer-DAQ
 - Ubuntu for -PTB & -Analysys
 - [Python (ver 3.8 or 3.9 is compatible for 2022a)](https://jp.mathworks.com/support/requirements/python-compatibility.html)
@@ -39,8 +39,8 @@ BitPlayer is the Matlab app for
 ### Analysys
 - Developped in Ubuntu 20.04.5 LTS (macOS and Windows not tested)
 - Matlab R2022a
-- Python 3.8 or 3.9
-    - pandas 
+- Python 3.8 or 3.9 is used for reading meatadata from .oif file
+    - pandas, numpy, scipy
 ___
 ## Visual Stimulation using PTB3
 1. Simple spot (full screen)
@@ -50,9 +50,19 @@ ___
 1. Static Bar (fixed bar height: 65deg)
 1. Moving Spot
 1. Sinusoidal, Shifting Grating, Gabor
-1. Image (under development)
+1. Image Presentation (under development)
+1. V1 serach (Coarse & Fine)
 1. Mosaic (under development)
 1. 2points, black/white (under development)
+
+### How to add new stimulation
+1. Add name of new stimulation @./PTB/CheckParams/gui_ini.m
+1. Add GUI setting
+    1. Add position info in GUI function PatternDropDownValueChanged
+    1. Add other GUI settings @./PTB/GUI/Set_StimPattern.m
+1. Add procedure of the new stim @./PTB/Stim/VisStimON.m
+1. Add text info during stimu presentation ./PTB/GUI/ShowStimInfo.m
+1. Save stimulus-specific parameters ./PTB/CheckParams/Get_ParamsSave.m
 ___
 ## DAQ channel configureation (see daq_ini)
 1. Recording Eye positino singal from iRecHS2 (anohter WindowsPC)
@@ -66,6 +76,9 @@ ___
 
 ***
 ## Change history
+2023/06-12
+* Add Image Presentation
+
 2023/03/21-23
 * Fix loop structure in DAQ recording.
 * Fix bootstrap in Analysys

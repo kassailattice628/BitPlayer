@@ -71,8 +71,46 @@ switch sobj.Pattern
 
         text_stim_info{5} = ['Max Size: ', num2str(sobj.LoomingMaxSize),' deg'];
     
-    case 'Images'
-        %n x n matrix, position in matrix, size, image #
+    case 'Random Dot Motion'
+        %moving direction, moving speed
+        text_stim_info{3} = [...
+            'Direction: ', num2str(sobj.MoveDirection),' deg'];
+
+        text_stim_info{4} = [...
+            'Speed: ', num2str(sobj.MoveSpd), ' deg/sec'];
+
+        text_stim_info{5} = ['Coherence: ', num2str(sobj.CoherenceRDM*100),' %'];
+
+    case 'Image Presentaions'
+        %n x n matrix, position in matrix, size, image
+        text_stim_info{3} = [...
+            'Position: ', num2str(sobj.index_center_in_mat),...
+            '/(',num2str(sobj.DivNum), 'x',num2str(sobj.DivNum) ')'];
+        text_stim_info{4} = ['Size: ', num2str(sobj.StimSize_deg),' deg'];
+        text_stim_info{5} = ['Image: #', num2str(sobj.img_i),...
+            ': ', sobj.img_fname];
+
+    case {'Search V1_Coarse'}
+
+        text_stim_info{3} = [...
+            'Center: ', num2str(sobj.FixPos),...
+            '/(',num2str(sobj.DivNum), 'x',num2str(sobj.DivNum) ')'];
+
+        text_stim_info{4} = [...
+            'Direction: ', num2str(sobj.MoveDirection),' deg'];
+        
+    case {'Search V1_Fine'}
+        
+        text_stim_info{3} = [...
+            'Center: ', num2str(sobj.FixPos),...
+            '/(',num2str(sobj.DivNum), 'x',num2str(sobj.DivNum) ')'];
+
+        text_stim_info{4} = [...
+            'Fine Pos: ', num2str(sobj.index_center_in_mat),...
+            '/(',num2str(sobj.Div_grid), 'x',num2str(sobj.Div_grid) ')'];
+
+        text_stim_info{5} = [...
+            'Direction: ', num2str(sobj.MoveDirection),' deg'];
 
     case 'Mosaic'
         %size, density

@@ -5,20 +5,28 @@ function VisStimON(app, n_in_loop, n_blankloop)
 % Add blank loop 2023/02/16
 %
 %%%%%%%%%%
-
+%% 
 % Check parameters & Update GUI...
 % display total stim duration in sec
 
-% Presenting Visual Stimuli
 sobj = app.sobj;
 sobj.n_in_loop = n_in_loop;
 
+switch sobj.Shape
+    case 'FillRect'
+        dot_type = 4;
+    case 'FillOval'
+        dot_type= 2;
+end
 
+HideCursor; % Hide the mouse cursor
+
+%% Presenting Visual Stimuli
 if n_blankloop > app.Blankloop.Value
     disp('Vis Stim ON')
 
     switch sobj.Pattern
-        case {'Uni'}
+        case 'Uni'
             %Stim position
             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
 
@@ -30,7 +38,7 @@ if n_blankloop > app.Blankloop.Value
 
         case 'Fine Mapping'
             %Stim position
-            FineMapArea_deg = [0, 0, sobj.Dist, sobj.Dist];
+            FineMapArea_deg = [0, 0, sobj.Distance, sobj.Distance];
             FineMapArea = Deg2Pix(FineMapArea_deg, sobj.MonitorDist, sobj.Pixelpitch);
 
             %Define center of the subarea (fix pos in DivNum^2 matrix)
@@ -61,6 +69,11 @@ if n_blankloop > app.Blankloop.Value
                 Stim_spot2(sobj, app.StiminfoTextArea);
 
         case 'Moving Bar'
+
+            %Bar width and height in deg;
+            sobj.bar_height = 65; %fixed height
+            sobj.bar_witdh = sobj.StimSize_deg(1);
+
             %Moving direction
             sobj = Set_Direction(app.Direction.Value, sobj);
             [dist, duration] = Set_MovingDuration(sobj);
@@ -204,7 +217,7 @@ if n_blankloop > app.Blankloop.Value
             cycles_per_pix = CPD2CPP(sobj.SpatialFreq, sobj.MonitorDist, sobj.Pixelpitch);
 
             %Generate Grating texture;
-            gratingtex = Make_GratingTexture(app);
+            [gratingtex, sobj] = Make_GratingTexture(sobj);
 
             %Prep Delay %%%%%%%%%%%%%%%%%
             [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
@@ -220,7 +233,7 @@ if n_blankloop > app.Blankloop.Value
             drawnow;
 
             %Grating stimuli
-            for count = 1:sobj.FlipNum-1
+            for count = 2:sobj.FlipNum
                 phase = count * 360/sobj.FrameRate * sobj.TemporalFreq;
                 Screen('DrawTexture', sobj.wPtr, gratingtex, [], stimRect, angle,...
                     [], [], [], [], [], [phase, cycles_per_pix, sobj.GratingContrast, 0]);
@@ -239,7 +252,6 @@ if n_blankloop > app.Blankloop.Value
             %sc = sobj.StimSize_pix(1) * 0.16; %what is 0.16??
             sigma = sobj.StimSize_pix(1) /6;
             contrast = 100;
-
 
             %Moving Direction
             sobj = Set_Direction(app.Direction.Value, sobj);
@@ -278,7 +290,7 @@ if n_blankloop > app.Blankloop.Value
             drawnow;
 
             %Grating stimuli
-            for count = 1:sobj.FlipNum-1
+            for count = 2:sobj.FlipNum
                 phase = count * 360/sobj.FrameRate * sobj.TemporalFreq;
                 Screen('DrawTexture', sobj.wPtr, gratingtex, [], stimRect,...
                     angle, [], [], [], [], kPsychDontDoRotation,...
@@ -293,19 +305,73 @@ if n_blankloop > app.Blankloop.Value
             sobj = MovingStim_off(sobj, app.StiminfoTextArea, vbl);
 
 
-        case 'Images'
-            %Stim position
-            sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
-            sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
-            %Set Image
-            %Randomize image order
-
-        case 'Mosaic'
+        case 'Image Presentation'
             %Stim position
             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
 
-        case 'Mouse Cursor'
+            %Set Image (from image list)
+            sobj = SelectImage;
+
+            % Delay %
+            [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+
+            % Present three consecutive stimuli at intervals of 200ms.
+            Prepare_stim_spot(sobj.StimSize_pix);
+            [sobj.vbl_2, sobj.BeamposON, sobj.vbl_3, sobj.BeamposOFF] =...
+                Stim_spot2(sobj, app.StiminfoTextArea);
+
+%         case 'Mosaic'
+%             %Stim position
+%             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+%             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
+
+        case 'Random Dot Motion'
+            %Stim center position
+            sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+            sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
+
+            %Moving Direction
+            sobj = Set_Direction(app.Direction.Value, sobj);
+
+            %Coherence
+            sobj = Set_Coherence(app.Coherence, app.Coherence_Mode.Text,...
+                sobj);
+
+            % Stim ON
+            sobj = RandomDotMotion(sobj, app.StiminfoTextArea);
+
+        case 'Search V1_Coarse'
+            % Define position of the stimulus
+            sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+            sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
+
+            % Stim ON
+            sobj = Sinusoidal_and_Grating(app.Direction.Value,...
+                sobj, app.StiminfoTextArea);
+
+       
+        case 'Search V1_Fine'
+
+            %Stim position
+            FineMapArea_deg = [0, 0, sobj.Distance, sobj.Distance];
+            FineMapArea = Deg2Pix(FineMapArea_deg, sobj.MonitorDist, sobj.Pixelpitch);
+
+            %Define center of the subarea (fix pos in DivNum^2 matrix)
+            Pos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+            C = Pos_list(sobj.FixPos, :);
+
+            %Corner position in pix
+            AREA = CenterRectOnPointd(FineMapArea, C(1), C(2));
+
+            %Define CenterPos_list for fine mapping
+            sobj.CenterPos_list = Get_StimCenter_in_matrix(AREA, sobj.Div_grid);
+            sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
+
+            % Stim ON
+            sobj = Sinusoidal_and_Grating(app.Direction.Value,...
+                sobj, app.StiminfoTextArea);
+
     end
 
 
@@ -336,14 +402,16 @@ app.sobj = sobj;
 
 %setRTS(app.SerPort , false) %TTL low -> daq
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     function Prepare_stim_spot(Size)
+        flag = 1;
 
         sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
 
         maxDiameter = round(max(Size) * 1.5);
 
+        if flag == 0
         Rect = CenterRectOnPointd([0, 0, Size(1), Size(2)], ...
             sobj.StimCenterPos(1), sobj.StimCenterPos(2));
         
@@ -352,6 +420,22 @@ app.sobj = sobj;
         
         % Prepare Screen
         Screen(sobj.Shape, sobj.wPtr, sobj.stimColor, Rect, maxDiameter);
+
+        elseif flag == 1
+            %Screen('DrawDots', windowPtr, xy [,size] [,color] [,center] [,dot_type][, lenient]);
+            %Screen('DrawDots', window, [dotXpos dotYpos], dotSizePix, dotColor, [], 2);
+            % size: diameter in pixe;
+            % center: relative to center of the monitor([0, 0])
+            % dot_type:2 high quality anti-aliasing
+            %
+
+            X = sobj.StimCenterPos(1);
+            Y = sobj.StimCenterPos(2);
+
+            Screen('DrawDots', sobj.wPtr, [X, Y], Size(1), sobj.stimColor,...
+                [], dot_type);
+        end
+
     end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
