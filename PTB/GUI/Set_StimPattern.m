@@ -3,7 +3,7 @@ function Set_StimPattern(app)
 ResetAll(app);
 
 value = app.PatternDropDown.Value;
-
+app.sobj.Stim_valiation_type = 'Fixed';
 switch value
     case {'Uni','Black & White'}
         
