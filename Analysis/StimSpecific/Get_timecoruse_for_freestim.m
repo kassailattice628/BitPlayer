@@ -30,7 +30,7 @@ roi_negative = [];
 
 %%
 switch s.Pattern
-    case 'Moving Bar'
+    case {'Moving Bar','Image Presentation'}
         stim = nan(1, n_stimON);
     case 'Fine Mapping'
         stim = nan(2, n_stimON);
@@ -64,6 +64,9 @@ for i = 1:n_stimON
         case 'Fine Mapping'
             stim(1, i) = p{i_p}.stim1.x;
             stim(2, i) = p{i_p}.stim1.y;
+
+        case 'Image Presentation'
+            stim(i) = p{i_p}.stim1.Image_i;
     end
 
 end

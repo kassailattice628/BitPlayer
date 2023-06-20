@@ -48,6 +48,12 @@ if ~p.stim1.Blank
             t2 = ['Position: ', div 'x', div, '=', pos,...
                 '; Size: ', sz, 'deg'];
 
+        case 'Image Presentation'
+            div = num2str(s.DivNum);
+            pos = num2str(p.stim1.Center_position);
+            t1 = ['Position: ', div 'x', div, '=', pos];
+            t2 = ['Image: #', num2str(p.stim1.Image_i)];
+
 
     end
 
