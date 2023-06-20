@@ -21,7 +21,7 @@ for i = im.selected_ROIs
             Plot_on_stim_location(i, im, divnum, app.Zscore.Value);
 
         otherwise
-            Plot_stacked_time_series(i, im);
+            Plot_stacked_time_series(i, im, app.Zscore.Value);
     end
 
 end
@@ -89,7 +89,7 @@ end
 end
 
 %%
-function Plot_stacked_time_series(i, im)
+function Plot_stacked_time_series(i, im, Z)
 Y = im.dFF_stim_average(:,:,i);
 T = (0:size(Y,1)-1)*im.FVsampt;
 
@@ -128,7 +128,7 @@ Y = im.dFF_stim_average(:,:,i);
 img_x = 1:size(Y, 2);
 
 imagesc(T, img_x, Y')
-if app.Zscore.Value
+if Z
     clim([-4, 15]);
 else
     clim([-1, 5]);
