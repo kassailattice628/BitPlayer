@@ -14,7 +14,9 @@ end
 
 %%
 disp('Update all saccades...')
-for i = 1:size(t, 2)
+
+n_trials = min(size(p,2), size(t, 2));
+for i = 1:n_trials
     
     % Extract stim timing
     if i > app.sobj.Blankloop_times
