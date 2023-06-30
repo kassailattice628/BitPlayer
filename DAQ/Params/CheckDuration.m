@@ -40,27 +40,28 @@ if app.TTLSwitch.Value
     stim_d = obj.Delay_in_sec + obj.Duration_in_sec;
 
     %Check Duration in msec
-    if stim_d > app.recobj.rect
+    if stim_d * 1000 > app.recobj.rect
         errordlg('TTL stim duration is longer than the DAQ recording time!')
-        
+
+        %--- Reset recording settings ---%
         obj.Delay_in_sec = 0.1; %sec
         obj.Duration_in_sec = 0.1; %sec
         obj.Freq = 100; %Hz
         obj.PulseNum = 10;
         obj.DutyCycle = 0.5;
-        obj.SinglePulseWidth = 1000 * obj.DutyCycle / obj.TTL.Freq; %ms
 
         app.TTLDelay.Value = obj.Delay_in_sec * 1000;
         app.TTLDuration.Value = obj.Duration_in_sec * 1000;
         app.TTLFrequency.Value = obj.Freq;
         app.TTLPulseNum.Value = obj.PulseNum;
         app.TTLDutyCycle.Value = obj.DutyCycle;
-        obj.SinglePulseWidth = 1000 * obj.DutyCycle / obj.TTL.Freq; %ms
+        obj.SinglePulseWidth = 1000 * obj.DutyCycle / obj.Freq; %ms
         app.SinglePulseWidthLabel.Text = ['Single Pulse Width (ms): '...
             num2str(obj.SinglePulseWidth), ' ms'];
+        
 
-        %recobj.rect = 2*1000; %recording time (ms)
-        %app.RecTime.Value = recobj.rect;
+        recobj_ini(app);
+        capture_ini(app);
         
     end
 end

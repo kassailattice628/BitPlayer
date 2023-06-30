@@ -29,15 +29,16 @@ while app.loopON
         break
     end
 
-    %% Prepare
-    % Video setting
+    %%%----- Video setting
     if app.CameraSave.Value % When CameraSave is ON
         app.imaq = LoggingVideoSetting(app.imaq, app.recobj.n_in_loop);
     end
-    % AO for TTL
+
+    %%%----- AO for TTL
     if app.TTLSwitch.Value % TTL is ON
-        preload(app.d_out_ao, 5 * app.recobj.TTL.outputSignal) % 5V ouput
-        start(app.d_out_ao);
+        %flush(app.d_out_ao);
+        %preload(app.d_out_ao, 5 * app.recobj.TTL.outputSignal) % 5V ouput
+        %start(app.d_out_ao);
     end
 
 
@@ -61,8 +62,14 @@ while app.loopON
         FVtrig = 0;
         %write(app.d_out, [1, 0, 1, 0]);
     end
+    
     %Trigger
     write(app.d_out, [1, FVtrig, 1, 0]);
+    if app.TTLSwitch.Value % TTL is ON
+        %flush(app.d_out_ao);
+        write(app.d_out_ao, 5 * app.recobj.TTL.outputSignal) % 5V ouput
+        %start(app.d_out_ao);
+    end
     fprintf('Trig #%d >>>> ', app.recobj.n_in_loop)
     app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
     app.capturing = 1;
@@ -92,6 +99,8 @@ while app.loopON
             pause(0.1)
         end
     end
+
+    
     app.CurrentState = 'Aqcuisition.Buffering';
     app.recobj.n_in_loop = app.recobj.n_in_loop + 1;
 
@@ -125,6 +134,10 @@ if app.saveON
     %flush memory
     stop(app.d_in);
     flush(app.d_in);
+
+%     stop(app.d_out_ao);
+%     flush(app.d_out_ao);
+    
     %Rest state
     app.CurrentState = 'DAQstop';
     app.CaptureData = [];

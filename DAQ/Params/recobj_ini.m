@@ -10,6 +10,7 @@ recobj.recp = recobj.sampf * recobj.rect/1000;
 
 
 %% TTL pulse stimulation by Analog Output?
+
 recobj.TTL.Delay_in_sec = 0.1; %sec
 recobj.TTL.Duration_in_sec = 0.1; %sec
 recobj.TTL.Freq = 100; %Hz
@@ -20,6 +21,7 @@ recobj.TTL.DutyCycle = 0.5;
 recobj.TTL.SinglePulseWidth = 1000 * recobj.TTL.DutyCycle / recobj.TTL.Freq; %ms
 
 %% Update GUI
+
 app.ITI.Value = recobj.interval;
 app.SamplingRate.Value = recobj.sampf/1000;
 app.RecTime.Value = recobj.rect;

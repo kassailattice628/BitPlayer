@@ -19,9 +19,9 @@ pulseOFF = zeros(size_pulseOFF, 1);
 
 pulses = repmat([pulseON; pulseOFF], r.TTL.PulseNum, 1);
 
-off =zeros(r.recp - (length(delay) + length(pulses)),1);
-
-r.TTL.outputSignal = [delay; pulses; off];
+% off =zeros(r.recp - (length(delay) + length(pulses)),1);
+% r.TTL.outputSignal = [delay; pulses; off];
+r.TTL.outputSignal = [delay; pulses; zeros(10, 1)];
 
 %% Return
 app.recobj = r;
