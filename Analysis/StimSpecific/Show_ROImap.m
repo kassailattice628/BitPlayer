@@ -6,6 +6,9 @@ function Show_ROImap(app)
 im = app.imgobj;
 s = app.sobj;
 imgsz = im.imgsz;
+if length(imgsz)==1
+    imgsz = [imgsz, imgsz];
+end
 
 % Prepare background img
 imgBG = zeros(imgsz(1) * imgsz(2), 3);
