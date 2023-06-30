@@ -1,5 +1,6 @@
 function CheckDuration(app)
 % Calculate TTL stim duration and Check them when the TTL switch is ON.
+%
 % If the TTL delay + TTL stim duration is longer than the recording time,
 % rest DAQ recording time and TTL stim duration.
 % recobj.TTL.Delay_in_sec = 0.1; %sec
@@ -14,25 +15,26 @@ obj = app.recobj.TTL;
 
 if app.TTLSwitch.Value
     %Extract TTL setting from GUI.
-    obj.Delay_in_sec = app.TTLDelay.Value/1000;
+    obj.Delay_in_sec = app.TTLDelay.Value/1000; % ms -> sec
     obj.Freq = app.TTLFrequency.Value;
     obj.DutyCycle = app.TTLDutyCycle.Value;
-    obj.SinglePulseWidth = 1000 * obj.DutyCycle / obj.Freq; %ms
-    app.SinglePulseWidthLabel.Text = ['Single Pulse Width (ms): '...
+    obj.SinglePulseWidth = 1/obj.Freq * obj.DutyCycle * 1000;% ms
+
+    app.SinglePulseWidthLabel.Text = ['Single Pulse Width (ms): ',...
             num2str(obj.SinglePulseWidth), ' ms'];
 
     switch app.SetDurationDropDown.Value
         case 'Fix Duration'
             %in msec
-            obj.Duration_in_sec = app.TTLDuration.Value/1000;
+            obj.Duration_in_sec = app.TTLDuration.Value/1000; %ms -> sec
             obj.PulseNum = round(obj.Duration_in_sec * obj.Freq);
             app.TTLPulseNum.Value = obj.PulseNum;
 
         case 'Fix Pulse Number'
             %in msec
             obj.PulseNum = app.TTLPulseNum.Value;
-            obj.Duration_in_sec = round(obj.PulseNum / obj.Freq);
-            app.TTLDuration.Value = obj.Duration_in_sec/1000;
+            obj.Duration_in_sec = obj.PulseNum / obj.Freq;
+            app.TTLDuration.Value = obj.Duration_in_sec * 1000;
     end
 
     stim_d = obj.Delay_in_sec + obj.Duration_in_sec;
