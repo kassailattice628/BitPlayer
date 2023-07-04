@@ -25,6 +25,7 @@ while app.loopON
 
     % GUI Button check
     if ~app.loopON
+        % Loop stop
         write(app.d_out, [0, 0, 0, 0])
         break
     end
@@ -37,8 +38,8 @@ while app.loopON
     %%%----- AO for TTL
     if app.TTLSwitch.Value % TTL is ON
         %flush(app.d_out_ao);
-        %preload(app.d_out_ao, 5 * app.recobj.TTL.outputSignal) % 5V ouput
-        %start(app.d_out_ao);
+        preload(app.d_out_ao, 5*app.recobj.TTL.outputSignal) % 5V ouput
+        start(app.d_out_ao);
     end
 
 
@@ -65,11 +66,6 @@ while app.loopON
     
     %Trigger
     write(app.d_out, [1, FVtrig, 1, 0]);
-    if app.TTLSwitch.Value % TTL is ON
-        %flush(app.d_out_ao);
-        write(app.d_out_ao, 5 * app.recobj.TTL.outputSignal) % 5V ouput
-        %start(app.d_out_ao);
-    end
     fprintf('Trig #%d >>>> ', app.recobj.n_in_loop)
     app.recobj.DAQt = [app.recobj.DAQt; toc(t)];
     app.capturing = 1;
