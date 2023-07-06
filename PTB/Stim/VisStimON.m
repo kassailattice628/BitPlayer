@@ -325,8 +325,12 @@ if n_blankloop > app.Blankloop.Value
             % Photosensor
             Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
             % Select image and make texture
+
+            % Define location of images
+            img_dir = fullfile('Images', 'doi_test');
+            img_ext = '.jpg';
             [sobj, imgtex, stimRect] = ...
-                Set_ImagePresentation(sobj, fullfile('Images', 'test'), '.tif');
+                Set_ImagePresentation(sobj, img_dir, img_ext);
             Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect);
 
             % Stim ON (after 200ms delay)

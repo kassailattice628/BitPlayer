@@ -177,7 +177,7 @@ switch value
 
         app.Delay.Enable = 'off';
         
-        app.ISI.Value = 0.2;
+        app.ISI.Value = 4;
         app.sobj.ISI_sec = app.ISI.Value;
 
         app.Size.Value = 20; %20deg
