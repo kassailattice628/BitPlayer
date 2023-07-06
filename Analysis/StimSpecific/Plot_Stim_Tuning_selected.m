@@ -9,7 +9,7 @@ s = app.sobj;
 stim_list = 1:size(im.dFF_stim_average, 2);
 switch s.Pattern
     case {'Uni', 'Fine Mapping'}
-        for roi = im.selectROI
+        for roi = im.selected_ROIs
             Plot_RF_selected(im, s, roi);
         end
         

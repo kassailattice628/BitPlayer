@@ -4,7 +4,10 @@ function Open_load2P(app)
 %
 
 im = app.imgobj;
-im.imgsz = app.ImageSize.Value;
+
+if ~isfield(im, 'imgsz') || isempty(im.imgsz)
+    im.imgsz = [app.ImageSize.Value, app.ImageSize.Value];
+end
 
 if isfield(app.sobj, 'Stim_valiation_type')
     stimval = app.sobj.Stim_valiation_type;
