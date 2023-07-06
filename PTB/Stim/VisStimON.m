@@ -309,22 +309,55 @@ if n_blankloop > app.Blankloop.Value
             %Stim position
             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
-
-            %Set Image (from image list)
-            sobj = SelectImage;
-
+            
             % Delay %
-            [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+            % Prepare blank while delay period
+            Screen('FillRect', sobj.wPtr, sobj.bgcol);
+            [sobj.vbl_1, sobj.onset, sobj.flipend]= Screen('Flip', sobj.wPtr);
 
-            % Present three consecutive stimuli at intervals of 200ms.
-            Prepare_stim_spot(sobj.StimSize_pix);
-            [sobj.vbl_2, sobj.BeamposON, sobj.vbl_3, sobj.BeamposOFF] =...
-                Stim_spot2(sobj, app.StiminfoTextArea);
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            % 
+            % Prepare stimulation (1st)
+            % Indicator for photo sensor at left bottom of the Monitor
+            %
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+            % Photosensor
+            Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
+            % Select image and make texture
 
-%         case 'Mosaic'
-%             %Stim position
-%             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
-%             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
+            % Define location of images
+            img_dir = fullfile('Images', 'doi_test');
+            img_ext = '.jpg';
+            [sobj, imgtex, stimRect] = ...
+                Set_ImagePresentation(sobj, img_dir, img_ext);
+            Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect);
+
+            % Stim ON (after 200ms delay)
+            [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
+                Screen('Flip', sobj.wPtr, sobj.vbl_1 + 0.2);
+            ShowStimInfo(sobj, app.StiminfoTextArea)
+
+            vbl = sobj.vbl_2;
+            for n = 1:2
+                %Prepare blank full screen
+                Screen('FillRect', sobj.wPtr, sobj.bgcol);
+                vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
+
+                %Prepare next stim + photosensor 
+                Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
+                Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect);
+                vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
+            end
+
+            % Off
+            %Prepare blank full screen
+            Screen('FillRect', sobj.wPtr, sobj.bgcol);
+
+            %Flip (Stim OFF)
+            [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
+                Screen('Flip', sobj.wPtr, vbl + 0.2);
+            ResetStimInfo(app.StiminfoTextArea);
 
         case 'Random Dot Motion'
             %Stim center position

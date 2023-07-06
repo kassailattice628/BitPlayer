@@ -6,7 +6,7 @@ function sobj = sobj_ini
 
 %%%%% X-Display setting %%%%%%
 %XOrgConfCreator(Display0 (HDMI), Disoplay1 (DP)
-%XOrgConfSelector -> Logout -> Login
+%XOrgConfSelector -> Log out -> Log in
 %
 % Refresh Rate setting
 %oldsetting = Screen('ConfigureDisplays', 'Scanout', 1, 0, 1920, 1080, 144)
@@ -103,6 +103,8 @@ sobj.FixPos = 41; %Center for 9x9 matrix
 %Moving bar & spot direction
 sobj.MoveDirection = 0; %rightward
 sobj.MoveDirection_i = 1;
+sobj.Stim_valiation_type = 'Fixed';
+
 %Moving speed
 sobj.MoveSpd = 10; %deg/sec
 
@@ -132,9 +134,7 @@ sobj.Div_grid = 5; %deg step
 sobj.Distance = 15; %deg
 
 %Images
-sobj.Img_i = 0; %# image;
-sobj.ImageNum = 256;
-sobj.list_img = 1:sobj.ImageNum;
+sobj.Img_fname = '';
 
 %Mosaic
 sobj.DotDensity = 0.3; % 30%
