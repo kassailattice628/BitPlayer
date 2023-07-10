@@ -21,7 +21,7 @@ imaq.vid.FramesPerTrigger = video_rec_time * imaq.src.FrameRate; %
 imaq.vid.TriggerRepeat = 0;
 delay_ms = app.VideoCaptureDelay.Value; %ms
 delay_frames = round(delay_ms/1000 * imaq.frame_rate);
-imaq.vid.TriggerFrameDelay = delay_frames; %if needed, add GUI
+imaq.vid.TriggerFrameDelay = delay_frames;
 
 
 % Save Mode & Trigger Mode
