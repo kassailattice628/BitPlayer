@@ -130,9 +130,6 @@ if app.saveON
     %flush memory
     stop(app.d_in);
     flush(app.d_in);
-
-%     stop(app.d_out_ao);
-%     flush(app.d_out_ao);
     
     %Rest state
     app.CurrentState = 'DAQstop';
