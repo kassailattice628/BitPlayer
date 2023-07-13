@@ -57,6 +57,31 @@ if n_blankloop > app.Blankloop.Value
             [sobj.vbl_2, sobj.BeamposON, sobj.vbl_3, sobj.BeamposOFF] =...
                 Stim_spot2(sobj, app.StiminfoTextArea);
 
+        case 'Fine Mapping Free'
+            %%% Stim position (Circular Area: Diameter of sobj.Distance)
+            % Randomley sample from the circular area
+            d = Deg2Pix(sobj.Distance, sobj.MonitorDist, sobj.Pixelpitch);
+            xy = rand(1,2)*d;
+
+            %Define center of the subarea (fix pos in DivNum^2 matrix)
+            Pos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+            C = Pos_list(sobj.FixPos, :);
+
+            sobj.StimCenterPos(1) = C(1) + round(xy(1) - d/2);
+            sobj.StimCenterPos(2) = C(2) + round(xy(2) - d/2);
+
+            % Blank -> Stim ON -> Stim OFF %%%%%%%%%%%%%%%%%
+            [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+            
+            Screen('DrawDots', sobj.wPtr,...
+                [sobj.StimCenterPos(1), sobj.StimCenterPos(2)],...
+                sobj.StimSize_pix(1), sobj.stimColor,...
+                [], dot_type);
+
+            [sobj.vbl_2, sobj.BeamposON, sobj.vbl_3, sobj.BeamposOFF] =...
+                Stim_spot2(sobj, app.StiminfoTextArea);
+
+
         case 'Size Random'
             %Stim position
             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
@@ -309,19 +334,19 @@ if n_blankloop > app.Blankloop.Value
             %Stim position
             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
-            
+
             % Delay %
             % Prepare blank while delay period
             Screen('FillRect', sobj.wPtr, sobj.bgcol);
             [sobj.vbl_1, sobj.onset, sobj.flipend]= Screen('Flip', sobj.wPtr);
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            % 
+            %
             % Prepare stimulation (1st)
             % Indicator for photo sensor at left bottom of the Monitor
             %
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            
+
             % Photosensor
             Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
             % Select image and make texture
@@ -344,7 +369,7 @@ if n_blankloop > app.Blankloop.Value
                 Screen('FillRect', sobj.wPtr, sobj.bgcol);
                 vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
 
-                %Prepare next stim + photosensor 
+                %Prepare next stim + photosensor
                 Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
                 Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect);
                 vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
@@ -383,7 +408,7 @@ if n_blankloop > app.Blankloop.Value
             sobj = Sinusoidal_and_Grating(app.Direction.Value,...
                 sobj, app.StiminfoTextArea);
 
-       
+
         case 'Search V1_Fine'
 
             %Stim position
@@ -445,14 +470,14 @@ app.sobj = sobj;
         maxDiameter = round(max(Size) * 1.5);
 
         if flag == 0
-        Rect = CenterRectOnPointd([0, 0, Size(1), Size(2)], ...
-            sobj.StimCenterPos(1), sobj.StimCenterPos(2));
-        
-        % Luminance or color
-        %%%%% add code %%%%%
-        
-        % Prepare Screen
-        Screen(sobj.Shape, sobj.wPtr, sobj.stimColor, Rect, maxDiameter);
+            Rect = CenterRectOnPointd([0, 0, Size(1), Size(2)], ...
+                sobj.StimCenterPos(1), sobj.StimCenterPos(2));
+
+            % Luminance or color
+            %%%%% add code %%%%%
+
+            % Prepare Screen
+            Screen(sobj.Shape, sobj.wPtr, sobj.stimColor, Rect, maxDiameter);
 
         elseif flag == 1
             %Screen('DrawDots', windowPtr, xy [,size] [,color] [,center] [,dot_type][, lenient]);

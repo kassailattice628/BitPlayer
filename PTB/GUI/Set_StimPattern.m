@@ -18,6 +18,11 @@ switch value
         app.GetFinePos.Enable = 'on';
         app.Distance.Enable = 'on';
         app.Divide.Enable = 'on';
+
+    case 'Fine Mapping Free'
+        app.GetFinePos.Enable= 'off';
+        app.Distance.Enable = 'on';
+        app.Divide.Enable = 'off';
         
     case 'Size Random'
         app.Size.Enable = 'off';
