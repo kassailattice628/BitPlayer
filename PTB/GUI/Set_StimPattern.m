@@ -23,6 +23,7 @@ switch value
         app.GetFinePos.Enable= 'off';
         app.Distance.Enable = 'on';
         app.Divide.Enable = 'off';
+        app.sobj.Stim_valiation_type = 'Free';
         
     case 'Size Random'
         app.Size.Enable = 'off';
