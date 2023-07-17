@@ -40,7 +40,11 @@ switch state
     case 'CameraON'
         app.AdujstROIButton.Enable = 'on';
         app.CameraPreviewButton.Enable = 'on';
-        app.CameraSave.Enable = 'on';
+        
+        if app.saveON
+            app.CameraSave.Enable = 'on';
+        end
+
         app.VideoCaptureDelay.Enable = 'on';
         app.VideoCaptureTime.Enable = 'on';
         app.VideoFrameRate.Enable = 'on';
