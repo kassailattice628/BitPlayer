@@ -85,7 +85,14 @@ while app.loopON
     %% Finishing loop
     if app.StandAloneModeButton.Value
         disp('Wait for ITI')
-        pause(app.recobj.interval)
+        tic
+        while toc < app.recobj.interval
+            if ~app.loopON
+                break
+            else
+                pause(0.1);
+            end
+        end
     else
         while ~app.RTS
             % Wait for finishing visual stimuli
