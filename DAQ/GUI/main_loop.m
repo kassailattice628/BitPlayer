@@ -127,6 +127,8 @@ if app.saveON
     app.SAVEONButton.Enable = "on";
     app.SAVEOFFButton.Enable = "off";
 
+    
+
     %flush memory
     stop(app.d_in);
     flush(app.d_in);
