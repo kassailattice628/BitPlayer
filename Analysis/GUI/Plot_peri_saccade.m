@@ -2,10 +2,10 @@ function Plot_peri_saccade(mat1v, mat2v, mat1h, mat2h, t_plot)
 
 %t_plot = -0.1:1/sf:0.1;
 
-mat1v_ = apply_mean(mat1v);
-mat2v_ = apply_mean(mat2v);
-mat1h_ = apply_mean(mat1h);
-mat2h_ = apply_mean(mat2h);
+mat1v_ = apply_mean(mat1v, length(t_plot));
+mat2v_ = apply_mean(mat2v, length(t_plot));
+mat1h_ = apply_mean(mat1h, length(t_plot));
+mat2h_ = apply_mean(mat2h, length(t_plot));
 
 a1 = 0.2;
 a2 = 1;
@@ -49,7 +49,11 @@ end
 
 end
 
-function mat = apply_mean(mat)
+function mat = apply_mean(mat, l)
 
-mat = mat - mean(mat(:, 1:50), 2);
+if ~isempty(mat)
+    mat = mat - mean(mat(:, 1:50), 2);
+else
+    mat = zeros(l,1);
+end
 end

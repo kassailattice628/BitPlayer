@@ -18,7 +18,16 @@ main = app.mainvar;
 trial_stimON = [];
 
 for i_p = 1:size(p,2)
+
     if ~p{i_p}.stim1.Blank
+        if app.RemoveSacTrials.Value && isfield(p{i_p}, 't_saccades')
+            if sum(p{i_p}.t_saccades > p{i_p}.stim1.correct_StimON_timing &...
+                    p{i_p}.t_saccades < p{i_p}.stim1.correct_StimOFF_timing)
+                %Skip trials
+                disp(['Skip trial#:' num2str(i_p)])
+                continue;
+            end
+        end
         trial_stimON = [trial_stimON, i_p];
     end
 end
@@ -32,8 +41,9 @@ roi_negative = [];
 switch s.Pattern
     case {'Moving Bar','Image Presentation'}
         stim = nan(1, n_stimON);
-    case 'Fine Mapping'
-        stim = nan(2, n_stimON);
+    case 'Fine Mapping Free'
+        stim = nan(1, n_stimON);
+        stim_pos = nan(2, n_stimON);
 end
 
 %%
@@ -61,9 +71,10 @@ for i = 1:n_stimON
         case 'Moving Bar'
             stim(i) = p{i_p}.stim1.Movebar_Direction_angle_deg;
 
-        case 'Fine Mapping'
-            stim(1, i) = p{i_p}.stim1.x;
-            stim(2, i) = p{i_p}.stim1.y;
+        case 'Fine Mapping Free'
+            %stim_(i) = 
+            stim_pos(1, i) = p{i_p}.stim1.CenterX_pix;
+            stim_pos(2, i) = p{i_p}.stim1.CenterY_pix;
 
         case 'Image Presentation'
             stim(i) = p{i_p}.stim1.Image_i;
