@@ -25,8 +25,8 @@ PosCenterY = sobj.StimCenterPos(2) - dist/2 * sin(ang_deg);
 
 %Stim cneter in each frame
 for i = 1:flipnum
-    xmove = (i-1) * tf * cos(ang_deg);
-    ymove = (i-1) * tf * sin(ang_deg);
+    xmove = round((i-1) * tf * cos(ang_deg));
+    ymove = round((i-1) * tf * sin(ang_deg));
     spot_pos(i,:) = CenterRectOnPointd([0, 0, sobj.StimSize_pix],...
         round(PosCenterX +xmove), round(PosCenterY + ymove));
 end

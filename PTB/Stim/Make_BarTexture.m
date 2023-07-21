@@ -1,6 +1,6 @@
 function [im_tex, sRect, tex_pos] = Make_BarTexture(dist, flipnum, sobj)
 %Object Transfer Factor (Distance / flip)
-tf = round(dist/flipnum);
+tf = dist/flipnum;
 
 %% Prepare Bar
 
@@ -26,8 +26,8 @@ PosCenterX = sobj.ScrCenterX - (bar_h + bar_w)/2 * cos(-ang_deg);
 PosCenterY = sobj.ScrCenterY - (bar_h + bar_w)/2 * sin(-ang_deg);
 
 for i = 1:flipnum
-    xmove = (i-1) * tf * cos(ang_deg);
-    ymove = -(i-1) * tf * sin(ang_deg);
+    xmove = round((i-1) * tf * cos(ang_deg));
+    ymove = round(-(i-1) * tf * sin(ang_deg));
 
     tex_pos(i, :) =...
         [PosCenterX - bar_w/2 + xmove,...
