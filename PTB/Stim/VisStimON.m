@@ -430,6 +430,45 @@ if n_blankloop > app.Blankloop.Value
             sobj = Sinusoidal_and_Grating(app.Direction.Value,...
                 sobj, app.StiminfoTextArea);
 
+        case 'Decode SC_v1'
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %
+            % Monochromic dot pattern 16*16 or 32*32
+            %
+            % Stim size:    60 deg (850pix, monitor dist:200mm)
+            % Dot size:     1.875 deg for 32*32 tiles
+            %               3.75 deg for 16*16 tiles
+            %
+            % This stim is used for SC Decording with Kamitani Lab.
+            %
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+            %sobj.Checker_RECT = Set_RandChecker(app);
+            % @Set_StimPattern.m
+
+            %Randomize Checker Pattern (1:white; 0:black)
+            sobj.checker_pattern = randi([0,1], [sobj.Div_grid^2, 1]);
+            Checker_COL = repmat(sobj.checker_pattern' * sobj.stimlumi, 3, 1);
+
+
+            % Stim Presentation
+            % Blank %%%%%%%%%%%%%%%%%
+            [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+
+            Screen('FillRect', sobj.wPtr, Checker_COL, sobj.Checker_RECT);
+            %Flip (Stim ON)
+            [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
+                Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
+            ShowStimInfo(sobj, app.StiminfoTextArea);
+
+            %Prepare blank full screen
+            Screen('FillRect', sobj.wPtr, sobj.bgcol);
+
+            %Flip (Stim OFF)
+            [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
+                Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
+            ResetStimInfo(app.StiminfoTextArea);
     end
 
 

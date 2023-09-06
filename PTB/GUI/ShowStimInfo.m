@@ -115,6 +115,13 @@ switch sobj.Pattern
     case 'Mosaic'
         %size, density
 
+    case 'Decode SC_v1'
+        %Decoding SC: random dot n by n
+        text_stim_info{3} = [...
+            'Position: ', num2str(num2str(sobj.FixPos)),...
+            '/(',num2str(sobj.DivNum), 'x',num2str(sobj.DivNum) ')'];
+        text_stim_info{4} = '';%['Size: ', num2str(sobj.StimSize_deg),' deg'];
+
     case 'Mouse Cursor'
         %********
 

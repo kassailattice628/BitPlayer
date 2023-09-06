@@ -52,6 +52,7 @@ ___
 1. Sinusoidal, Shifting Grating, Gabor
 1. Image Presentation (under development)
 1. V1 serach (Coarse & Fine)
+1. Decode SC_v1 (RandomCheckerPattern + some figures)
 1. Mosaic (under development)
 1. 2points, black/white (under development)
 
