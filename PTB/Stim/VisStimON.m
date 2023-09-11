@@ -469,6 +469,53 @@ if n_blankloop > app.Blankloop.Value
             [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
                 Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
             ResetStimInfo(app.StiminfoTextArea);
+
+
+        case 'Decode test_v1'
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %
+            % Test figures 16*16 or 32*32
+            %
+            % Stim size:    60 deg (850pix, monitor dist:200mm)
+            % Dot size:     1.875 deg for 32*32 tiles
+            %               3.75 deg for 16*16 tiles
+            %
+            % 5 simple shapes and 5 font-images.
+            %
+            % This stim is used for SC Decording with Kamitani Lab.
+            %
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+            
+            %sobj.Checker_RECT = Set_RandChecker(app);
+            % @Set_StimPattern.m
+
+            % test images is defined @Load_test_images.m
+
+            [Img_COL, sobj.img_i, sobj.img_shape] = Set_DecodeImage(sobj);
+            Img_COL = reshape(Img_COL, [], 1);
+            Img_COL = repmat(Img_COL' * sobj.stimlumi, 3, 1);
+
+
+            % Stim Presentation
+            % Blank %%%%%%%%%%%%%%%%%
+            [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+
+            Screen('FillRect', sobj.wPtr, Img_COL, sobj.Checker_RECT);
+            %Flip (Stim ON)
+            [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
+                Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
+            ShowStimInfo(sobj, app.StiminfoTextArea);
+
+            %Prepare blank full screen
+            Screen('FillRect', sobj.wPtr, sobj.bgcol);
+
+            %Flip (Stim OFF)
+            [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
+                Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
+            ResetStimInfo(app.StiminfoTextArea);
+
+
     end
 
 

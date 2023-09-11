@@ -70,6 +70,17 @@ switch value
 
         Set_RandChecker(app);
 
+    case 'Decode test_v1'
+        app.Size.Enable = 'off';
+        app.Distance.Value = 60;
+        app.sobj.Distance = app.Distance.Value;
+        app.Divide.Enable = 'on';
+        app.Divide.Value = 32; %or 16?
+        app.sobj.Div_grid = app.Divide.Value;
+        
+        Set_RandChecker(app);
+        Load_test_images(app);
+
     case {'Sinusoidal', 'Shifting Grating', 'Gabor'}
         app.SpatialFreq.Enable = 'on';
         app.SpatialFreq_Label.Enable = 'on';
