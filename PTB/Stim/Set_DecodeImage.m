@@ -29,9 +29,9 @@ elseif img_i == 5
     img_shape = 'X';
 
 elseif img_i == 6
-    img_shape = '6';
-elseif img_i == 7
     img_shape = '28';
+elseif img_i == 7
+    img_shape = '6';
 elseif img_i == 8
     img_shape = 'A';
 elseif img_i == 9
