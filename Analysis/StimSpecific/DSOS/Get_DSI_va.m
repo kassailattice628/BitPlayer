@@ -24,13 +24,14 @@ StimAngles = linspace(0, (2*pi - 2*pi/n_stim), n_stim);
 
 rois = 1 : im.Num_ROIs;
 %%
-for i = rois 
+for i = rois
+
     % mean pkea value;
     y_positive = mean(peak_positive(:,:,i), 'omitnan');
     y_negative = mean(-peak_negative(:,:,i), 'omitnan');
 
-    y_positive(y_positive < 0) = 0;
-    y_negative(y_negative < 0) = 0;
+    y_positive(y_positive < 0) = nan;
+    y_negative(y_negative < 0) = nan;
 
     % vector average for orientation
     [L(i), Ang(i)] = VectorAveraging(y_positive, StimAngles, 'Direction');

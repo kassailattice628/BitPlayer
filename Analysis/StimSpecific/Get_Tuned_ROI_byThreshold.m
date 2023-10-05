@@ -34,7 +34,13 @@ switch s.Pattern
         im.roi_DS_negative = roi_DS_n;
         im.roi_OS_positive = roi_OS_p;
         im.roi_OS_negative = roi_OS_n;
-        im.roi_non_selective = setdiff(im.roi_res, union(roi_DS, roi_OS));
+        im.roi_non_selective_positive = ...
+            setdiff(im.roi_positive, union(im.roi_DS_positive, im.roi_OS_positive));
+        im.roi_non_selective_negative = ...
+            setdiff(im.roi_negative, union(im.roi_positive,...
+            [im.roi_DS, im.roi_OS]));
+        im.roi_non_selective = ...
+            union(im.roi_non_selective_positive, im.roi_non_selective_negative);
 
         %ROI_sorted
         im.roi_sortDS = Sort_ROI_by_DSOS(im, 'DS');
@@ -75,4 +81,7 @@ roi_p = intersect(roi_res, find(L(1,:) >= th));
 roi_n = intersect(roi_res, find(L(2,:) >= th));
 roi = union(roi_p, roi_n);
 
+if size(roi, 1) ~= 1
+    roi = roi';
+end
 end

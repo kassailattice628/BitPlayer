@@ -34,6 +34,9 @@ switch s.Pattern
     case 'Fine Mapping'
         d = 3;
 
+    case {'Decode test_v1', 'Decode rand_v1'}
+        d = 4;
+
     otherwise
         d = 5;
 end

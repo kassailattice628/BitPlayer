@@ -9,21 +9,7 @@ function im = Get_OSI_va(im)
 % BitPlayer version 20230307
 %%%%%
 
-%{
-if isfield(im, 'dFF_peak_each_positive_orientation')
-    %Moving Bar or Shifting Grating
-    peak_positive = im.dFF_peak_each_positive_orientation;
-    peak_negative = im.dFF_peak_each_negative_orientation;
-else
-    peak_positive = im.dFF_peak_each_positive;
-    peak_negative = im.dFF_peak_each_negative;
-end
 
-% number of stim with same orientaion
-n_stim = size(peak_positive, 2);
-
-StimAngles = linspace(-pi/2, (pi/2 - pi/n_stim), n_stim);
-%}
 peak_positive = im.dFF_peak_each_positive;
 peak_negative = im.dFF_peak_each_negative;
 StimAngles = im.stim_directions;
@@ -43,9 +29,8 @@ for i = rois
     y_positive = mean(peak_positive(:,:,i), 'omitnan');
     y_negative = mean(-peak_negative(:,:,i), 'omitnan');
 
-    y_positive(y_positive < 0) = 0;
-    y_negative(y_negative < 0) = 0;
-
+    y_positive(y_positive < 0) = nan;
+    y_negative(y_negative < 0) = nan;
 
     % vector average for orientation
     [L(i), Ang(i)] = VectorAveraging(y_positive, StimAngles, 'Orientation');

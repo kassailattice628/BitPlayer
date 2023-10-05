@@ -44,8 +44,6 @@ switch s.Pattern
             Plot_DSOS(im, s, stim, roi)
         end
 
-    case ''
-
     case 'Static Bar'
         stim = im.stim_orientations;
         for roi = im.selected_ROIs

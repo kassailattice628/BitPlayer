@@ -16,9 +16,13 @@ for i = im.selected_ROIs
         case 'Fine Mapping'
 
             divnum = s.Div_grid;
-
-            
             Plot_on_stim_location(i, im, divnum, app.Zscore.Value);
+
+        case 'Fine Mapping Free'
+
+%         case 'Decode SC_v1'
+% 
+%         case 'Decode test_v1'
 
         otherwise
             Plot_stacked_time_series(i, im, app.Zscore.Value);
@@ -28,7 +32,8 @@ end
 end
 
 %% Sub function for plot selected ROI
-%%
+
+%% PLOT_ON_STIM_LOCATION %%
 function Plot_on_stim_location(i, im, divnum, Z)
 
 Y = im.dFF_stim_average(:,:,i);
@@ -88,8 +93,9 @@ end
 
 end
 
-%%
+%% PLOT_STACKED_TIME_SERIES %%
 function Plot_stacked_time_series(i, im, Z)
+
 Y = im.dFF_stim_average(:,:,i);
 T = (0:size(Y,1)-1)*im.FVsampt;
 

@@ -1,5 +1,6 @@
 function Get_Trial_Averages_for_timecourse(app, varargin)
-%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Get traial averages for each stimulus
 %
 % im.dFF_s_mean :: mean values from dFF_s_each
@@ -9,7 +10,7 @@ function Get_Trial_Averages_for_timecourse(app, varargin)
 % Appdesigner version (191101)
 % BitPlayer version (20230306)
 %
-%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 s = app.sobj;
 im = app.imgobj;
@@ -33,7 +34,7 @@ stim = frame_stimON;
 roi_positive = [];
 roi_negative = [];
 
-threshold = 2;
+threshold = 5;
 
 %% Collect the number(s) for each stimulus parameter.
 
@@ -43,6 +44,11 @@ for i = 1:size(p, 2) % Extract stimulus
     if isfield(p{i}.stim1, 'correct_StimON_timing')
         ON = p{i}.stim1.correct_StimON_timing;
     else
+        continue;
+    end
+
+    % Skip stim after the imaging was already done.
+    if ON > im.FVt(end)
         continue;
     end
     
@@ -86,6 +92,12 @@ for i = 1:size(p, 2) % Extract stimulus
             
             case 'Random Dot Motion'
                 stim(i) = p{i}.stim1.MoveDirection_deg;
+
+            case 'Decode test_v1'
+                stim(i) = p{i}.stim1.Image_i;
+
+            case 'Decode SC_v1'
+                stim(i) = i - s.Blankloop_times;
                 
             otherwise
                 stim(1) = 1;
@@ -226,10 +238,6 @@ disp('Trial average of dFF is generated.')
 if ~isempty(dFF_peak_each_trials)
     dFF_peak_each_trials = Delete_event_for_trial_average(...
         dFF_peak_each_trials);
-
-%     %Check
-%     dFF_peak_each_trials = Delete_event_for_trial_average(...
-%         dFF_peak_each_trials, 1, 1);
 end
 
 %% Update imgobj

@@ -62,7 +62,13 @@ if ~p.stim1.Blank
             t1 = ['Position: ', div 'x', div, '=', pos];
             t2 = ['Image: #', num2str(p.stim1.Image_i)];
 
+        case 'Decode test_v1'
+            t1 = ['Image file:', p.stim1.Image_fname];
+            t2 = '';
 
+        case 'Decode SC_v1'
+            t1 = 'Random Checker';
+            t2 = '';
     end
 
 else
