@@ -62,23 +62,27 @@ switch value
 
     case 'Decode SC_v1'
         app.Size.Enable = 'off';
-        app.Distance.Value = 60;
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 60;%60 deg as default
         app.sobj.Distance = app.Distance.Value;
         app.Divide.Enable = 'on';
         app.Divide.Value = 32; %or 16?
         app.sobj.Div_grid = app.Divide.Value;
 
+        Check_StimeArea_Distance(app);
         Set_RandChecker(app);
 
     case 'Decode test_v1'
         app.Size.Enable = 'off';
-        app.Distance.Value = 60;
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 60;%60 deg as default
         app.sobj.Distance = app.Distance.Value;
         app.Divide.Enable = 'on';
         app.Divide.Value = 32; %or 16?
         app.sobj.Div_grid = app.Divide.Value;
         
-        Set_RandChecker(app);
+        Check_StimeArea_Distance(app);
+        %Set_RandChecker(app);
         Load_test_images(app);
 
     case {'Sinusoidal', 'Shifting Grating', 'Gabor'}
