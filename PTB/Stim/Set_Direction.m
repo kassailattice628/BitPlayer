@@ -40,6 +40,10 @@ switch direction
         sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
         %disp(sobj.MoveDirection)
 
+    case '0 vs 90'
+        sobj.MoveDir_i_in_list = [0, 90];
+        sobj.MoveDirection = sobj.MoveDir_i_in_list(randperm(2, 1));
+
     % for rondom-dot stim
     case '0 vs 180'
         sobj.MoveDir_i_in_list = [0, 180];
