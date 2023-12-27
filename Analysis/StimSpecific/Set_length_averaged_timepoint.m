@@ -9,7 +9,7 @@ function [p_prestim, p_stim, p_poststim] =...
 %%%%%%%%%%
 
 %%
-t_prestim = 2.5; %sec
+t_prestim = 1.5; %sec
 
 p_prestim = ceil(t_prestim/im.FVsampt); %point
 
@@ -37,7 +37,11 @@ switch s.Pattern
     otherwise
         d = 5;
 end
+
+post_sec = min(d, s.ISI_sec);
+
+%%
 p_stim = round(duration/im.FVsampt);
-p_poststim = round(d/ im.FVsampt);
+p_poststim = round(post_sec/im.FVsampt);
 
 end

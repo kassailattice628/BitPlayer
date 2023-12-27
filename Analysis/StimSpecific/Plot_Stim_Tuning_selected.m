@@ -9,9 +9,9 @@ s = app.sobj;
 stim_list = 1:size(im.dFF_stim_average, 2);
 switch s.Pattern
     case {'Uni', 'Fine Mapping'}
-        
-        Plot_RF_selected(app, im.selectROI);
-        
+        for roi = im.selected_ROIs
+            Plot_RF_selected(im, s, roi);
+        end
         
     case 'Size Random'
         %%%%%%%%%%
@@ -41,7 +41,7 @@ switch s.Pattern
         stim = im.stim_directions;
 
         for roi = im.selected_ROIs
-            Plot_DSOS(im, stim, roi)
+            Plot_DSOS(im, s, stim, roi)
         end
 
     case ''

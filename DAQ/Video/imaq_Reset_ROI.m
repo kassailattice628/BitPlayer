@@ -17,6 +17,8 @@ imaq.vid.FramesPerTrigger = 1;
 
 % Change logging mode for temporal image.
 imaq.vid.LoggingMode = 'memory'; % 'disk' or 'memory'
+% imediately acquire single image.
+imaq.vid.TriggerFrameDelay = 0;
 triggerconfig(imaq.vid, 'immediate');
 imaq.vid.triggerRepeat = 0;
 

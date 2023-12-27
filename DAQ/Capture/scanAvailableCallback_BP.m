@@ -41,7 +41,7 @@ end
 %3 addinput(d_in, "Dev2", "ai2", "Voltage") %photo sensor
 %4 addinput(d_in, "Dev2", "ai3", "Voltage") %trigger monitor
 %5 addinput(d_in, "Dev2", "ai4", "Voltage") %pupil size
-%6 addinput(d_in, "Dev2", "ai5", "Voltage") %researve
+%6 addinput(d_in, "Dev2", "ai5", "Voltage") %researve: ex)ECG
 %7 addinput(d_in, "Dev2", "ctr0",  "Position") %rotary encoder
 %8 addinput(d_in, "Dev2", "Port0/Line4", "Digital") %RST monitor
 

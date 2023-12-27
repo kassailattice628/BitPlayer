@@ -27,6 +27,10 @@ switch app.CurrentState
     case 'Saving.Movie'
         app.StateText.Text = 'Saving movie file...';
         app.StateText.FontColor = [0,1,0];
+
+    case 'Loop.End'
+        app.StateText.Text = 'Waiting ITI...';
+        app.StateText.FontColor = [0, 0, 0];
 end
 
 end

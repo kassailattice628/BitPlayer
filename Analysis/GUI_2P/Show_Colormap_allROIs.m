@@ -1,14 +1,15 @@
 function Show_Colormap_allROIs(im)
 %
-% plot all ROIs 
+% Show responses of all ROI and stimulus
 %
 
 
-% Set color range
-a = reshape(im.mat2D, [], 1);
-b = prctile(a, 99.5);
-%c = prctile(a, 0.5);
-clims = [-b, b];
+% % Set color range
+% a = reshape(im.mat2D, [], 1);
+% b = prctile(a, 99.5);
+% %c = prctile(a, 0.5);
+% clims = [-b, b];
+clims = [-4, 15]; % same color range with "Show_selected_
 
 p_data = size(im.dFF_stim_average, 1);
 n_stim = size(im.dFF_stim_average, 2);

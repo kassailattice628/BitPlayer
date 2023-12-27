@@ -78,12 +78,15 @@ for i = 1:size(p, 2) % Extract stimulus
             case 'Static Bar'
                 stim(i) = p{i}.stim1.Bar_Orientation_angle_deg;
                 
-            case 'Images'
-                stim(i) = p{i}.stim1.Image_index;
+            case 'Image Presentation'
+                stim(i) = p{i}.stim1.Image_i;
                 
             case {'Sinusoidal', 'Shifting Grating', 'Gabor'}
                 stim(i) = p{i}.stim1.Grating_Angle_deg;
             
+            case 'Random Dot Motion'
+                stim(i) = p{i}.stim1.MoveDirection_deg;
+                
             otherwise
                 stim(1) = 1;
         end

@@ -52,12 +52,14 @@ switch s.Pattern
         for roi = 1:im.Num_ROIs
             % 5% shuffled DSI < DSI
             if sum(P_DS(:, 1, roi) < P_DS_shuffle(:, 1, roi))/size(P_DS, 1)...
-                    < 0.05
+                    < 0.05 &&...
+                    ~ismember(roi, im.roi_nores)
                 roi_DS = [roi_DS, roi];
             end
             
             if sum(P_OS(:, 1, roi) < P_OS_shuffle(:, 1, roi))/size(P_OS, 1)...
-                    < 0.05
+                    < 0.05 &&...
+                    ~ismember(roi, im.roi_nores)
                 roi_OS = [roi_OS, roi];
             end
         end

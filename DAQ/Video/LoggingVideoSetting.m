@@ -11,7 +11,7 @@ logvid = VideoWriter(movie_fname, "Motion JPEG AVI");
 %logvid = VideoWriter(movie_fname, 'Uncompressed AVI');
 
 logvid.FrameRate = imaq.src.FrameRate; %500Hz
-logvid.Quality = 100; %100% quality
+logvid.Quality = 75; %100% quality
 
 imaq.vid.DiskLogger = logvid;
 
