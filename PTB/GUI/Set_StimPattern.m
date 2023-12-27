@@ -275,7 +275,9 @@ app.Coherence_Mode.Enable = 'off';
 
 app.Direction.Items =...
     {'0', '45', '90', '135', '180', '225', '270', '315',...
-    'Ord12', 'Rand12', 'Rand16', 'Free', 'Ord12+jump', 'Ord16+jump', '0 vs 90'};
+    'Rand8', 'Ord12', 'Rand12', 'Rand16',...
+    'Free', 'Ord12+jump', 'Ord16+jump', '0 vs 90'};
+
 app.Direction.Value = app.Direction.Items(10);
 
 app.ShapeDropDown.Value = 'Circle';

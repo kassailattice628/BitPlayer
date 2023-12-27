@@ -21,7 +21,7 @@ end
 sobj.Stim_valiation_type = 'Fixed';
 
 switch direction
-    case {'Rand12', 'Rand16', 'Ord12', 'Ord16'}
+    case {'Rand12', 'Rand16', 'Ord12', 'Ord16', 'Rand8'}
         [dir_list, list_size] = make_list(n_directions);
         sobj.MoveDir_i_in_list = Get_RandomDirection(i, list_size, randomize);
         sobj.MoveDirection = dir_list(sobj.MoveDir_i_in_list);
