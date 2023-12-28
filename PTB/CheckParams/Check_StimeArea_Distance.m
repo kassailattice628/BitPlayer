@@ -1,8 +1,7 @@
 function Check_StimeArea_Distance(app)
 %
 % When DecodeSC(s) are selected,
-% Check stim size;
-%
+% Check and Set stim size;
 
 sobj = app.sobj;
 
@@ -12,6 +11,7 @@ sobj.Distance = app.Distance.Value;
 sobj.Div_grid = app.Divide.Value;
 
 
+%%
 % Define stim area (sobj.Distance:60 deg -> variable)
 Area_deg = [0, 0, sobj.Distance, sobj.Distance];
 Area_pix = Deg2Pix(Area_deg, sobj.MonitorDist, sobj.Pixelpitch);
@@ -70,5 +70,8 @@ end
 %%
 
 app.sobj = sobj;
+Set_RandChecker(app);
+Load_test_images(app);
+
 end
 
