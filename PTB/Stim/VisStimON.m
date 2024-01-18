@@ -57,6 +57,31 @@ if n_blankloop > app.Blankloop.Value
             [sobj.vbl_2, sobj.BeamposON, sobj.vbl_3, sobj.BeamposOFF] =...
                 Stim_spot2(sobj, app.StiminfoTextArea);
 
+        case 'Fine Mapping Free'
+            %%% Stim position (Circular Area: Diameter of sobj.Distance)
+            % Randomley sample from the circular area
+            d = Deg2Pix(sobj.Distance, sobj.MonitorDist, sobj.Pixelpitch);
+            xy = rand(1,2)*d;
+
+            %Define center of the subarea (fix pos in DivNum^2 matrix)
+            Pos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+            C = Pos_list(sobj.FixPos, :);
+
+            sobj.StimCenterPos(1) = C(1) + round(xy(1) - d/2);
+            sobj.StimCenterPos(2) = C(2) + round(xy(2) - d/2);
+
+            % Blank -> Stim ON -> Stim OFF %%%%%%%%%%%%%%%%%
+            [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+            
+            Screen('DrawDots', sobj.wPtr,...
+                [sobj.StimCenterPos(1), sobj.StimCenterPos(2)],...
+                sobj.StimSize_pix(1), sobj.stimColor,...
+                [], dot_type);
+
+            [sobj.vbl_2, sobj.BeamposON, sobj.vbl_3, sobj.BeamposOFF] =...
+                Stim_spot2(sobj, app.StiminfoTextArea);
+
+
         case 'Size Random'
             %Stim position
             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
@@ -309,19 +334,19 @@ if n_blankloop > app.Blankloop.Value
             %Stim position
             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
             sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
-            
+
             % Delay %
             % Prepare blank while delay period
             Screen('FillRect', sobj.wPtr, sobj.bgcol);
             [sobj.vbl_1, sobj.onset, sobj.flipend]= Screen('Flip', sobj.wPtr);
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            % 
+            %
             % Prepare stimulation (1st)
             % Indicator for photo sensor at left bottom of the Monitor
             %
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            
+
             % Photosensor
             Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
             % Select image and make texture
@@ -344,7 +369,7 @@ if n_blankloop > app.Blankloop.Value
                 Screen('FillRect', sobj.wPtr, sobj.bgcol);
                 vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
 
-                %Prepare next stim + photosensor 
+                %Prepare next stim + photosensor
                 Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
                 Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect);
                 vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
@@ -383,7 +408,7 @@ if n_blankloop > app.Blankloop.Value
             sobj = Sinusoidal_and_Grating(app.Direction.Value,...
                 sobj, app.StiminfoTextArea);
 
-       
+
         case 'Search V1_Fine'
 
             %Stim position
@@ -404,6 +429,92 @@ if n_blankloop > app.Blankloop.Value
             % Stim ON
             sobj = Sinusoidal_and_Grating(app.Direction.Value,...
                 sobj, app.StiminfoTextArea);
+
+        case 'Decode SC_v1'
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %
+            % Monochromic dot pattern 16*16 or 32*32
+            %
+            % Stim size:    60 deg (850pix, monitor dist:200mm)
+            % Dot size:     1.875 deg for 32*32 tiles
+            %               3.75 deg for 16*16 tiles
+            %
+            % This stim is used for SC Decording with Kamitani Lab.
+            %
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+            %sobj.Checker_RECT = Set_RandChecker(app);
+            % @Set_StimPattern.m
+
+            %Randomize Checker Pattern (1:white; 0:black)
+            sobj.checker_pattern = randi([0,1], [sobj.Div_grid^2, 1]);
+            Checker_COL = repmat(sobj.checker_pattern' * sobj.stimlumi, 3, 1);
+
+
+            % Stim Presentation
+            % Blank %%%%%%%%%%%%%%%%%
+            [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+
+            Screen('FillRect', sobj.wPtr, Checker_COL, sobj.Checker_RECT);
+            %Flip (Stim ON)
+            [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
+                Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
+            ShowStimInfo(sobj, app.StiminfoTextArea);
+
+            %Prepare blank full screen
+            Screen('FillRect', sobj.wPtr, sobj.bgcol);
+
+            %Flip (Stim OFF)
+            [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
+                Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
+            ResetStimInfo(app.StiminfoTextArea);
+
+
+        case 'Decode test_v1'
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %
+            % Test figures 16*16 or 32*32
+            %
+            % Stim size:    60 deg (850pix, monitor dist:200mm)
+            % Dot size:     1.875 deg for 32*32 tiles
+            %               3.75 deg for 16*16 tiles
+            %
+            % 5 simple shapes and 5 font-images.
+            %
+            % This stim is used for SC Decording with Kamitani Lab.
+            %
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+            
+            %sobj.Checker_RECT = Set_RandChecker(app);
+            % @Set_StimPattern.m
+
+            % test images is defined @Load_test_images.m
+
+            [Img_COL, sobj.img_i, sobj.img_shape] = Set_DecodeImage(sobj);
+            Img_COL = reshape(Img_COL, [], 1);
+            Img_COL = repmat(Img_COL' * sobj.stimlumi, 3, 1);
+
+
+            % Stim Presentation
+            % Blank %%%%%%%%%%%%%%%%%
+            [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+
+            Screen('FillRect', sobj.wPtr, Img_COL, sobj.Checker_RECT);
+            %Flip (Stim ON)
+            [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
+                Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
+            ShowStimInfo(sobj, app.StiminfoTextArea);
+
+            %Prepare blank full screen
+            Screen('FillRect', sobj.wPtr, sobj.bgcol);
+
+            %Flip (Stim OFF)
+            [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
+                Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
+            ResetStimInfo(app.StiminfoTextArea);
+
 
     end
 
@@ -445,14 +556,14 @@ app.sobj = sobj;
         maxDiameter = round(max(Size) * 1.5);
 
         if flag == 0
-        Rect = CenterRectOnPointd([0, 0, Size(1), Size(2)], ...
-            sobj.StimCenterPos(1), sobj.StimCenterPos(2));
-        
-        % Luminance or color
-        %%%%% add code %%%%%
-        
-        % Prepare Screen
-        Screen(sobj.Shape, sobj.wPtr, sobj.stimColor, Rect, maxDiameter);
+            Rect = CenterRectOnPointd([0, 0, Size(1), Size(2)], ...
+                sobj.StimCenterPos(1), sobj.StimCenterPos(2));
+
+            % Luminance or color
+            %%%%% add code %%%%%
+
+            % Prepare Screen
+            Screen(sobj.Shape, sobj.wPtr, sobj.stimColor, Rect, maxDiameter);
 
         elseif flag == 1
             %Screen('DrawDots', windowPtr, xy [,size] [,color] [,center] [,dot_type][, lenient]);

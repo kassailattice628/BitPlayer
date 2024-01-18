@@ -12,7 +12,6 @@ switch s.Pattern
         flag_gabor = 1;
         flag_sin = 0;
 
-
     otherwise
         flag_gabor = 0;
         flag_sin = 0;

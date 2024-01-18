@@ -7,6 +7,7 @@ if contains(sobj.Pattern, {'Uni', 'Size Random',...
     div = sobj.DivNum;
 elseif contains(sobj.Pattern, {'Fine Mapping', 'Search V1_Fine'})
     div = sobj.Div_grid;
+
 end
 
 i = sobj.n_in_loop - sobj.Blankloop_times;
