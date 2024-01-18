@@ -51,7 +51,7 @@ for i = rois
     if length(y_positive) ~= length(StimAngles)
         disp(i)
     end
-    % vector average for orientation
+    % vector average for direction
     [L(i), Ang(i)] = ...
         VectorAveraging(y_positive, StimAngles, 'Direction');
     [L_nega(i), Ang_nega(i)] = ...

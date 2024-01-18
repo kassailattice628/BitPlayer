@@ -7,7 +7,10 @@ function DAQ_ini(app)
 daqreset;
 d_in = daq('ni');
 d_in.Rate = app.recobj.sampf;
+
 d_out_ao = daq('ni');
+d_out_ao.Rate = app.recobj.sampf;
+
 d_out = daq('ni');
 %d_in.ScansAvailableFcnCount = app.recobj.recp_live;
 %d_in.ScansAvailableFcnCount is 10 times/sec in default.
@@ -34,9 +37,6 @@ d_in.Channels(1).Range = [-5, 5];
 
 %% Output Channel Setting
 
-%Add analong output channels
-addoutput(d_out_ao, "Dev1", "ao0", "Voltage") 
-
 %DO for TTL trigger for hardware
 %%% TTL Condition %%%
 % Port0/Line0: DAQ Start (L -> H)
@@ -44,6 +44,11 @@ addoutput(d_out_ao, "Dev1", "ao0", "Voltage")
 % Port0/Line2: PTB Start (H -> L)
 % Port0/Line3: researve
 addoutput(d_out, "Dev1", "Port0/Line0:3", "Digital")
+
+%Add analong output channels
+addoutput(d_out_ao, "Dev1", "ao0", "Voltage") 
+addtrigger(d_out_ao, "Digital", "StartTrigger", "External", "Dev1/PFI0")
+
 
 %% Reset trigger
 write(d_out, [0,0,0,0]);

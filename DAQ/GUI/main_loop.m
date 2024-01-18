@@ -25,18 +25,20 @@ while app.loopON
 
     % GUI Button check
     if ~app.loopON
+        % Loop stop
         write(app.d_out, [0, 0, 0, 0])
         break
     end
 
-    %% Prepare
-    % Video setting
+    %%%----- Video setting
     if app.CameraSave.Value % When CameraSave is ON
         app.imaq = LoggingVideoSetting(app.imaq, app.recobj.n_in_loop);
     end
-    % AO for TTL
+
+    %%%----- AO for TTL
     if app.TTLSwitch.Value % TTL is ON
-        preload(app.d_out_ao, 5 * app.recobj.TTL.outputSignal) % 5V ouput
+        %flush(app.d_out_ao);
+        preload(app.d_out_ao, 5*app.recobj.TTL.outputSignal) % 5V ouput
         start(app.d_out_ao);
     end
 
@@ -61,6 +63,7 @@ while app.loopON
         FVtrig = 0;
         %write(app.d_out, [1, 0, 1, 0]);
     end
+    
     %Trigger
     write(app.d_out, [1, FVtrig, 1, 0]);
     fprintf('Trig #%d >>>> ', app.recobj.n_in_loop)
@@ -82,7 +85,25 @@ while app.loopON
     %% Finishing loop
     if app.StandAloneModeButton.Value
         disp('Wait for ITI')
-        pause(app.recobj.interval)
+        
+        t_ITI = tic;
+        t0 = toc(t_ITI);
+        n_check = 1;
+        while toc(t_ITI) < app.recobj.interval
+            if ~app.loopON
+                break
+            else
+                pause(0.1);
+            end
+
+          
+            if toc(t_ITI) - t0 > 10
+                disp(strcat(...
+                    'Waiting ITI...', num2str(10*n_check), 's'));
+                t0 = toc(t_ITI);
+                n_check = n_check + 1;
+            end
+        end
     else
         while ~app.RTS
             % Wait for finishing visual stimuli
@@ -92,6 +113,8 @@ while app.loopON
             pause(0.1)
         end
     end
+
+    
     app.CurrentState = 'Aqcuisition.Buffering';
     app.recobj.n_in_loop = app.recobj.n_in_loop + 1;
 
@@ -122,9 +145,12 @@ if app.saveON
     app.SAVEONButton.Enable = "on";
     app.SAVEOFFButton.Enable = "off";
 
+    
+
     %flush memory
     stop(app.d_in);
     flush(app.d_in);
+    
     %Rest state
     app.CurrentState = 'DAQstop';
     app.CaptureData = [];

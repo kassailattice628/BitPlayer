@@ -14,7 +14,7 @@ switch s.Pattern
         roi_ds = im.roi_DS_positive;
         roi_os = im.roi_OS_positive;
 
-        %
+        %%%%%%%%%% Orientation Selectivity %%%%%%%%%%
         figure
         subplot(2, 3, 1)
         histo_plot(im.L_OS(roi_os), 'L_OS');
@@ -22,13 +22,12 @@ switch s.Pattern
         subplot(2, 3, 2)
         histo_plot(im.Ang_OS(roi_os), 'Ang_OS');
 
-
         subplot(2, 3, 3)
         plot(im.Ang_OS(roi_os), im.L_OS(roi_os), 'bo')
         title('Pref Orientation vs OSI')
         xlim([-pi/2, pi/2])
 
-        %%%%%%%%%%
+        %%%%%%%%%% Direction Selectivity %%%%%%%%%%
         subplot(2, 3, 4)
         histo_plot(im.L_DS(roi_ds), 'L_DS');
 

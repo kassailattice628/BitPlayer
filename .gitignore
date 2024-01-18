@@ -1,6 +1,7 @@
 #gitignore
 
 .DS_Store
+
 #matlab tempfile
 *.asv
 
@@ -9,3 +10,5 @@
 *.pyc
 __pycache__/
 
+#PTB images, temporary
+PTB/Images/

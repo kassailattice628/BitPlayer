@@ -10,13 +10,15 @@
 %
 %%%%%%%%%%%
 
-fname = '/home/lattice/Share/s2p_working/20230414daq/1403/daq_2_.mat';
+fname = '/home/lattice/Share/s2p_working/20230716daq/1440/daq_4_.mat';
 load(fname)
 
 %Edit here
-%sobj.Stim_valiation_type = 'Free';
+
+%sobj.ISI_sec = '4';
+sobj.Stim_valiation_type = 'Free'; % 'Free' or 'Fixed'
 %mainvar = rmfield(mainvar, 'PhotoSensorloaded');
-mainvar.PhotoSensorloaded = true;
+%mainvar.PhotoSensorloaded = true;
 
 %SaveData(:,3,:) =  SaveData(:,3,:)*1000;
 
