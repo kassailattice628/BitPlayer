@@ -31,7 +31,9 @@ for i = im.selected_ROIs
 end
 end
 
-%% Sub function for plot selected ROI
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Sub function for plot selected ROI  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% PLOT_ON_STIM_LOCATION %%
 function Plot_on_stim_location(i, im, divnum, Z)
@@ -113,6 +115,8 @@ tiledlayout(2,2);
 nexttile([2,1])
 hold on
 for i2 = 1:size(Y,2)
+
+    
     Y(:,i2) = Y(:,i2) + (i2-1)*2*im.SD(:,i);
     plot(T, Y(:,i2), 'b-')
 end

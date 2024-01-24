@@ -56,14 +56,6 @@ switch s.Pattern
 
     case 'Size Random'
         map_size;
-        
-
-
-        
-
-        
-
-        
 
     otherwise
 end
