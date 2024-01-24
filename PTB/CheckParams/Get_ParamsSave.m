@@ -15,7 +15,12 @@ if ~Blank
 
     %%% Center Position %%%
     switch sobj.Pattern
-        case {'Moving Bar'}
+        case {'Moving Bar', 'Decode SC_v1', 'Decode test_v1'}
+
+        case 'Fine Mapping Free'
+            p.stim1.CenterX_pix = sobj.StimCenterPos(1);
+            p.stim1.CenterY_pix = sobj.StimCenterPos(2);
+
         otherwise
             p.stim1.Center_position = sobj.index_center_in_mat;
             p.stim1.CenterX_pix = sobj.StimCenterPos(1);
@@ -93,6 +98,18 @@ if ~Blank
             p.stim1.Coherence = sobj.CoherenceRDM;
             p.stim1.PatchSize_deg = sobj.Distance;
             p.stim1.DotSize_deg = sobj.dot_RDM_deg;
+
+        case 'Decode SC_v1'
+            % Random Checkker pattern for "Decoding"
+            p.stim1.Size_deg = sobj.Distance; % Fixed size
+            p.stim1.Checker_pattern = sobj.checker_pattern;
+
+        case 'Decode test_v1'
+
+            % 5 figure, and 5 characters
+            p.stim1.Size_deg = sobj.Distance; % Fixed size
+            p.stim1.Image_i = sobj.img_i;
+            p.stim1.Image_fname = sobj.img_shape;
 
     end
 end

@@ -1,9 +1,9 @@
 function Set_StimPattern(app)
 
-EnableOffAll(app);
+ResetAll(app);
 
 value = app.PatternDropDown.Value;
-
+app.sobj.Stim_valiation_type = 'Fixed';
 switch value
     case {'Uni','Black & White'}
         
@@ -18,6 +18,12 @@ switch value
         app.GetFinePos.Enable = 'on';
         app.Distance.Enable = 'on';
         app.Divide.Enable = 'on';
+
+    case 'Fine Mapping Free'
+        app.GetFinePos.Enable= 'off';
+        app.Distance.Enable = 'on';
+        app.Divide.Enable = 'off';
+        app.sobj.Stim_valiation_type = 'Free';
         
     case 'Size Random'
         app.Size.Enable = 'off';
@@ -41,10 +47,10 @@ switch value
         app.Direction_Label.Enable = 'on';
         app.MoveSpd.Enable = 'on';
         app.MoveSpd_Label.Enable = 'on';
-        
+
         app.Distance.Enable = 'on';
         app.DurationMoveStim_Label.Enable = 'on';
-        
+
     case 'Static Bar'
         app.ShapeDropDown.Enable = 'off';
         app.BarOrientation.Enable = 'on';
@@ -53,10 +59,32 @@ switch value
     case 'Mosaic'
         app.DotDensity.Enable = 'on';
         app.DotDensity_Label.Enable = 'on';
+
+    case 'Decode SC_v1'
+        app.Size.Enable = 'off';
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 60;%60 deg as default
+        app.sobj.Distance = app.Distance.Value;
+        app.Divide.Enable = 'on';
+        app.Divide.Value = 32; %or 16?
+        app.sobj.Div_grid = app.Divide.Value;
+
+        Check_StimeArea_Distance(app);
+        Set_RandChecker(app);
+
+    case 'Decode test_v1'
+        app.Size.Enable = 'off';
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 60;%60 deg as default
+        app.sobj.Distance = app.Distance.Value;
+        app.Divide.Enable = 'on';
+        app.Divide.Value = 32; %or 16?
+        app.sobj.Div_grid = app.Divide.Value;
         
-    case 'Images'
-        app.NumImages.Enable = 'on';
-        
+        Check_StimeArea_Distance(app);
+        %Set_RandChecker(app);
+        Load_test_images(app);
+
     case {'Sinusoidal', 'Shifting Grating', 'Gabor'}
         app.SpatialFreq.Enable = 'on';
         app.SpatialFreq_Label.Enable = 'on';
@@ -101,7 +129,7 @@ switch value
         app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
 
     case 'Search V1_Coarse'
-        % reffered from Yoshida & Ohki 2019 NatCommun
+        % Yoshida & Ohki 2019 NatCommun
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
         app.SpatialFreq.Enable = 'on';
@@ -113,12 +141,7 @@ switch value
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
         app.Size.Value = 40; %50deg
-        stimsz = round(ones(1,2) *...
-            Deg2Pix(app.Size.Value, app.sobj.MonitorDist, app.sobj.Pixelpitch));
-        app.sobj.StimSize_pix = stimsz;
-%         app.sobj.Bar_width_pix = stimsz(1);
-        app.sobj.StimSize_deg = app.Size.Value;
-%         app.sobj.Bar_width = app.Size.Value;
+
 
         app.MonitorDiv.Value = 4;
         app.sobj.DivNum = app.MonitorDiv.Value;
@@ -141,7 +164,7 @@ switch value
 
 
     case 'Search V1_Fine'
-        % reffered from Yoshida & Ohki 2019 NatCommun
+        % Yoshida & Ohki 2019 NatCommun
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
         app.SpatialFreq.Enable = 'on';
@@ -175,26 +198,20 @@ switch value
         app.sobj.Div_grid = app.Divide.Value;
 
         app.Size.Value = 20; %20deg
-        stimsz = round(ones(1,2) *...
-            Deg2Pix(app.Size.Value, app.sobj.MonitorDist, app.sobj.Pixelpitch));
-        app.sobj.StimSize_pix = stimsz;
-%         app.sobj.Bar_width_pix = stimsz(1);
-        app.sobj.StimSize_deg = app.Size.Value;
-%         app.sobj.Bar_width = app.Size.Value;
 
         app.ShapeDropDown.Value = 'Square';
         app.sobj.Shape = 'FillRect';
 
     case 'Image Presentation'
         % reffered from Yoshida & Ohki 2019 NatCommun
+        app.NumImages.Enable = 'off';
+
+        app.Delay.Enable = 'off';
+        
+        app.ISI.Value = 4;
+        app.sobj.ISI_sec = app.ISI.Value;
 
         app.Size.Value = 20; %20deg
-        stimsz = round(ones(1,2) *...
-            Deg2Pix(app.Size.Value, app.sobj.MonitorDist, app.sobj.Pixelpitch));
-        app.sobj.StimSize_pix = stimsz;
-        app.sobj.Bar_width_pix = stimsz(1);
-        app.sobj.StimSize_deg = app.Size.Value;
-        app.sobj.Bar_width = app.Size.Value;
 
         app.ShapeDropDown.Value = 'Square';
         app.sobj.Shape = 'FillRect';
@@ -203,10 +220,15 @@ end
 end
 
 %% %%%%
-function EnableOffAll(app)
+function ResetAll(app)
 %
 % All off other than Size, MonitorDiv, Fixed Pos
 %
+app.NumImages.Enable = 'on';
+app.Duration.Enable = 'on';
+app.Delay.Enable = 'on';
+app.ISI.Enable = 'on';
+
 app.DurationMoveStim_Label.Enable = 'off';
 
 app.PositionOrderDropDown.Enable = 'on';
@@ -253,7 +275,9 @@ app.Coherence_Mode.Enable = 'off';
 
 app.Direction.Items =...
     {'0', '45', '90', '135', '180', '225', '270', '315',...
-    'Ord12', 'Rand12', 'Rand16', 'Free', 'Ord12+jump', 'Ord16+jump'};
+    'Rand8', 'Ord12', 'Rand12', 'Rand16',...
+    'Free', 'Ord12+jump', 'Ord16+jump', '0 vs 90'};
+
 app.Direction.Value = app.Direction.Items(10);
 
 app.ShapeDropDown.Value = 'Circle';

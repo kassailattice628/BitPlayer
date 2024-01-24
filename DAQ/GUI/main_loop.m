@@ -85,12 +85,23 @@ while app.loopON
     %% Finishing loop
     if app.StandAloneModeButton.Value
         disp('Wait for ITI')
-        tic
-        while toc < app.recobj.interval
+        
+        t_ITI = tic;
+        t0 = toc(t_ITI);
+        n_check = 1;
+        while toc(t_ITI) < app.recobj.interval
             if ~app.loopON
                 break
             else
                 pause(0.1);
+            end
+
+          
+            if toc(t_ITI) - t0 > 10
+                disp(strcat(...
+                    'Waiting ITI...', num2str(10*n_check), 's'));
+                t0 = toc(t_ITI);
+                n_check = n_check + 1;
             end
         end
     else
