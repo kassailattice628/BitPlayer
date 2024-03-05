@@ -112,7 +112,7 @@ switch value
         Set_RandChecker(app);
 
     case 'Decode test_v2'
-        app.Size.Enable = 'off';
+        app.Size.Enable = 'on';
         app.Distance.Enable = 'on';
         app.Distance.Value = 40;
         app.sobj.Distance = app.Distance.Value;

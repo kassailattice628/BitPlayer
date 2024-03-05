@@ -7,7 +7,7 @@ function [img_col, img_i, img_shape] = Set_DecodeImage(s)
 
 %%
 % loop #
-i = s.n_in_loop - s.Blankloop_times;
+i = s.n_in_loop - s.Blankloop_times - 8;
 
 % image data (matrix)
 % Images is defined @Load_test_imagem
