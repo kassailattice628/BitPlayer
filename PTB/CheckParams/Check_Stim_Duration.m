@@ -6,7 +6,8 @@ function Check_Stim_Duration(app)
 pattern = app.PatternDropDown.Value;
 
 switch pattern
-    case {'Moving Bar', 'Moving Spot', 'Looming'}    
+    case {'Moving Bar', 'Moving Spot', 'Looming'}
+
         [distance, duration] = Set_MovingDuration(app.sobj);
 
         app.sobj.MovingDuration = duration;
@@ -23,6 +24,21 @@ switch pattern
 
         blank_duration = (app.sobj.MovingDuration + app.sobj.ISI_sec)*...
             app.sobj.Blankloop_times;
+
+    case {'Decode SC_v2', 'Decode test_v2'}
+          
+        [distance, duration] = Set_MovingDuration(app.sobj);
+        app.sobj.MovingDuration = duration;
+        app.sobj.MovingDistance = distance;
+        %Update GUI
+        app.DurationMoveStim_Label.Text = ...
+            ['Duration in Moving Stim: ' num2str(duration, 3), ' sec'];
+
+        app.DurationMoveStim_Label.Enable = 'on';
+
+        blank_duration = (app.sobj.MovingDuration + app.sobj.ISI_sec)*...
+            app.sobj.Blankloop_times;
+
     
     case 'Image Presentation'
         app.DurationMoveStim_Label.Enable = 'off';

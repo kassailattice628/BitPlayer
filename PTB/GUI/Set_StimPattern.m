@@ -36,8 +36,7 @@ switch value
         app.MoveSpd.Enable = 'on';
         app.MoveSpd_Label.Enable = 'on';
         app.DurationMoveStim_Label.Enable = 'on';
-        app.MoveSpd.Items = {'5', '10', '20', '40'};
-        app.MoveSpd.Value = app.MoveSpd.Items(2);
+
         app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
         app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
         Check_Stim_Duration(app);
@@ -59,7 +58,7 @@ switch value
     case 'Mosaic'
         app.DotDensity.Enable = 'on';
         app.DotDensity_Label.Enable = 'on';
-
+%{
     case 'Decode SC_v1'
         app.Size.Enable = 'off';
         app.Distance.Enable = 'on';
@@ -83,6 +82,50 @@ switch value
         
         Check_StimeArea_Distance(app);
         %Set_RandChecker(app);
+        Load_test_images(app);
+%}
+
+    case 'Decode SC_v2'
+        app.Size.Enable = 'on';
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 40;
+        app.sobj.Distance = app.Distance.Value;
+        app.Divide.Enable = 'on';
+        app.Divide.Value = 32; %or 16?
+        app.sobj.Div_grid = app.Divide.Value;
+
+        app.DurationMoveStim_Label.Enable = 'on';
+        app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
+        app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
+        Check_Stim_Duration(app);
+
+
+        app.Direction.Value = app.Direction.Items(9);
+
+        app.Direction.Enable = 'on';
+        app.Direction_Label.Enable = 'on';
+        app.MoveSpd.Enable = 'on';
+        app.MoveSpd_Label.Enable = 'on';
+        app.DurationMoveStim_Label.Enable = 'on';
+
+        Check_StimeArea_Distance(app);
+        Set_RandChecker(app);
+
+    case 'Decode test_v2'
+        app.Size.Enable = 'off';
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 40;
+        app.sobj.Distance = app.Distance.Value;
+        app.Divide.Enable = 'on';
+        app.Divide.Value = 32; %or 16?
+        app.sobj.Div_grid = app.Divide.Value;
+
+        app.DurationMoveStim_Label.Enable = 'on';
+        app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
+        app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
+        Check_Stim_Duration(app);
+        
+        Check_StimeArea_Distance(app);
         Load_test_images(app);
 
     case {'Sinusoidal', 'Shifting Grating', 'Gabor'}
@@ -278,7 +321,10 @@ app.Direction.Items =...
     'Rand8', 'Ord12', 'Rand12', 'Rand16',...
     'Free', 'Ord12+jump', 'Ord16+jump', '0 vs 90'};
 
-app.Direction.Value = app.Direction.Items(10);
+app.Direction.Value = app.Direction.Items(11);
+
+app.MoveSpd.Items = {'5', '10', '20', '40'};
+app.MoveSpd.Value = app.MoveSpd.Items(2);
 
 app.ShapeDropDown.Value = 'Circle';
 app.sobj.Shape = 'FillOval';

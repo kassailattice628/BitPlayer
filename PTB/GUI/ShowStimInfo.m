@@ -1,4 +1,4 @@
-function ShowStimInfo(sobj, gui)
+function ShowStimInfo(sobj, gui, blank)
 %Displaying stimulus information (and timing) in the GUI.
 
 % Common: trial #
@@ -127,6 +127,26 @@ switch sobj.Pattern
             'Position: ', num2str(num2str(sobj.FixPos)),...
             '/(',num2str(sobj.DivNum), 'x',num2str(sobj.DivNum) ')'];
         text_stim_info{4} = sobj.img_shape;
+
+    case 'Decode SC_v2'
+        if sobj.n_in_loop < blank + 8
+
+            %size(width), moving direction, moving speed
+            text_stim_info{3} = [...
+                'Direction: ', num2str(sobj.MoveDirection),' deg'];
+            text_stim_info{4} = [...
+                'Speed: ', num2str(sobj.MoveSpd), ' deg/sec'];
+            text_stim_info{5} = ['Width: ', num2str(sobj.StimSize_deg),' deg'];
+        else
+
+            %Decoding SC: random dot n by n
+            text_stim_info{3} = [...
+                'Position: ', num2str(num2str(sobj.FixPos)),...
+                '/(',num2str(sobj.DivNum), 'x',num2str(sobj.DivNum) ')'];
+            text_stim_info{4} = '';
+        end
+
+    case 'Decode test_v2'
 
     case 'Mouse Cursor'
         %********
