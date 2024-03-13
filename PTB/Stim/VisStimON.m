@@ -273,6 +273,11 @@ if n_blankloop > app.Blankloop.Value
 
 
         case 'Gabor'
+            %
+            % Gabor contrast is not correct
+            % need to be fixed.
+            %
+
             %sigma value in the exponential function;
             %sc = sobj.StimSize_pix(1) * 0.16; %what is 0.16??
             sigma = sobj.StimSize_pix(1) /6;
@@ -294,7 +299,7 @@ if n_blankloop > app.Blankloop.Value
             cycles_per_pix = CPD2CPP(sobj.SpatialFreq, sobj.MonitorDist, sobj.Pixelpitch);
 
             %Generate Grating texture;
-            gratingtex = Make_GratingTexture(app);
+            gratingtex = Make_GratingTexture(app.sobj);
 
             %Prep Delay %%%%%%%%%%%%%%%%%
             [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
@@ -303,9 +308,6 @@ if n_blankloop > app.Blankloop.Value
             Screen('DrawTexture', sobj.wPtr, gratingtex, [], stimRect,...
                 angle, [], [], [], [], kPsychDontDoRotation,...
                 [0, cycles_per_pix, sigma, contrast, 1, 0, 0, 0]);
-            %         Screen('DrawTexture', win, gabortex, [], [],...
-            %             90+tilt, [], [], [], [], kPsychDontDoRotation,...
-            %             [phase+180, freq, sc, contrast, aspectratio, 0, 0, 0]);
 
 
             [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
