@@ -109,7 +109,7 @@ switch value
         app.DurationMoveStim_Label.Enable = 'on';
 
         Check_StimeArea_Distance(app);
-        Set_RandChecker(app);
+        Set_RandChecker2(app);
 
     case 'Decode test_v2'
         app.Size.Enable = 'on';

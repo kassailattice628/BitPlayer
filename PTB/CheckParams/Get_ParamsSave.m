@@ -112,9 +112,10 @@ if ~Blank
             p.stim1.Image_fname = sobj.img_shape;
 
         case 'Decode SC_v2'
-
+            
             p.stim1.subPattern = sobj.subPattern;
             switch sobj.subPattern
+
                 case 'Checker'
                     % Random Checker pattern for "Decoding"
                     p.stim1.Size_deg = sobj.Distance; % Fixed size

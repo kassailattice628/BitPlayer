@@ -1,6 +1,6 @@
 # BitPlayer
 
-Last Update 2024/3/4
+Last Update 2024/3/13
 
 ***
 BitPlayer is the Matlab app for
@@ -86,6 +86,11 @@ ___
 
 ***
 ## Change history
+2024/03/13
+* Update Decode SC/test v2. Each patch of Random checker is generate as white/black/2x2 small cecker
+* Update stim/bg luminace setting, double to uint8 (0-255).
+
+
 2024/03/04
 * Add MovingBar stim(rand8) before DecodeSC/Test stimulus.
 * Keep previouse setting for MoivingBar, DecodeSC/Test

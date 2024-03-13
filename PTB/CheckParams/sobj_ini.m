@@ -64,13 +64,13 @@ sobj.black = BlackIndex(1);
 sobj.white = WhiteIndex(1);
 sobj.gray = round((sobj.white + sobj.black)/2);
 
-sobj.stimlumi = sobj.white;
-sobj.bgcol = sobj.black;
+sobj.stimlumi = uint8(sobj.white * 255);
+sobj.bgcol = uint8(sobj.black);
 if sobj.gray == sobj.stimlumi
     sobj.gray = sobj.white/2;
 end
 sobj.stimRGB = [1,1,1];
-sobj.stimColor = sobj.stimlumi * sobj.stimRGB;
+sobj.stimColor = double(sobj.stimlumi)/255 * sobj.stimRGB;
 
 %%%%%%
 %Duration, 1sec == 144 flip, for MSI Optix 242G =: 144Hz

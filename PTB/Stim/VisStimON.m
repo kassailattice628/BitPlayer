@@ -520,7 +520,7 @@ if n_blankloop > app.Blankloop.Value
             %
             % Monochromic dot pattern 16*16 or 32*32
             %
-            % Stim size:    40 deg
+            % Stim size:    40 deg -> variable.
             %
             % This stim is used for SC Decording with Kamitani Lab.
             % Before Decoding stimuli, Moving Bar (rand8) are insearted
@@ -541,17 +541,38 @@ if n_blankloop > app.Blankloop.Value
 
                 %Randomize Checker Pattern (1:white; 0:black)
                 sobj.checker_pattern = randi([0,1], [sobj.Div_grid^2, 1]);
-                Checker_COL = repmat(sobj.checker_pattern' * sobj.stimlumi, 3, 1);
+                Checker_COL = repmat(uint8(sobj.checker_pattern') * sobj.stimlumi, 3, 1);
+
+                test = 1;
+                if test == 0
+                    % Stim Presentation
+                    % Blank %%%%%%%%%%%%%%%%%
+                    [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+
+                    Screen('FillRect', sobj.wPtr, Checker_COL, sobj.Checker_RECT);
+
+                elseif test == 1
+
+                    %imgtex = Screen('MakeTexture', sobj.wPtr,...
+                    %   sobj.patch_checker * sobj.stimlumi);
+
+                    imgtex = Screen('MakeTexture', sobj.wPtr,...
+                        sobj.patch_white * sobj.stimlumi);
 
 
-                % Stim Presentation
-                % Blank %%%%%%%%%%%%%%%%%
-                [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+                    Screen(...
+                        'DrawTextures',...
+                        sobj.wPtr, imgtex, [],...
+                        sobj.Checker_RECT(:, find(sobj.checker_pattern))...
+                        );
 
-                Screen('FillRect', sobj.wPtr, Checker_COL, sobj.Checker_RECT);
+
+                end
+                
                 %Flip (Stim ON)
                 [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
                     Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
+
                 ShowStimInfo(sobj, app.StiminfoTextArea, app.Blankloop.Value);
 
                 %Prepare blank full screen
@@ -586,6 +607,54 @@ if n_blankloop > app.Blankloop.Value
                 [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
 
                 Screen('FillRect', sobj.wPtr, Img_COL, sobj.Checker_RECT);
+                %Flip (Stim ON)
+                [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
+                    Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
+                ShowStimInfo(sobj, app.StiminfoTextArea, app.Blankloop.Value);
+
+                %Prepare blank full screen
+                Screen('FillRect', sobj.wPtr, sobj.bgcol);
+
+                %Flip (Stim OFF)
+                [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
+                    Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
+                ResetStimInfo(app.StiminfoTextArea);
+            end
+            case 'Decode SC_v3'
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %
+            % Monochromic dot pattern 16*16 or 32*32
+            %
+            % Stim size:    40 deg -> variable.
+            %
+            %
+            % This stim is used for SC Decording with Kamitani Lab.
+            % Before Decoding stimuli, Moving Bar (rand8) are insearted
+            % to check data quality (stability of neurons)
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+            % Moving Bar
+            if sobj.n_in_loop <= app.Blankloop.Value + 8
+                sobj.subPattern = 'MovingBar';
+                MovingBar;
+
+            else
+
+                sobj.subPattern = 'Checker';
+
+                %sobj.Checker_RECT = Set_RandChecker(app);
+                % @Set_StimPattern.m
+
+                %Randomize Checker Pattern (1:white; 0:black)
+                sobj.checker_pattern = randi([0,1], [sobj.Div_grid^2, 1]);
+                Checker_COL = repmat(sobj.checker_pattern' * sobj.stimlumi, 3, 1);
+
+
+                % Stim Presentation
+                % Blank %%%%%%%%%%%%%%%%%
+                [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+
+                Screen('FillRect', sobj.wPtr, Checker_COL, sobj.Checker_RECT);
                 %Flip (Stim ON)
                 [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
                     Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
