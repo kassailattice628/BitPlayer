@@ -1,22 +1,35 @@
 function Set_RandChecker(app)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Generate Checker Matrxi
-%
-% 20230905
-%
+% Generate Checker Matrix
+% original Set_RandCher specified patch area and set each pixes to w/b.
+% Each patch is prepared as 4x4 checkerboard, white or black matrix.
+% Center pixes of each panels are calculated and put panels on each
+% position.
+% 
+% Decode SC/test v2
+% 20240313
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 sobj = app.sobj;
-% 
+
+% Prepare patch (128x128)
+patch_white = uint8(ones(32,32));
+patch_black = uint8(zeros(32,32));
+p1 = [patch_white, patch_black, patch_white, patch_black];
+p2 = [patch_black, patch_white, patch_black, patch_white];
+patch_checker = [p1;p2;p1;p2];
+
+sobj.patch_white = repmat(patch_white, 4, 4);
+sobj.patch_checker = patch_checker;
+
+
 % Define stim area (sobj.Distance:60 deg -> variable)
 disp(sobj.Distance)
 Area_deg = [0, 0, sobj.Distance, sobj.Distance];
 Area_pix = Deg2Pix(Area_deg, sobj.MonitorDist, sobj.Pixelpitch);
 Pos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
 C = Pos_list(sobj.FixPos, :);
-
-% Get corner position in pix (left, top, right, bottom)
 Area = CenterRectOnPointd(Area_pix, C(1), C(2));
 
 
@@ -41,6 +54,7 @@ Checker_RECT(2,:) = Checker_top(y);
 Checker_RECT(3,:) = Checker_right(x);
 Checker_RECT(4,:) = Checker_bottom(y);
 sobj.Checker_RECT = Checker_RECT;
+
 %%
 app.sobj = sobj;
 

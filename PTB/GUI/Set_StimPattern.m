@@ -107,9 +107,11 @@ switch value
         app.MoveSpd.Enable = 'on';
         app.MoveSpd_Label.Enable = 'on';
         app.DurationMoveStim_Label.Enable = 'on';
+        
+        app.CheckerboardButton.Enable = 'on';
 
         Check_StimeArea_Distance(app);
-        Set_RandChecker2(app);
+        Set_RandChecker(app); %update 20240313
 
     case 'Decode test_v2'
         app.Size.Enable = 'on';
@@ -135,7 +137,6 @@ switch value
         app.TemporalFreq_Label.Enable = 'on';
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
-        %app.PositionOrderDropDown.Value = 'Fix Repeat';
         
     case {'Looming'}
         app.LoomingMax.Enable = 'on';
@@ -328,4 +329,6 @@ app.MoveSpd.Value = app.MoveSpd.Items(2);
 
 app.ShapeDropDown.Value = 'Circle';
 app.sobj.Shape = 'FillOval';
+
+app.CheckerboardButton.Enable = 'off';
 end
