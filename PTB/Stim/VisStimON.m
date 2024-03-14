@@ -682,8 +682,10 @@ app.sobj = sobj;
 
             X = sobj.StimCenterPos(1);
             Y = sobj.StimCenterPos(2);
-            %StimColor does not work?
-            Screen('DrawDots', sobj.wPtr, [X, Y], Size(1), sobj.stimlumi,...
+            %stimColor does not work?
+            %Screen('DrawDots', sobj.wPtr, [X, Y], Size(1), sobj.stimlumi,...
+            %    [], dot_type);
+            Screen('DrawDots', sobj.wPtr, [X, Y], Size(1), sobj.stimColor,...
                 [], dot_type);
         end
 

@@ -60,18 +60,27 @@ sobj.Shape_list = [{'FillRect'};{'FillOval'}];
 sobj.Shape = 'FillOval'; %Default shape
 
 %Luminance & Color
-sobj.black = BlackIndex(1);
-sobj.white = WhiteIndex(1);
-sobj.gray = round((sobj.white + sobj.black)/2);
+sobj.black = BlackIndex(1); %0
+sobj.white = WhiteIndex(1); %255
+sobj.gray = round((sobj.white + sobj.black)/2); %128
 
-sobj.stimlumi = uint8(sobj.white * 255);
-sobj.bgcol = uint8(sobj.black);
+if sobj.white == 1
+    sobj.stimlumi = sobj.white * 255; % 0-255
+else
+    sobj.stimlumi = sobj.white;
+end
+
+sobj.bgcol = sobj.black;
+
 if sobj.gray == sobj.stimlumi
     sobj.gray = sobj.white/2;
 end
 sobj.stimRGB = [1,1,1];
-sobj.stimColor = double(sobj.stimlumi)/255 * sobj.stimRGB;
-
+if sobj.white == 1
+    sobj.stimColor = sobj.stimlumi * 255 * sobj.stimRGB; %[255,255,255]
+else
+    sobj.stimColor = sobj.stimlumi * sobj.stimRGB;
+end
 %%%%%%
 %Duration, 1sec == 144 flip, for MSI Optix 242G =: 144Hz
 sobj.Duration_sec = 1;
