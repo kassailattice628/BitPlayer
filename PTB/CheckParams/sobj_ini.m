@@ -146,6 +146,9 @@ sobj.DotNum = 300;
 sobj.ConcentricDirection = 0;
 sobj.ConcentricDirection_i = 1;
 
+%%
+sobj.CheckerPatch = false;
+
 %% 2 points
 % sobj.stimsz2 = sobj.stimsz; %1 deg
 % sobj.shape2 = 'FillOval';
