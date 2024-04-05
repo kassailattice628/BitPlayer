@@ -26,16 +26,19 @@ end
 % Duration of post stimulus periods in sec
 switch s.Pattern
     case 'Uni'
-        d = 2;
+        d = 2; %sec
     
     case {'Sinusoidal', 'Shifting Grating', 'Gabor'}
         d = 5;
 
     case 'Fine Mapping'
-        d = 3;
-
-    case {'Decode test_v1', 'Decode rand_v1'}
         d = 4;
+
+    case {'Decode SC_v1', 'Decode test_v1'}
+        d = 8;
+
+    case {'Decode SC_v2', 'Decode test_v2'}
+        d = 8;
 
     otherwise
         d = 5;
