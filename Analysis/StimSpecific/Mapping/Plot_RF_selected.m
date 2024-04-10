@@ -15,16 +15,27 @@ else
     pos = s.DivNum;
 end 
 
-order = 1:pos^2;
-order = reshape(order, [], pos);
-
+%%
 for i = roi
     %Set Color of the selected ROI(i), according to center of the RF.
     
     dFF_peak = mean(im.dFF_peak_each(:,:, i), 'omitnan');
 
     data = reshape(dFF_peak, pos, pos);
-    figure, imagesc(data)
+    figure;
+
+    if isfield(im, 'beta_GRot2D')
+        %plot response with fitted elipse.
+        [x_e, y_e] = RF_Elipse(im.beta_GRot2D(i,:));
+
+        imagesc([1, pos], [1, pos], data)
+        hold on
+        plot(x_e, y_e, 'r', 'LineWidth', 2)
+    else
+        %plot response
+        imagesc([1, pos], [1, pos], data)
+    end
+    title(['RF: ROI = ', num2str(i)])
     
 end 
 

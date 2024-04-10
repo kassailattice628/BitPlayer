@@ -148,15 +148,16 @@ switch s.Pattern
         data_bstrp = Bootstrap_RF(im, 0);
 
         b_GaussianRot2D = zeros(im.Num_ROIs, 6);
-        
-        %i_ROI = 64;
+        R2 = zeros(im.Num_ROIs, 1);
 
+        %i_ROI = 64;
         for i_ROI = 1:im.Num_ROIs
-            b_GaussianRot2D(i_ROI, :) =Find_RF_fit(data_bstrp(:,:,i_ROI));
-            
+            [b_GaussianRot2D(i_ROI, :), R2(i_ROI,1)] =...
+                Find_RF_fit(data_bstrp(:,:,i_ROI), s);
         end
 
         im.beta_GRot2D = b_GaussianRot2D;
+        im.beta_R2 = R2;
 
 
         % Check result
