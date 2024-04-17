@@ -126,9 +126,39 @@ switch value
         app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
         app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
         Check_Stim_Duration(app);
+
+        app.Direction.Value = app.Direction.Items(9);
+        app.Direction.Enable = 'on';
+        app.Direction_Label.Enable = 'on';
+        app.MoveSpd.Enable = 'on';
+        app.MoveSpd_Label.Enable = 'on';
+        app.DurationMoveStim_Label.Enable = 'on';
+
         
         Check_StimeArea_Distance(app);
         Load_test_images(app);
+
+    case {'ImageNet train', 'ImageNet test'}
+        app.Size.Enable = 'on';
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 50;
+        app.sobj.Distance = app.Distance.Value;
+
+        app.DurationMoveStim_Label.Enable = 'on';
+        app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
+        app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
+        Check_Stim_Duration(app);
+
+        app.Direction.Value = app.Direction.Items(9);
+        app.Direction.Enable = 'on';
+        app.Direction_Label.Enable = 'on';
+        app.MoveSpd.Enable = 'on';
+        app.MoveSpd_Label.Enable = 'on';
+        app.DurationMoveStim_Label.Enable = 'on';
+
+        
+        Check_StimeArea_Distance(app);
+        app.sobj = Load_ImageNet(app.sobj, value);
 
     case {'Sinusoidal', 'Shifting Grating', 'Gabor'}
         app.SpatialFreq.Enable = 'on';

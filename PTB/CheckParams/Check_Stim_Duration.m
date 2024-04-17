@@ -25,7 +25,8 @@ switch pattern
         blank_duration = (app.sobj.MovingDuration + app.sobj.ISI_sec)*...
             app.sobj.Blankloop_times;
 
-    case {'Decode SC_v2', 'Decode test_v2'}
+    case {'Decode SC_v2', 'Decode test_v2',...
+            'ImageNet train', 'ImageNet test'}
           
         [distance, duration] = Set_MovingDuration(app.sobj);
         app.sobj.MovingDuration = duration;

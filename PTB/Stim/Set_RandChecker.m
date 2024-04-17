@@ -2,7 +2,7 @@ function Set_RandChecker(app)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Generate Checker Matrix
-% original Set_RandCher specified patch area and set each pixes to w/b.
+% original Set_RandChecker specified patch area and set each pixes to w/b.
 % Each patch is prepared as 4x4 checkerboard, white or black matrix.
 % Center pixes of each panels are calculated and put panels on each
 % position.
@@ -25,7 +25,7 @@ sobj.patch_checker = patch_checker;
 
 
 % Define stim area (sobj.Distance:60 deg -> variable)
-disp(sobj.Distance)
+
 Area_deg = [0, 0, sobj.Distance, sobj.Distance];
 Area_pix = Deg2Pix(Area_deg, sobj.MonitorDist, sobj.Pixelpitch);
 Pos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);

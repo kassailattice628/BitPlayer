@@ -401,6 +401,7 @@ if n_blankloop > app.Blankloop.Value
             % Stim ON
             sobj = RandomDotMotion(sobj, app.StiminfoTextArea);
 
+            %{
         case 'Search V1_Coarse'
             % Define position of the stimulus
             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
@@ -432,7 +433,7 @@ if n_blankloop > app.Blankloop.Value
             sobj = Sinusoidal_and_Grating(app.Direction.Value,...
                 sobj, app.StiminfoTextArea);
 
-            %{
+          
 
         case 'Decode SC_v1'
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -591,8 +592,8 @@ if n_blankloop > app.Blankloop.Value
             % Moving Bar
             if sobj.n_in_loop <= app.Blankloop.Value + 8
                 sobj.subPattern = 'MovingBar';
+                % Dealy + StimON + StimOF
                 MovingBar;
-
             else
 
                 sobj.subPattern = 'Checker';
@@ -610,6 +611,56 @@ if n_blankloop > app.Blankloop.Value
 
                 Screen('FillRect', sobj.wPtr, Img_COL, sobj.Checker_RECT);
                 %Flip (Stim ON)
+                [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
+                    Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
+                ShowStimInfo(sobj, app.StiminfoTextArea, app.Blankloop.Value);
+
+                %Prepare blank full screen
+                Screen('FillRect', sobj.wPtr, sobj.bgcol);
+
+                %Flip (Stim OFF)
+                [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
+                    Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
+                ResetStimInfo(app.StiminfoTextArea);
+            end
+        case  {'ImageNet train', 'ImageNet test'}
+            %Stim position
+            sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+            sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
+
+
+            if sobj.n_in_loop <= app.Blankloop.Value + 8
+                % Moving Bar
+
+                sobj.subPattern = 'MovingBar';
+                MovingBar;
+
+            else
+                % Image Presentation
+
+                sobj.subPattern = 'Image';
+
+                % ImageNet file names list is defined @Load_ImageNet.m
+                % as, sobj.ImageNet_list
+                sobj.ImageNet_f = Set_ImageNet_images(sobj);
+                img = imread(fullfile(sobj.ImageNet_dir, sobj.ImageNet_f));
+                imgtex = Screen('MakeTexture', sobj.wPtr, img);
+                
+                % make texture
+                Area_deg = [0, 0, sobj.Distance, sobj.Distance];
+                Area_pix = Deg2Pix(Area_deg, sobj.MonitorDist, sobj.Pixelpitch);
+
+                stimRect = CenterRectOnPointd(Area_pix,...
+                    sobj.StimCenterPos(1), sobj.StimCenterPos(2));
+
+
+                % Stim Presentation
+                % Blank %%%%%%%%%%%%%%%%%
+                [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+
+                % Load a image file
+                Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect);
+                % Flip (Stim ON)
                 [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
                     Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
                 ShowStimInfo(sobj, app.StiminfoTextArea, app.Blankloop.Value);
