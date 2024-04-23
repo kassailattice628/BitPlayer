@@ -11,11 +11,12 @@ switch pattern
         s.ImageNet_dir = '/home/lattice/Research/BitPlayer/PTB/Images/ImageNetTraining/';
 
     case 'ImageNet test'
-        s.ImageNet_dir = '/home/lattice/Research/BitPlayer/PTB/Images/ImageNetTest/';
+        s.ImageNet_dir = '/home/lattice/Research/BitPlayer/PTB/Images/ImageNetTest20/';
 end
 
 impath = [s.ImageNet_dir, 'n*.JPEG'];
 a = dir(impath);
 s.ImageNet_list = {a.name}; % cell
+s.n_Images = length(s.ImageNet_list);
 
 end

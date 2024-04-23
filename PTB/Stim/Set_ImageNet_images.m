@@ -1,21 +1,46 @@
-function ImageNet_f = Set_ImageNet_images(s)
+function s = Set_ImageNet_images(s)
 %
 % Select ImageNet image file
 % for Decode SC project
 % images were given from KAMITANI lab
 %
+% randamized order is shared across same session
 
 %%
-% loop #
-i = s.n_in_loop - s.Blankloop_times - 8;
 
 % ImageNet file names list is defined @Load_ImageNet.m
-n_images = length(s.ImageNet_list);
+% as, s.ImageNet_list
+switch s.Pattern
+    case "ImageNet train"
+        %keep randamized order in s.RandOrderImages;
+        if ~isfield(s, 'i_presented')
+            s.i_presented = 1;
+        elseif s.i_presented > s.n_Images
+            s.i_presented = 1;
+        end
 
-% Get randamized index.
-img_i = Get_Randomized_Order(i, n_images);
-ImageNet_f = s.ImageNet_list{img_i};
+        if s.i_presented == 1
+            s.RandOrderImages = randperm(s.n_Images);
+        end
 
+        s.img_i = s.RandOrderImages(s.i_presented);
+        s.ImageNet_f = s.ImageNet_list{s.img_i};
+
+        % Count up for next stim
+        s.i_presented = s.i_presented + 1;
+
+    case "ImageNet test"
+        %%
+        i = s.n_in_loop - s.Blankloop_times - 8;
+
+        % Get randamized index. sobj.n_Images = 20 image?
+        s.img_i = Get_Randomized_Order(i, s.n_Images);
+        s.ImageNet_f = s.ImageNet_list{s.img_i};
+
+end
+s.ImageNet_f = s.ImageNet_list{s.img_i};
+
+fprintf('Image-i: %u \n', s.img_i);
 
 end
 

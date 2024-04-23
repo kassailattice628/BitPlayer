@@ -58,6 +58,8 @@ switch direction
         sobj.MoveDirection = str2double(direction);
 
 end
+
+fprintf('Move direction: %u deg \n', sobj.MoveDirection);
 end
 
 %% Get Direction List

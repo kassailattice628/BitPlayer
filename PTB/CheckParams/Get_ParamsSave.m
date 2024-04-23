@@ -144,7 +144,7 @@ if ~Blank
 
             end
 
-        case {'ImageNet train', 'ImageNet test'}
+        case {'ImageNet train'}
             p.stim1.subPattern = sobj.subPattern;
             switch sobj.subPattern
                 case 'MovingBar'
@@ -152,6 +152,17 @@ if ~Blank
                 case 'Image'
                     p.stim1.Size_deg = sobj.Distance;
                     p.stim1.ImageNet_name = sobj.ImageNet_f;
+                    p.stim1.Image_i = sobj.RandOrderImages(sobj.i_presented - 1);
+            end
+        case {'ImageNet test'}
+            p.stim1.subPattern = sobj.subPattern;
+            switch sobj.subPattern
+                case 'MovingBar'
+                    p.stim1.Movebar_Direction_angle_deg = sobj.MoveDirection;
+                case 'Image'
+                    p.stim1.Size_deg = sobj.Distance;
+                    p.stim1.ImageNet_name = sobj.ImageNet_f;
+                    p.stim1.Image_i = sobj.img_i;
             end
     end
 end

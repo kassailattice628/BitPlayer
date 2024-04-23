@@ -23,7 +23,7 @@ HideCursor; % Hide the mouse cursor
 
 %% Presenting Visual Stimuli
 if n_blankloop > app.Blankloop.Value
-    disp('Vis Stim ON')
+    fprintf('Vis Stim ON:: ')
 
     switch sobj.Pattern
         case 'Uni'
@@ -640,16 +640,16 @@ if n_blankloop > app.Blankloop.Value
 
                 sobj.subPattern = 'Image';
 
-                % ImageNet file names list is defined @Load_ImageNet.m
-                % as, sobj.ImageNet_list
-                sobj.ImageNet_f = Set_ImageNet_images(sobj);
+                % Select one image from ImageNet_train or _trest
+                sobj = Set_ImageNet_images(sobj);
+
+                % Load image
                 img = imread(fullfile(sobj.ImageNet_dir, sobj.ImageNet_f));
                 imgtex = Screen('MakeTexture', sobj.wPtr, img);
                 
-                % make texture
+                % Set image size
                 Area_deg = [0, 0, sobj.Distance, sobj.Distance];
                 Area_pix = Deg2Pix(Area_deg, sobj.MonitorDist, sobj.Pixelpitch);
-
                 stimRect = CenterRectOnPointd(Area_pix,...
                     sobj.StimCenterPos(1), sobj.StimCenterPos(2));
 
@@ -658,7 +658,7 @@ if n_blankloop > app.Blankloop.Value
                 % Blank %%%%%%%%%%%%%%%%%
                 [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
 
-                % Load a image file
+                % Make texture
                 Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect);
                 % Flip (Stim ON)
                 [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...

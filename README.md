@@ -1,6 +1,6 @@
 # BitPlayer
 
-Last Update 2024/3/13
+Last Update 2024/4/12
 
 ***
 BitPlayer is the Matlab app for
@@ -61,6 +61,8 @@ ___
 1. Image Presentation (under development)
 1. Decode SC_v2 (RandomCheckerPattern + some figures)
 1. Decode Test_V2 (Simple figure + alphabet)
+1. ImageNet train
+1. ImageNet test
 1. Search V1_Coarse
 1. Search V1_Fine
 1. 2points, black/white (under development)
@@ -86,6 +88,11 @@ ___
 
 ***
 ## Change history
+2024/04/18
+* Add ImageNet stim.
+* Keep a order of training image across sessions.
+* Subset of test images are selected because of the limited number of stim presentation. 
+
 2024/03/13
 * Update Decode SC/test v2. Each patch of Random checker is generate as white/black/2x2 small cecker
 * Update stim/bg luminace setting, double to uint8 (0-255).

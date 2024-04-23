@@ -14,11 +14,11 @@ i = sobj.n_in_loop - sobj.Blankloop_times;
 img_folder = fullfile(pwd, img_folder);
 img_fList = dir([img_folder, '/*', ext]);
 
-sobj.num_images = length(img_fList);
+sobj.n_Images = length(img_fList);
 
 % Get randamized index.
-sobj.img_i = Get_Randomized_Order(i, sobj.num_images);
-sobj.img_fname = img_fList(sobj.img_i).name;
+sobj.i_image = Get_Randomized_Order(i, sobj.n_Images);
+sobj.img_fname = img_fList(sobj.i_image).name;
 img = imread(fullfile(img_folder, sobj.img_fname));
 
 imgtex = Screen('MakeTexture', sobj.wPtr, img);
