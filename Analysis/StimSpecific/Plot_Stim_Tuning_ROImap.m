@@ -48,6 +48,39 @@ switch s.Pattern
         xticks(ticks)
         xticklabels(labels)
 
+    case 'Fine Mapping'
+        % plot fitted 2D gaussian elipses (SD line)
+        if isfield(im, 'beta_GRot2D')
+            figure
+            good_fit = find(im.beta_R2 > 0.3);
+            for i = good_fit'
+                [x, y] = RF_Elipse(im.beta_GRot2D(i,:));
+                plot(x, y);
+                hold on
+            end
+            xlim([1,9])
+            ylim([1,9])
+            axis ij
+
+            figure
+            x = linspace(1,9,50);
+            [X,Y] = meshgrid(x,x);
+            XY = [X(:), Y(:)];
+            t = tiledlayout(7,7);
+            t.TileSpacing = "compact";
+            t.Padding = "compact";
+
+            title(t, "Examples of fitted RF")
+
+            i_max = min(49, length(good_fit));
+            for i = 1:i_max
+                R = GaussianRot2D(im.beta_GRot2D(good_fit(i),:), XY);
+                nexttile
+                imagesc([1,9],[1,9],reshape(R, 50, 50));
+            end
+
+        end
+
 end
 
 end

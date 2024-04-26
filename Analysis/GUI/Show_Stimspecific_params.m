@@ -88,11 +88,24 @@ if ~p.stim1.Blank
                     num2str(p.stim1.Movebar_Direction_angle_deg), 'deg'];
                 t2 = ['Width: ', num2str(s.StimSize_deg), 'deg, ',...
                     'Speed: ', num2str(s.MoveSpd), 'deg/s'];
-            elseif strcmp(p.stim1.subPattern, 'Images')
+            elseif strcmp(p.stim1.subPattern, 'Checker')
 
                 t1 = ['Image file:', p.stim1.Image_fname];
                 t2 = '';
             end
+
+        case {'ImageNet test', 'ImageNet train'}
+            if strcmp(p.stim1.subPattern, 'MovingBar')
+                t1 = ['Direction: ',...
+                    num2str(p.stim1.Movebar_Direction_angle_deg), 'deg'];
+                t2 = ['Width: ', num2str(s.StimSize_deg), 'deg, ',...
+                    'Speed: ', num2str(s.MoveSpd), 'deg/s'];
+            elseif strcmp(p.stim1.subPattern, 'Image')
+
+                t1 = ['Image file:', p.stim1.ImageNet_name];
+                t2 = ['Size: ', num2str(p.stim1.Size_deg), 'deg'];
+            end
+
     end
 
 else

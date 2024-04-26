@@ -138,12 +138,12 @@ switch s.Pattern
         im.fit.R = R_;
         im.fit.Ja = Ja_;
 
-        disp('Done.')
         
         %%%%%%%%%%
 
     case {'Uni', 'Fine Mapping'}
 
+        disp('Fitting 2D Gaussian')
         % Generate bootstrapped data: [n_bstrp, n_stim, n_ROIs]
         data_bstrp = Bootstrap_RF(im, 0);
 
@@ -195,36 +195,13 @@ switch s.Pattern
             title('Fit')
         end
 
-        %{
-      
-        if ~isfield(im, 'dFF_boot_med')
-             [R_boot_med, b_GaRot2D, Ci_GaRot2D, b_Ellipse] = ...
-                Get_Boot_RF(app); %im
-
-            im.dFF_boot_med = R_boot_med;
-            im.b_GaRot2D = b_GaRot2D;
-            im.Ci_GaRot2D = Ci_GaRot2D;
-            im.b_Ellipse = b_Ellipse;
-
-            %plot だけ分けたいが
-        else
-            %Plot only
-            i_roi = 1:im.maxROIs;
-            i_roi = i_roi(im.b_GaRot2D(:,1) >= 0.15);
-            if ~isempty(check_box)
-                if app.plotCheckBox.Value
-                    Plot_RF_selected(i_roi);
-                end
-            end
-        end
-        %}
-
-%%
-
     case {'Moving Spot', 'Sinusoidal', 'Gabor'}
 
     case 'StaticBar'
 end
+
+
+disp('Done.')
 %% Update imgobj
 
 im.bstrpDone = true;

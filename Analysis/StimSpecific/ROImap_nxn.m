@@ -78,6 +78,12 @@ axis ij
 axis([0, 320, 0, 320])
 title("Max Resp Pos")
 
+%% Show Center of 2D Gaussian fit 
+
+
+
+
+
 %% %%%%%%%%%%%%%%%%%
 %
 % Reconstruction of viewing location

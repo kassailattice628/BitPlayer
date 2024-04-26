@@ -27,8 +27,9 @@ for i = im.selected_ROIs
         case 'Decode SC_v2'
             disp('Under developping');
 
-        case 'Decode test_v2'
-            disp('Under developping');
+%         case 'Decode test_v2'
+%             disp('Under developping');
+%             Plot_Devode(i, im, app.Zscore.Value);
 
         otherwise
             Plot_stacked_time_series(i, im, app.Zscore.Value);

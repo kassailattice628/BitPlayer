@@ -93,12 +93,42 @@ for i = 1:size(p, 2) % Extract stimulus
             case 'Random Dot Motion'
                 stim(i) = p{i}.stim1.MoveDirection_deg;
 
-            case 'Decode test_v1'
-                stim(i) = p{i}.stim1.Image_i;
+%             case 'Decode test_v1'
+%                 stim(i) = p{i}.stim1.Image_i;
+% 
+%             case 'Decode SC_v1'
+%                 stim(i) = i - s.Blankloop_times;
+%             
+%             case 'Decode test_v2'
+%                 stim(i) = p{i}.stim1.Image_i;
 
-            case 'Decode SC_v1'
-                stim(i) = i - s.Blankloop_times;
-                
+            case 'Decode SC_v2'
+                if strcmp(p{i}.stim1.subPattern, 'MovingBar')
+                    % Moving Bar
+                    stim(i) = p{i}.stim1.Movebar_Direction_angle_deg;
+                else
+                    % Checker
+                    stim(i) = 1;
+                end
+
+            case 'Decode test_v2'
+                if strcmp(p{i}.stim1.subPattern, 'MovingBar')
+                    % Moving Bar
+                    stim(i) = p{i}.stim1.Movebar_Direction_angle_deg;
+                else
+                    % Image #
+                    stim(i) = p{i}.stim1.Image_i;
+                end
+
+            case {'ImageNet train', 'ImageNet test'}
+
+                if strcmp(p{i}.stim1.subPattern, 'MovingBar')
+                    % Moving Bar
+                    stim(i) = p{i}.stim1.Movebar_Direction_angle_deg;
+                else
+                    % Image #
+                    stim(i) = p{i}.stim1.Image_i;
+                end
             otherwise
                 stim(1) = 1;
         end
@@ -111,12 +141,17 @@ p_data = p_prestim + p_stim + p_poststim;
 im.p_prestim = p_prestim;
 im.p_stim = p_stim;
 %% Get the number of stimuli
-if strcmp(s.Pattern, 'Static Bar')
-    stim(stim == 180) = 0;
+switch s.Pattern
+    case 'Static Bar'
+        stim(stim == 180) = 0;
+    case {'Decode test_v2','ImageNet train', 'ImageNet test'}
+        % not use MB
+        stim = stim(s.Blankloop_times + 8 + 1:end);
 end
 
 [stim_list, ~, ic] = unique(stim, 'rows');
 
+% Remove NaN
 stim_list(isnan(stim_list)) = [];
 n_stim = size(stim_list, 1); %the number of stimuli
 
