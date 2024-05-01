@@ -59,7 +59,6 @@ switch direction
 
 end
 
-fprintf('Move direction: %u deg \n', sobj.MoveDirection);
 end
 
 %% Get Direction List

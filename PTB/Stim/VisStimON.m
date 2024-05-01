@@ -742,6 +742,7 @@ app.sobj = sobj;
 
     end
 
+%%
     function MovingBar
         %Bar width and height in deg;
         sobj.bar_height = 65; %fixed height

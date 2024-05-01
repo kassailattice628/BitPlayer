@@ -40,7 +40,7 @@ switch s.Pattern
 end
 s.ImageNet_f = s.ImageNet_list{s.img_i};
 
-fprintf('Image-i: %u \n', s.img_i);
+
 
 end
 
