@@ -37,7 +37,9 @@ switch pattern
 
         app.DurationMoveStim_Label.Enable = 'on';
 
-        blank_duration = (app.sobj.MovingDuration + app.sobj.ISI_sec)*...
+%         blank_duration = (app.sobj.MovingDuration + app.sobj.ISI_sec)*...
+%             app.sobj.Blankloop_times;
+        blank_duration = (app.sobj.Duration_sec + app.sobj.ISI_sec)*...
             app.sobj.Blankloop_times;
 
     
