@@ -33,6 +33,10 @@ switch sobj.Pattern
         fprintf('StimPos: %u x %u = %u \n\n',...
             sobj.Div_grid, sobj.Div_grid, sobj.index_center_in_mat);
 
+    case 'Fine Mapping Free'
+        fprintf('StimPos: %u x %u = %u \n\n',...
+            sobj.Div_grid, sobj.Div_grid, sobj.index_center_in_mat);
+
     case {'Static Bar'}
         %n x n matrix, position in matrix, size(width), bar angle
         text_stim_info{3} = [...
