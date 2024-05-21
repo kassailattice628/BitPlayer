@@ -24,7 +24,7 @@ elseif isfield(mainvar, 'mouse')
     [f, d] = uigetfile({['/', d, '*.mat']});
     
 else
-    [f, d] = uigetfile({'~/Share/s2p_working/*.mat'});
+    [f, d] = uigetfile({'/mnt/SSD1_Work/s2p_working/*.mat'});
 end
 
 %% File check

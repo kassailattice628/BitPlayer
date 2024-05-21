@@ -27,7 +27,7 @@ if isfield(mainvar, 'dirname_daq')
 else
     % If this is the first time to select daq data.
     % There is no information about location of the ,mat files.
-    [f, d] = uigetfile({'~/Share/s2p_working/*.mat'});
+    [f, d] = uigetfile({'/mnt/SSD1_Work/s2p_working/*.mat'});
 end
 
 %% File check

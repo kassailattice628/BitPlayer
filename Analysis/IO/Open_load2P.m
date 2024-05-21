@@ -27,7 +27,7 @@ if isfield(app.mainvar, 'dirname_2p')
 else
     mouse = app.mainvar.mouse;
     date = app.mainvar.date;
-    d = '~/Share/s2p_working/';
+    d = '/mnt/SSD1_Work/s2p_working/';
     d = fullfile(d, date, mouse);
 end
 
