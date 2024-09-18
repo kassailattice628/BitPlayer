@@ -10,7 +10,6 @@ ax= app.UIAxes_2;
 
 
 
-%% dFF
 y = im.dFF(:,n_ROIs);
 x = im.FVt;
 

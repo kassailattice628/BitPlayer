@@ -2,8 +2,13 @@ function ROImap_nxn(s, im)
 %
 % Colorize ROI along with stimulus positions (N x N divisions).
 %
-% s: sobj
+% s:    sobj
+% im:   imgobj
+%
+%%
 
+imgBG = zeros(size(im.Mask_ROIs, 1), 3);
+imgsz = sqrt(size(im.Mask_ROIs, 1));
 
 switch s.Pattern
     case 'Uni'
@@ -29,15 +34,18 @@ end
 
 % Show stim position as color matrix
 figure
-tiledlayout(2,4)
-nexttile([1,2])
+tiledlayout(1,2)
+nexttile;
 imagesc(RGB_stim)
+daspect([1 1 1])
+title("Stim Pos")
 
-%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%
 %
 % Calculate best stim position for each ROI
 % The color of ROI based on the best stim position using hue & blightness
 %
+%%%%%%%%%%%%%%%%%%
 
 [val, ind] = max(max(im.dFF_stim_average, [], 1));
 
@@ -55,17 +63,34 @@ for i2 = 1:im.Num_ROIs
 
     HSV_roi = [h, 1, v];
     RGB = hsv2rgb(HSV_roi);
-    imgBG(im.Mask_rois(:,i2), 1) = RGB(1);
-    imgBG(im.Mask_rois(:,i2), 2) = RGB(2);
-    imgBG(im.Mask_rois(:,i2), 3) = RGB(3);
+    imgBG(im.Mask_ROIs(:,i2), 1) = RGB(1);
+    imgBG(im.Mask_ROIs(:,i2), 2) = RGB(2);
+    imgBG(im.Mask_ROIs(:,i2), 3) = RGB(3);
 end
 
-imgBG = reshape(imgBG, [imgsz(1), imgsz(2), 3]);
+% Reshape image
+imgBG = reshape(imgBG, [imgsz, imgsz, 3]);
 
-%plot
-nexttile([1,2])
+%Plot max position projection.
+nexttile;
 imshow(imgBG)
 axis ij
 axis([0, 320, 0, 320])
-%colormap(hsv(div))
+title("Max Resp Pos")
+
+%% Show Center of 2D Gaussian fit 
+
+
+
+
+
+%% %%%%%%%%%%%%%%%%%
+%
+% Reconstruction of viewing location
+% by summing up all responded position and 
+% The color of ROI based on the best stim position using hue & blightness
+%
+%%%%%%%%%%%%%%%%%%
+
+
 end

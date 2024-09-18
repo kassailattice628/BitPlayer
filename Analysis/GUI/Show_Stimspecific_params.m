@@ -62,6 +62,49 @@ if ~p.stim1.Blank
             t1 = ['Position: ', div 'x', div, '=', pos];
             t2 = ['Image: #', num2str(p.stim1.Image_i)];
 
+        case 'Decode test_v1'
+            t1 = ['Image file:', p.stim1.Image_fname];
+            t2 = '';
+
+        case 'Decode SC_v1'
+            t1 = 'Random Checker';
+            t2 = '';
+
+        case 'Decode SC_v2'
+            if strcmp(p.stim1.subPattern, 'MovingBar')
+                t1 = ['Direction: ',...
+                    num2str(p.stim1.Movebar_Direction_angle_deg), 'deg'];
+                t2 = ['Width: ', num2str(s.StimSize_deg), 'deg, ',...
+                    'Speed: ', num2str(s.MoveSpd), 'deg/s'];
+
+            elseif strcmp(p.stim1.subPattern, 'Checker')
+                t1 = 'Random Checker';
+                t2 = '';
+            end
+
+        case 'Decode test_v2'
+            if strcmp(p.stim1.subPattern, 'MovingBar')
+                t1 = ['Direction: ',...
+                    num2str(p.stim1.Movebar_Direction_angle_deg), 'deg'];
+                t2 = ['Width: ', num2str(s.StimSize_deg), 'deg, ',...
+                    'Speed: ', num2str(s.MoveSpd), 'deg/s'];
+            elseif strcmp(p.stim1.subPattern, 'Checker')
+
+                t1 = ['Image file:', p.stim1.Image_fname];
+                t2 = '';
+            end
+
+        case {'ImageNet test', 'ImageNet train'}
+            if strcmp(p.stim1.subPattern, 'MovingBar')
+                t1 = ['Direction: ',...
+                    num2str(p.stim1.Movebar_Direction_angle_deg), 'deg'];
+                t2 = ['Width: ', num2str(s.StimSize_deg), 'deg, ',...
+                    'Speed: ', num2str(s.MoveSpd), 'deg/s'];
+            elseif strcmp(p.stim1.subPattern, 'Image')
+
+                t1 = ['Image file:', p.stim1.ImageNet_name];
+                t2 = ['Size: ', num2str(p.stim1.Size_deg), 'deg'];
+            end
 
     end
 

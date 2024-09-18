@@ -16,28 +16,70 @@ switch s.Pattern
 
         %%%%%%%%%% Orientation Selectivity %%%%%%%%%%
         figure
-        subplot(2, 3, 1)
-        histo_plot(im.L_OS(roi_os), 'L_OS');
+        tiledlayout(2,3)
+        nexttile
+        histo_plot(im.L_OS(1, roi_os), 'L_OS');
 
-        subplot(2, 3, 2)
-        histo_plot(im.Ang_OS(roi_os), 'Ang_OS');
+        nexttile
+        histo_plot(im.Ang_OS(1, roi_os), 'Ang_OS');
 
-        subplot(2, 3, 3)
-        plot(im.Ang_OS(roi_os), im.L_OS(roi_os), 'bo')
+        nexttile
+        plot(im.Ang_OS(1, roi_os), im.L_OS(1, roi_os), 'bo')
         title('Pref Orientation vs OSI')
         xlim([-pi/2, pi/2])
+        ticks = [-pi/2, 0, pi/2];
+        labels = {'-pi/2', '0', 'pi/2'};
+        xticks(ticks)
+        xticklabels(labels)
 
         %%%%%%%%%% Direction Selectivity %%%%%%%%%%
-        subplot(2, 3, 4)
-        histo_plot(im.L_DS(roi_ds), 'L_DS');
+        nexttile
+        histo_plot(im.L_DS(1, roi_ds), 'L_DS');
 
-        subplot(2, 3, 5)
-        histo_plot(im.Ang_DS(roi_ds), 'Ang_DS');
+        nexttile
+        histo_plot(im.Ang_DS(1, roi_ds), 'Ang_DS');
 
-        subplot(2, 3, 6)
-        plot(im.Ang_DS(roi_ds), im.L_DS(roi_ds), 'bo')
+        nexttile
+        plot(im.Ang_DS(1, roi_ds), im.L_DS(1, roi_ds), 'bo')
         title('Pref Direction vs DSI')
         xlim([0, 2*pi])
+        ticks = [0, pi/2, pi, 3*pi/2, 2*pi];
+        labels = {'0', 'pi/2', 'pi', '3pi/2', '2pi'};
+        xticks(ticks)
+        xticklabels(labels)
+
+    case 'Fine Mapping'
+        % plot fitted 2D gaussian elipses (SD line)
+        if isfield(im, 'beta_GRot2D')
+            figure
+            good_fit = find(im.beta_R2 > 0.3);
+            for i = good_fit'
+                [x, y] = RF_Elipse(im.beta_GRot2D(i,:));
+                plot(x, y);
+                hold on
+            end
+            xlim([1,9])
+            ylim([1,9])
+            axis ij
+
+            figure
+            x = linspace(1,9,50);
+            [X,Y] = meshgrid(x,x);
+            XY = [X(:), Y(:)];
+            t = tiledlayout(7,7);
+            t.TileSpacing = "compact";
+            t.Padding = "compact";
+
+            title(t, "Examples of fitted RF")
+
+            i_max = min(49, length(good_fit));
+            for i = 1:i_max
+                R = GaussianRot2D(im.beta_GRot2D(good_fit(i),:), XY);
+                nexttile
+                imagesc([1,9],[1,9],reshape(R, 50, 50));
+            end
+
+        end
 
 end
 
@@ -47,18 +89,18 @@ end
 function histo_plot(d, option)
 switch option
     case 'Ang_DS'
-    bins = 0: pi/12 : 2*pi;
-    ticks = [0, pi/2, pi, 3*pi/2, 2*pi];
-    labels = {'0', 'pi/2', 'pi', '3pi/2', '2pi'};
-    lims = [0, 51/24*pi];
-    txt = 'Direction';
+        bins = 0: pi/12 : 2*pi;
+        ticks = [0, pi/2, pi, 3*pi/2, 2*pi];
+        labels = {'0', 'pi/2', 'pi', '3pi/2', '2pi'};
+        lims = [0, 51/24*pi];
+        txt = 'Direction';
 
     case 'Ang_OS'
-    bins = -pi/2 : pi/24 : pi/2;
-    ticks = [-pi/2, 0, pi/2];
-    labels = {'-pi/2', '0', 'pi/2'};
-    lims = [-pi/2, pi/2];
-    txt = 'Orientation';
+        bins = -pi/2 : pi/24 : pi/2;
+        ticks = [-pi/2, 0, pi/2];
+        labels = {'-pi/2', '0', 'pi/2'};
+        lims = [-pi/2, pi/2];
+        txt = 'Orientation';
 
     case {'L_OS', 'L_DS'}
         bins = 0: 0.025: 1;

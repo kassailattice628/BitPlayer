@@ -20,7 +20,7 @@ end
 for i = selectedROI
 
     a = dFF_each(:,:,i);
-    i_out = isoutlier(a);
+    i_out = isoutlier(a, "movmean", 20);
     
     if show
         % Check if detected outliers are valid
@@ -40,7 +40,7 @@ for i = selectedROI
     end
 end
 
-if ~show
+if show
     disp('Delete outliers from dFF_peak')
 end
 end

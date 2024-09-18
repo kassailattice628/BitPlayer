@@ -25,6 +25,10 @@ switch type
 
         %%%%%
         for roi = rois
+            if L(roi) < 0.2
+                disp(roi)
+                continue
+            end
             %set HSV
             ang1 = find(angle_list > Ang(roi), 1, 'first');
             ang2 = find(angle_list <= Ang(roi), 1, 'last');
@@ -80,6 +84,11 @@ switch type
         RGB = zeros(length(rois), 3);
 
         for roi = rois
+            if L(roi) < 0.15
+                disp(roi)
+                continue
+            end
+            disp(roi)
             %set HSV
             ang1 = find(angle_list > Ang(roi), 1, 'first');
             ang2 = find(angle_list <= Ang(roi), 1, 'last');
@@ -111,9 +120,14 @@ switch type
 
     case 'Non Selective'
         rois = cell(1,3);
-        rois{1} = im.roi_non_selective;
-        rois{2} = im.roi_positive;
-        rois{3} = im.roi_negative;
+        rois{1} = union(im.roi_non_selective_positive,...
+            im.roi_non_selective_negative); %im.roi_non_selective;
+
+        if size(rois{1},1)~=1
+            rois{1} = rois{1}';
+        end
+        rois{2} = im.roi_non_selective_positive;
+        rois{3} = im.roi_non_selective_negative;
 
         imgBG = zeros(imgsz(1) * imgsz(2), 3);
         for roi = rois{1}

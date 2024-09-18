@@ -16,9 +16,20 @@ for i = im.selected_ROIs
         case 'Fine Mapping'
 
             divnum = s.Div_grid;
-
-            
             Plot_on_stim_location(i, im, divnum, app.Zscore.Value);
+
+        case 'Fine Mapping Free'
+
+%         case 'Decode SC_v1'
+% 
+%         case 'Decode test_v1'
+
+        case 'Decode SC_v2'
+            disp('Under developping');
+
+%         case 'Decode test_v2'
+%             disp('Under developping');
+%             Plot_Devode(i, im, app.Zscore.Value);
 
         otherwise
             Plot_stacked_time_series(i, im, app.Zscore.Value);
@@ -27,8 +38,11 @@ for i = im.selected_ROIs
 end
 end
 
-%% Sub function for plot selected ROI
-%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Sub function for plot selected ROI  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% PLOT_ON_STIM_LOCATION %%
 function Plot_on_stim_location(i, im, divnum, Z)
 
 Y = im.dFF_stim_average(:,:,i);
@@ -88,8 +102,9 @@ end
 
 end
 
-%%
+%% PLOT_STACKED_TIME_SERIES %%
 function Plot_stacked_time_series(i, im, Z)
+
 Y = im.dFF_stim_average(:,:,i);
 T = (0:size(Y,1)-1)*im.FVsampt;
 
@@ -107,6 +122,8 @@ tiledlayout(2,2);
 nexttile([2,1])
 hold on
 for i2 = 1:size(Y,2)
+
+    
     Y(:,i2) = Y(:,i2) + (i2-1)*2*im.SD(:,i);
     plot(T, Y(:,i2), 'b-')
 end

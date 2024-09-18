@@ -24,6 +24,9 @@ for i = 1:n_stim
     peak_ave(i) = mean(y_, 'omitnan');
 end
 
+% Normalize
+peak_ave = peak_ave / max(peak_ave);
+
 % Remove NaN
 x(isnan(y)) = [];
 y(isnan(y)) = [];
@@ -32,26 +35,29 @@ y(isnan(y)) = [];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Set color
-if ismember(roi, [im.roi_DS_positive, im.roi_DS_negative]) &&...
-        ismember(roi, [im.roi_OS_positive, im.roi_OS_negative])
+if ismember(roi, im.roi_DS_positive) && ismember(roi,im.roi_OS_positive)
     Col = [0.3010 0.7450 0.9330];
-    TiTxt = 'Direction & Orientation selective';
+    TiTxt = 'Direction & Orientation selective (p)';
 
-elseif ismember(roi, [im.roi_DS_positive, im.roi_DS_negative])
+elseif ismember(roi, im.roi_DS_positive)
     Col = [0 0.4470 0.7410];
-    TiTxt = 'Direction selective';
+    TiTxt = 'Direction selective (p)';
 
-elseif ismember(roi, [im.roi_OS_positive, im.roi_OS_negative])
+elseif ismember(roi, im.roi_OS_positive)
     Col = [0.8500 0.3250 0.0980];
-    TiTxt = 'Orientation selective';
+    TiTxt = 'Orientation selective (p)';
 
 elseif ismember(roi, im.roi_nores)
     Col = [0,0,0];
     TiTxt = 'No Responding';
 
-elseif ismember(roi, im.roi_non_selective)
+elseif ismember(roi, im.roi_non_selective_positive)
     Col = [0.4660 0.6740 0.1880];
-    TiTxt = 'Non selective';
+    TiTxt = 'Non selective (p)';
+
+elseif ismember(roi, im.roi_negative)
+    Col = [0,0,0];
+    TiTxt = 'Suppression';
 
 end
 
@@ -118,6 +124,12 @@ if im.bstrpDone
     hold on;
     polarplot([stim, stim(1)], [peak_boot, peak_boot(1)], 'ro-');
 end
+
+% hold on
+% [u, v] = pol2cart(im.Ang_DS(1, roi), im.L_DS(1, roi));
+% compass(u, v, 'r')
+hold on
+polarplot(im.Ang_DS(1,roi), im.L_DS(1,roi),  '.-', 'Color', 'red')
 
 title(TiTxt)
 

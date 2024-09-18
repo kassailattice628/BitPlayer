@@ -48,7 +48,9 @@ switch s.Pattern
         end
         
     case 'Fine Mapping'
-        map_nxn(2);
+
+        ROImap_nxn(s, im)
+        
         if isfield(im, 'b_GaRot2D')
             imgBG = zeros(imgsz(1) * imgsz(2), 3);
             map_nxn_use_fitdata;
@@ -56,14 +58,6 @@ switch s.Pattern
 
     case 'Size Random'
         map_size;
-        
-
-
-        
-
-        
-
-        
 
     otherwise
 end

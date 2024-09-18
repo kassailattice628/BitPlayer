@@ -2,8 +2,8 @@ function Add_stim_timing(ax, ON, OFF, type)
 
 switch type
     case 'Velocity'
-        lower = 0;
-        upper = 10;
+        lower = -0.2;
+        upper = 8;
         ax.YLim = [lower, upper];
         
     otherwise

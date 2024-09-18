@@ -28,10 +28,11 @@ L_ori_nega = Ang;
 
 rois = 1 : im.Num_ROIs;
 %%
+
 for i = rois
     StimAngles = deg2rad(im.stim_sorted);
     StimAngles_neg = StimAngles;
-    % mean pkea value;
+    % mean peak value;
     y_positive = peak_positive(1,:,i);
     y_negative = -peak_negative(1,:,i);
 
@@ -54,12 +55,14 @@ for i = rois
     % vector average for direction
     [L(i), Ang(i)] = ...
         VectorAveraging(y_positive, StimAngles, 'Direction');
+
     [L_nega(i), Ang_nega(i)] = ...
         VectorAveraging(y_negative, StimAngles_neg, 'Direction');
 
     % vector average for orientation
     [L_ori(i), Ang_ori(i)] = ...
         VectorAveraging(y_positive, StimAngles, 'Orientation');
+    
     [L_ori_nega(i), Ang_ori_nega(i)] = ...
         VectorAveraging(y_negative, StimAngles_neg, 'Orientation');
 end

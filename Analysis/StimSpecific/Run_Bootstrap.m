@@ -1,19 +1,23 @@
 function Run_Bootstrap(app)
+%%%%%%%%%%%%%%%%%%%
 %
-% 
+% Resample data and estimat fit.
+% For MovingBar & Grating:: VonMises.
+% Uni & Fine Mapping:: 2D Gaussian with rotation.
 %
+%%%%%%%%%%%%%%%%%%%
 
 %rng(6281980)
 im = app.imgobj;
 s = app.sobj;
 im.n_bstrp = app.n_bootstrp.Value;
 
-%% Show progress bar
+% Show progress bar
 % f = uifigure;
 % d = uiprogressdlg(f, 'Title', 'Bootstrapping data',...
 %     'Indeterminate', 'on');
 
-%%
+%% Stimulus specific condition
 switch s.Pattern
     case {'Moving Bar', 'Shifting Grating'}
 
@@ -134,76 +138,70 @@ switch s.Pattern
         im.fit.R = R_;
         im.fit.Ja = Ja_;
 
-        disp('Done.')
         
         %%%%%%%%%%
 
+    case {'Uni', 'Fine Mapping'}
+
+        disp('Fitting 2D Gaussian')
+        % Generate bootstrapped data: [n_bstrp, n_stim, n_ROIs]
+        data_bstrp = Bootstrap_RF(im, 0);
+
+        b_GaussianRot2D = zeros(im.Num_ROIs, 6);
+        R2 = zeros(im.Num_ROIs, 1);
+
+        %i_ROI = 64;
+        for i_ROI = 1:im.Num_ROIs
+            [b_GaussianRot2D(i_ROI, :), R2(i_ROI,1)] =...
+                Find_RF_fit(data_bstrp(:,:,i_ROI), s);
+        end
+
+        im.beta_GRot2D = b_GaussianRot2D;
+        im.beta_R2 = R2;
+
+
+        % Check result
+        check_flag = 0;
+        if check_flag
+            n_grid = sqrt(size(data_bstrp, 2));
+
+            data = data_bstrp(:,:,i_ROI);
+            data = mean(data, 'omitnan');
+            data = reshape(data, [n_grid, n_grid]);
+
+            %
+            X_grid = linspace(1, n_grid, 100);
+            [X, Y] = meshgrid(X_grid, X_grid);
+            XY_grid(:,:,1) = X;
+            XY_grid(:,:,2) = Y;
+            RF2DRot = GaussianRot2D(b_GaussianRot2D(i_ROI,:), XY_grid);
+
+            %Elipse
+            [x_e, y_e] = RF_Elipse(b_GaussianRot2D(i_ROI,:));
+
+
+            figure
+            tiledlayout(1,2)
+            nexttile;
+            imagesc([1, n_grid], [1, n_grid], data)
+            hold on
+            plot(x_e, y_e, 'r', 'LineWidth',2)
+            title('RAW(mean)')
+
+            nexttile;
+            imagesc([min(X_grid), max(X_grid)], [min(X_grid), max(X_grid)], RF2DRot)
+            hold on
+            plot(x_e, y_e, 'r', 'LineWidth',2)
+            title('Fit')
+        end
+
     case {'Moving Spot', 'Sinusoidal', 'Gabor'}
 
-        % Force recalcurate bootstrap if checkbox is ON
-        if ~isfield(im, 'Params_boot') || app.newbootstrapCheckBox.Value
-            disp('Bootstrapping...')
-            %
-            % To find selectivec cells, DSI/OSI are compared with
-            % shuffled DSI/OSI, rather than using threshold
-            %
-
-            im = Get_Boot_DSI_OSI(im, n_bootstrap);
-
-            % Reget stim average
-            % Get_Trial_Averages(app, 0);
-            im = Get_mat2D(im, s);
-            app.imgobj = im;
-            Plot_All_Averages(app, -1, 1);
-
-
-
-        else
-            %Plot only
-            errordlg('Already calculated.')
-        end
-
     case 'StaticBar'
-        if ~isfield(im, 'P_boot')
-            disp('Bootstrapping...')
-
-            [R_boot_med, P_boot, roi_os, b_os, Ci_os, f_os] =...
-                Get_Boot_BarOS(im);
-
-            im.dFF_boot_med = R_boot_med;
-            im.P_boot = P_boot;
-            im.f_os = f_os;
-            im.roi_os = roi_os;
-            im.b_os = b_os;
-            im.Ci_os = Ci_os;
-
-        else
-            %Plot only
-            errordlg('Already calculated.')
-        end
-
-    case {'Uni', 'FineMap'}
-        if ~isfield(im, 'dFF_boot_med')
-            [R_boot_med, b_GaRot2D, Ci_GaRot2D, b_Ellipse] = ...
-                Get_Boot_RF(app); %im
-
-            im.dFF_boot_med = R_boot_med;
-            im.b_GaRot2D = b_GaRot2D;
-            im.Ci_GaRot2D = Ci_GaRot2D;
-            im.b_Ellipse = b_Ellipse;
-
-            %plot だけ分けたいが
-        else
-            %Plot only
-            i_roi = 1:im.maxROIs;
-            i_roi = i_roi(im.b_GaRot2D(:,1) >= 0.15);
-            if ~isempty(check_box)
-                if app.plotCheckBox.Value
-                    Plot_RF_selected(i_roi);
-                end
-            end
-        end
 end
+
+
+disp('Done.')
 %% Update imgobj
 
 im.bstrpDone = true;
