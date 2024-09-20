@@ -522,10 +522,10 @@ if n_blankloop > app.Blankloop.Value
 
             %}
 
-        case 'Decode SC_v2'
+        case 'Decode SC'
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             %
-            % Monochromic dot pattern 16*16 or 32*32
+            % Monochromic dot pattern 5*5, 8*8, 16*16 or 32*32
             %
             % Stim size:    40 deg -> variable.
             %
@@ -587,7 +587,7 @@ if n_blankloop > app.Blankloop.Value
                 ResetStimInfo(app.StiminfoTextArea);
             end
 
-        case 'Decode test_v2'
+        case 'Decode test'
 
             % Moving Bar
             if sobj.n_in_loop <= app.Blankloop.Value + 8
@@ -623,6 +623,7 @@ if n_blankloop > app.Blankloop.Value
                     Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
                 ResetStimInfo(app.StiminfoTextArea);
             end
+
         case  {'ImageNet train', 'ImageNet test'}
             %Stim position
             sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);

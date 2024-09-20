@@ -16,6 +16,7 @@ if ~Blank
     %%% Center Position %%%
     switch sobj.Pattern
         case {'Moving Bar',...
+                'Decode SC', 'Decode test',...
                 'Decode SC_v2', 'Decode test_v2',...
                 'ImageNet train', 'ImageNet test'}
 
@@ -115,7 +116,7 @@ if ~Blank
             p.stim1.Image_fname = sobj.img_shape;
         %}
 
-        case 'Decode SC_v2'
+        case {'Decode SC','Decode SC_v2'}
             
             p.stim1.subPattern = sobj.subPattern;
             switch sobj.subPattern
@@ -130,7 +131,7 @@ if ~Blank
             end
 
 
-        case 'Decode test_v2'
+        case {'Decode test', 'Decode test_v2'}
             p.stim1.subPattern = sobj.subPattern;
             switch sobj.subPattern
                 case 'Checker'

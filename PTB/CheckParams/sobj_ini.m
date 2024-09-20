@@ -75,6 +75,7 @@ sobj.bgcol = sobj.black;
 if sobj.gray == sobj.stimlumi
     sobj.gray = sobj.white/2;
 end
+
 sobj.stimRGB = [1,1,1];
 if sobj.white == 1
     sobj.stimColor = sobj.stimlumi * 255 * sobj.stimRGB; %[255,255,255]

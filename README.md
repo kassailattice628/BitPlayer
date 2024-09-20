@@ -1,6 +1,6 @@
 # BitPlayer
 
-Last Update 2024/4/12
+Last Update 2024/9/19
 
 ***
 BitPlayer is the Matlab app for
@@ -88,6 +88,11 @@ ___
 
 ***
 ## Change history
+2024/09/19
+* Modify RandomChecer for Decoding project.
+* Reduce the number of pixels (ex., 5x5)
+* Remove version info from stim name of Decode SC(test)"_v2"; but the older code are kept.
+
 2024/04/18
 * Add ImageNet stim.
 * Keep a order of training image across sessions.

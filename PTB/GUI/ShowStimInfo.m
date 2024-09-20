@@ -152,7 +152,7 @@ switch sobj.Pattern
 %             '/(',num2str(sobj.DivNum), 'x',num2str(sobj.DivNum) ')'];
 %         text_stim_info{4} = sobj.img_shape;
 
-    case 'Decode SC_v2'
+    case {'Decode SC', 'Decode SC_v2'}
         if sobj.n_in_loop <= blank + 8
 
             %size(width), moving direction, moving speed
@@ -174,7 +174,7 @@ switch sobj.Pattern
         end
 
 
-    case 'Decode test_v2'
+    case {'Decode test', 'Decode test_v2'}
         if sobj.n_in_loop <= blank + 8
 
             %size(width), moving direction, moving speed
