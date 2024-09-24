@@ -8,26 +8,27 @@ function Load_test_images(app)
 
 s = app.sobj;
 
-s.Images = uint8(zeros(app.Divide.Value, app.Divide.Value, 10));
+str_grid = app.CheckerDivDropDown.Value;
+s.Images = uint8(zeros(str2double(str_grid), str2double(str_grid), 10));
 
-grid_size = app.CheckerDivDropDown.Value;
-f1 = append('test_img', grid_size);
-load('./Images/Decode_SC_Test_v1/test_images_20240920.mat', f1);
-assignin('caller', f1);
-s.Images(:,:,1:5) = f1;
+D = load('./Images/Decode_SC_Test_v1/test_images_20240924.mat');
+s.Images(:,:,1:5) = D.(['test_img' str_grid]);
+D = load('./Images/Decode_SC_Test_v1/test_fonts_20240924.mat');
+s.Images(:,:,6:10) = D.(['test_font' str_grid]);
 
-if app.CheckerDivDropDown.Value == 32
-    load('./Images/Decode_SC_Test_v1/test_images_20230911.mat', 'test_img32');
-    s.Images(:,:,1:5) = test_img32;
-    load('./Images/Decode_SC_Test_v1/test_fonts_20230912.mat', 'test_font32');
-    s.Images(:,:,6:10) = test_font32;
-    
-elseif app.Divide.Value == 16
-    load('./Images/Decode_SC_Test_v1/test_images_20230911.mat', 'test_img16');
-    s.Images(:,:,1:5) = test_img16;
-    load('./Images/Decode_SC_Test_v1/test_fonts_20230912.mat', 'test_font16');
-    s.Images(:,:,6:10) = test_font16;
-end
+% 
+% if app.CheckerDivDropDown.Value == 32
+%     load('./Images/Decode_SC_Test_v1/test_images_20230911.mat', 'test_img32');
+%     s.Images(:,:,1:5) = test_img32;
+%     load('./Images/Decode_SC_Test_v1/test_fonts_20230912.mat', 'test_font32');
+%     s.Images(:,:,6:10) = test_font32;
+%     
+% elseif app.Divide.Value == 16
+%     load('./Images/Decode_SC_Test_v1/test_images_20230911.mat', 'test_img16');
+%     s.Images(:,:,1:5) = test_img16;
+%     load('./Images/Decode_SC_Test_v1/test_fonts_20230912.mat', 'test_font16');
+%     s.Images(:,:,6:10) = test_font16;
+% end
 
 s.Images(s.Images > 0) = 1;
 
