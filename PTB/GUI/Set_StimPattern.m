@@ -169,7 +169,11 @@ switch value
         app.MoveSpd_Label.Enable = 'on';
         app.DurationMoveStim_Label.Enable = 'on';
 
-        
+
+        app.FlashButton.Visible = 'on';
+        app.FlashButton.Enable = 'on';
+
+
         Check_StimeArea_Distance(app);
         app.sobj = Load_ImageNet(app.sobj, value);
 
@@ -333,6 +337,8 @@ app.DivideLabel.Visible = 'on';
 app.CheckerDivLabel.Visible ='off';
 app.CheckerDivDropDown.Enable = 'off';
 app.CheckerDivDropDown.Visible = 'off';
+%app.FlashButton.Visible = 'off';
+app.FlashButton.Enable = 'off';
 
 app.DotDensity.Enable = 'off';
 app.DotDensity_Label.Enable = 'off';
@@ -403,6 +409,8 @@ app.CheckerDivDropDown.Enable = 'on';
 app.CheckerDivDropDown.Items = {'5', '8', '16', '32'};
 app.CheckerDivDropDown.Value =  app.CheckerDivDropDown.Items(1);
 app.sobj.Div_grid = str2double(app.CheckerDivDropDown.Value);
+%app.FlashButton.Visible = 'on';
+app.FlashButton.Enable = 'on';
 
 
 app.DurationMoveStim_Label.Enable = 'on';

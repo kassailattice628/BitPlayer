@@ -2,7 +2,7 @@ function [distance, duration] = Set_MovingDuration(sobj)
 
 
 switch sobj.Pattern
-    case {'Moving Bar', 'Decode SC_v2', 'Decode test_v2',...
+    case {'Moving Bar', 'Decode SC', 'Decode test',...
             'ImageNet train', 'ImageNet test'}
         %Change sobj.MoveSpd (deg/sec) -> pix/sec
         MoveSpd_pix = Deg2Pix(sobj.MoveSpd, sobj.MonitorDist, sobj.Pixelpitch);

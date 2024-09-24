@@ -1,7 +1,8 @@
 function Load_test_images(app)
 %
 % Load 16*16 or 32*32 images
-%
+% Adding 5*5 and 8*8 dot map 20240924
+% 
 % Code for generating images
 % GoogleDrive/5_Research/Decode_SC/PIL_test/
 %

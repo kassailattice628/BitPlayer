@@ -9,6 +9,9 @@ function Set_RandChecker(app)
 % 
 % Decode SC/test v2
 % 20240313
+%
+% Remove version name
+% 20240924
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 sobj = app.sobj;

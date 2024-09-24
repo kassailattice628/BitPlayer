@@ -17,7 +17,6 @@ if ~Blank
     switch sobj.Pattern
         case {'Moving Bar',...
                 'Decode SC', 'Decode test',...
-                'Decode SC_v2', 'Decode test_v2',...
                 'ImageNet train', 'ImageNet test'}
 
         case 'Fine Mapping Free'
@@ -116,7 +115,7 @@ if ~Blank
             p.stim1.Image_fname = sobj.img_shape;
         %}
 
-        case {'Decode SC','Decode SC_v2'}
+        case {'Decode SC'}
             
             p.stim1.subPattern = sobj.subPattern;
             switch sobj.subPattern
@@ -131,11 +130,11 @@ if ~Blank
             end
 
 
-        case {'Decode test', 'Decode test_v2'}
+        case {'Decode test'}
             p.stim1.subPattern = sobj.subPattern;
             switch sobj.subPattern
                 case 'Checker'
-                    % 5 figure, and 5 characters
+                    % 5 figures, and 5 characters
                     p.stim1.Size_deg = sobj.Distance; % Fixed size
                     p.stim1.Image_i = sobj.img_i;
                     p.stim1.Image_fname = sobj.img_shape;

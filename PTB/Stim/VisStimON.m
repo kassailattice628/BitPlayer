@@ -572,11 +572,32 @@ if n_blankloop > app.Blankloop.Value
                     sobj.wPtr, imgtex, [],...
                     sobj.Checker_RECT(:, find(sobj.checker_pattern))...
                     );
+                Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
+
                 %Flip (Stim ON)
                 [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
-                    Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
-
+                        Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
+                vbl=sobj.vbl_2;
                 ShowStimInfo(sobj, app.StiminfoTextArea, app.Blankloop.Value);
+
+                %Flashing ON/OFF
+                if app.FlashButton.Value
+                    for flash_n = 1:2
+                        %blank
+                        Screen('FillRect', sobj.wPtr, sobj.bgcol);
+                        Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
+                        vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
+
+                        %Prepare next stim + photosensor
+                        Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
+                        Screen(...
+                            'DrawTextures',...
+                            sobj.wPtr, imgtex, [],...
+                            sobj.Checker_RECT(:, find(sobj.checker_pattern))...
+                            );
+                        vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
+                    end
+                end
 
                 %Prepare blank full screen
                 Screen('FillRect', sobj.wPtr, sobj.bgcol);
@@ -584,6 +605,7 @@ if n_blankloop > app.Blankloop.Value
                 %Flip (Stim OFF)
                 [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
                     Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
+
                 ResetStimInfo(app.StiminfoTextArea);
             end
 
@@ -610,10 +632,29 @@ if n_blankloop > app.Blankloop.Value
                 [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
 
                 Screen('FillRect', sobj.wPtr, Img_COL, sobj.Checker_RECT);
+                Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
+                
                 %Flip (Stim ON)
                 [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
-                    Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
+                    Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);                
+                vbl = sobj.vbl_2;
                 ShowStimInfo(sobj, app.StiminfoTextArea, app.Blankloop.Value);
+
+
+                %Flashing ON/OFF
+                if app.FlashButton.Value
+                    for flash_n = 1:2
+                        %blank
+                        Screen('FillRect', sobj.wPtr, sobj.bgcol);
+                        Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
+                        vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
+
+                        %Prepare next stim + photosensor
+                        Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
+                        Screen('FillRect', sobj.wPtr, Img_COL, sobj.Checker_RECT);
+                        vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
+                    end
+                end
 
                 %Prepare blank full screen
                 Screen('FillRect', sobj.wPtr, sobj.bgcol);
@@ -659,51 +700,37 @@ if n_blankloop > app.Blankloop.Value
                 % Blank %%%%%%%%%%%%%%%%%
                 [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
 
-                ShowStimInfo(sobj, app.StiminfoTextArea, app.Blankloop.Value);
-
                 % Make texture
                 Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect);
 
-                % Flip (Stim ON)
-                flag_rep = 0;
-                if flag_rep
-                    ShowStimInfo(sobj, app.StiminfoTextArea, app.Blankloop.Value)
+                %Flip (Stim ON)
+                [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
+                    Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);                
+                vbl = sobj.vbl_2;
+                ShowStimInfo(sobj, app.StiminfoTextArea, app.Blankloop.Value);
 
-                    % Stim ON (after 200ms delay)
-                    [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
-                        Screen('Flip', sobj.wPtr, sobj.vbl_1 + 0.2);
-                    vbl = sobj.vbl_2;
+                %Flashing ON/OFF
+                if app.FlashButton.Value
                     for n = 1:2
                         %blank screen
                         Screen('FillRect', sobj.wPtr, sobj.bgcol);
+                        Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
                         vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
+
                         %Prepare next stim + photosensor
                         Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
                         Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect);
                         vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
                     end
-
-                    %OFF
-                    Screen('FillRect', sobj.wPtr, sobj.bgcol);
-
-                    %Flip (Stim OFF)
-                    [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
-                        Screen('Flip', sobj.wPtr, vbl + 0.2);
-
-                else
-                    [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
-                        Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
-
-
-                    %Prepare blank full screen
-                    Screen('FillRect', sobj.wPtr, sobj.bgcol);
-
-                    %Flip (Stim OFF)
-                    [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
-                        Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
-
-
                 end
+
+                %Prepare blank full screen
+                Screen('FillRect', sobj.wPtr, sobj.bgcol);
+
+                %Flip (Stim OFF)
+                [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
+                    Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
+                
                 ResetStimInfo(app.StiminfoTextArea);
             end
 
