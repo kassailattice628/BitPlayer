@@ -116,10 +116,10 @@ if ~Blank
         %}
 
         case {'Decode SC'}
-            
             p.stim1.subPattern = sobj.subPattern;
-            switch sobj.subPattern
+            p.stim1.FlashON = app.FlashButton.Value;
 
+            switch sobj.subPattern
                 case 'Checker'
                     % Random Checker pattern for "Decoding"
                     p.stim1.Size_deg = sobj.Distance; % Fixed size
@@ -132,6 +132,8 @@ if ~Blank
 
         case {'Decode test'}
             p.stim1.subPattern = sobj.subPattern;
+            p.stim1.FlashON = app.FlashButton.Value;
+            
             switch sobj.subPattern
                 case 'Checker'
                     % 5 figures, and 5 characters
@@ -141,7 +143,6 @@ if ~Blank
 
                 case 'MovingBar'
                     p.stim1.Movebar_Direction_angle_deg = sobj.MoveDirection;
-
             end
 
         case {'ImageNet train'}
