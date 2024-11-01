@@ -117,7 +117,7 @@ if ~Blank
 
         case {'Decode SC'}
             p.stim1.subPattern = sobj.subPattern;
-            p.stim1.FlashON = app.FlashButton.Value;
+            p.stim1.FlashON = sobj.FlashButton;
 
             switch sobj.subPattern
                 case 'Checker'
@@ -132,7 +132,7 @@ if ~Blank
 
         case {'Decode test'}
             p.stim1.subPattern = sobj.subPattern;
-            p.stim1.FlashON = app.FlashButton.Value;
+            p.stim1.FlashON = sobj.FlashButton;
             
             switch sobj.subPattern
                 case 'Checker'
