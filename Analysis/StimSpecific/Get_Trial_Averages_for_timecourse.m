@@ -102,7 +102,7 @@ for i = 1:size(p, 2) % Extract stimulus
 %             case 'Decode test_v2'
 %                 stim(i) = p{i}.stim1.Image_i;
 
-            case 'Decode SC_v2'
+            case {'Decode SC', 'Decode SC_v2'}
                 if strcmp(p{i}.stim1.subPattern, 'MovingBar')
                     % Moving Bar
                     stim(i) = p{i}.stim1.Movebar_Direction_angle_deg;
@@ -111,7 +111,7 @@ for i = 1:size(p, 2) % Extract stimulus
                     stim(i) = 1;
                 end
 
-            case 'Decode test_v2'
+            case {'Decode test', 'Decode test_v2'}
                 if strcmp(p{i}.stim1.subPattern, 'MovingBar')
                     % Moving Bar
                     stim(i) = p{i}.stim1.Movebar_Direction_angle_deg;
@@ -144,7 +144,7 @@ im.p_stim = p_stim;
 switch s.Pattern
     case 'Static Bar'
         stim(stim == 180) = 0;
-    case {'Decode test_v2','ImageNet train', 'ImageNet test'}
+    case {'Decode test', 'Decode test_v2','ImageNet train', 'ImageNet test'}
         % not use MB
         stim = stim(s.Blankloop_times + 8 + 1:end);
 end

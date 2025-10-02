@@ -49,6 +49,24 @@ switch s.Pattern
         for roi = im.selected_ROIs
             Plot_OS_selected(im, stim, roi)
         end
+
+    case 'ImageNet test'
+        
+        for ROI = im.selected_ROIs
+            figure;
+            for i = 1:s.n_Images
+                a = im.dFF_peak_each_positive(:,i, ROI);
+                b_y=rmmissing(a);
+                b_x = repmat(i, length(b_y), 1);
+                scatter(b_x, b_y);
+                hold on
+            end
+            hold off
+            xlabel("Image #")
+            xlim([0, s.n_Images+1])
+            ylabel("dFF")
+            title(['ROI: ', num2str(ROI)])
+        end
 end
 
 %%

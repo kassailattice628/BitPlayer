@@ -53,7 +53,7 @@ if strcmp(s.Pattern, 'Uni')
     %lower limit of RF SD (deg)
     min_sd_deg = 3; %3
 
-    u_sd_x = max_sd_deg/gird_deg_x;
+    u_sd_x = max_sd_deg/grid_deg_x;
     u_sd_y = max_sd_deg/grid_deg_y;
 
     l_sd_x = min_sd_deg/grid_deg_x;

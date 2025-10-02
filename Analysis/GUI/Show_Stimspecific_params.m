@@ -70,7 +70,7 @@ if ~p.stim1.Blank
             t1 = 'Random Checker';
             t2 = '';
 
-        case 'Decode SC_v2'
+        case {'Decode SC','Decode SC_v2'}
             if strcmp(p.stim1.subPattern, 'MovingBar')
                 t1 = ['Direction: ',...
                     num2str(p.stim1.Movebar_Direction_angle_deg), 'deg'];
@@ -82,7 +82,7 @@ if ~p.stim1.Blank
                 t2 = '';
             end
 
-        case 'Decode test_v2'
+        case {'Decode test', 'Decode test_v2'}
             if strcmp(p.stim1.subPattern, 'MovingBar')
                 t1 = ['Direction: ',...
                     num2str(p.stim1.Movebar_Direction_angle_deg), 'deg'];

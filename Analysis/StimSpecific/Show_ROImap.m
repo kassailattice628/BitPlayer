@@ -40,7 +40,7 @@ switch s.Pattern
 
 %%%%%%%%%%Å@Ç±Ç±Ç©ÇÁÇµÇΩÇÕÇ‹Çæ %%%%%%%%%%
     case 'Uni'
-        map_nxn(s, im);
+        ROImap_nxn(s, im);
         
         if isfield(im, 'b_GaRot2D')
             imgBG = zeros(imgsz(1) * imgsz(1), 3);

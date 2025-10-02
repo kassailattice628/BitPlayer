@@ -22,10 +22,15 @@ min_h = [];
 max_v = [];
 min_v = [];
 
+blank_ = app.sobj.Blankloop_times;
+sampf = app.recobj.sampf;
+Thres_low = app.Threshold_saccade_low.Value;
+Thres_high = app.Threshold_saccade_high.Value;
+
 for i = 1:n_trials
     
     % Extract stim timing
-    if i > app.sobj.Blankloop_times
+    if i > blank_
     
         [ON, OFF] = Get_stim_timing(t, data, i, p, th); 
 
@@ -33,31 +38,30 @@ for i = 1:n_trials
         ON = [];
         OFF = [];
     end
+
     p{1,i}.stim1.correct_StimON_timing = ON;
     p{1,i}.stim1.correct_StimOFF_timing = OFF;
     
     % Rotary encoder
     if ~isfield(p{1, i}, 'locomotion_velocity')
-        [~, locomotion_velocity] = Decode_Rotary_Encoder(data(:, 7, i), app.recobj.sampf);
+        [~, locomotion_velocity] = Decode_Rotary_Encoder(data(:, 7, i), sampf);
         p{1,i}.locomotion_velocity = locomotion_velocity;
     end
     
     % Eye velocity
     if ~isfield(p{1, i}, 'eye_velocity')
-        eye_velocity = Get_eye_velocity(data(:, 1:2, i), app.recobj.sampf);
+        eye_velocity = Get_eye_velocity(data(:, 1:2, i), sampf);
         p{1,i}.eye_velocity = eye_velocity;
     end
     
     % Detect saccade
     [locations, ~] = Get_detect_saccade(...
-        p{1,i}.eye_velocity, app.recobj.sampf,...
-        [app.Threshold_saccade_low.Value,...
-        app.Threshold_saccade_high.Value]);
+        p{1,i}.eye_velocity, sampf,...
+        [Thres_low, Thres_high]);
     
     t_saccades = t(locations, i);
     p{1,i}.p_saccades = locations; %time point
     p{1,i}.t_saccades = t_saccades; %time
-
 
 
     max_h = [max_h, max(data(:,1, i))];
