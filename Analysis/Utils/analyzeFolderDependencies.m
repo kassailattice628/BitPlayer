@@ -9,7 +9,9 @@ function T = analyzeFolderDependencies(folderPath)
         folderPath = pwd;
     end
 
+    % サブフォルダも含めて .m ファイルを探索
     files = dir(fullfile(folderPath, '**', '*.m'));
+
     visited = containers.Map;
     T = table(cell(0,1),cell(0,1),cell(0,1), ...
               'VariableNames', {'Caller','Callee','Toolbox'});
@@ -21,8 +23,7 @@ function T = analyzeFolderDependencies(folderPath)
     end
 
     [groupCounts, toolboxes] = groupcounts(T.Toolbox);
-    toolboxSummary = table(toolboxes, groupCounts);
-    disp(toolboxSummary)
+    disp(table(toolboxes, groupCounts))
 end
 
 
@@ -99,33 +100,40 @@ function toolboxName = getToolboxNameFromPath(pathStr)
         return;
     end
 
-    if contains(pathStr, 'toolbox/shared/')
-        % shared 以下のマッピング
+    % ---- shared ライブラリ判定 ----
+    if contains(pathStr, fullfile(matlabroot,'toolbox','shared'))
         if contains(pathStr, 'statslib')
             toolboxName = 'stats';
-        elseif contains(pathStr, '/signal')
+        elseif contains(pathStr, 'signal')
             toolboxName = 'signal';
         elseif contains(pathStr, 'imageslib')
             toolboxName = 'image';
+        elseif contains(pathStr, 'optimlib')
+            toolboxName = 'optim';
+        elseif contains(pathStr, 'maputils')
+            toolboxName = 'mapping';
         elseif contains(pathStr, 'controllib')
             toolboxName = 'control';
-        elseif contains(pathStr, '/coder')
+        elseif contains(pathStr, 'coder')
             toolboxName = 'coder';
         else
-            toolboxName = 'shared'; % 未知のものは shared のまま
+            toolboxName = 'shared'; % 未知の shared
         end
 
-    elseif contains(pathStr, 'toolbox')
-        tokens = regexp(pathStr, 'toolbox/([^/]+)/', 'tokens');
+    % ---- 通常の toolbox フォルダ ----
+    elseif contains(pathStr, fullfile(matlabroot,'toolbox'))
+        tokens = regexp(pathStr, 'toolbox[/\\]([^/\\]+)', 'tokens');
         if ~isempty(tokens)
             toolboxName = tokens{1}{1};
         else
             toolboxName = 'matlab';
         end
 
+    % ---- matlabroot 以下 ----
     elseif contains(pathStr, matlabroot)
         toolboxName = 'matlab';
 
+    % ---- ユーザー定義 ----
     else
         toolboxName = 'User-defined';
     end
