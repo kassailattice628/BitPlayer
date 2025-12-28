@@ -1,13 +1,14 @@
-function latency = Pupil_dialation_latency(t, x)
-%
-% t: time ベクトル
+function latency = Pupil_dialation_latency(stimOn, stimOff, t, x)
+% pupil dialation latency from video data
+% t: time ベクトル 
 % x: Pupil Area data
 
-% ====== 設定 ======
-stimOn  = 5.0;   % 刺激開始 (s)
-stimOff = 7.0;   % 刺激終了 (s)
 
-baselineWin = [3.0 5.0];   % baseline（刺激前2秒）
+% ====== 設定 ======
+%stimOn  = 5.0;   % 刺激開始 (s)
+%stimOff = 10.0;   % 刺激終了 (s)
+
+baselineWin = [stimOn-2, stimON];   % baseline（刺激前2秒）
 frac = 0.2;                % peak の 20%
 
 smoothWinSec = 0.05;       % 平滑化（秒）0 にすると無し
@@ -29,7 +30,7 @@ idxBase = (t >= baselineWin(1)) & (t < baselineWin(2));
 mu0 = mean(x(idxBase));
 
 % ---- peak（刺激中）----
-idxStim = (t >= stimOn) & (t <= stimOff);
+idxStim = (t >= stimOn) & (t <= stimOff+2);
 peak = max(x(idxStim));
 
 % ---- しきい値（baseline + 20% peak）----
