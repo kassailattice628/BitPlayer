@@ -28,5 +28,6 @@ rotMove_filt = filtfilt(d_filt, rotMove);
 %rotVel = abs(diff(rotMove_filt)/p{1,n}.AIstep);
 rotVel = abs(diff(rotMove_filt)*sf);
 % Smoothing
-rotVel = smooth(rotVel, 10, 'moving');
+%rotVel = smooth(rotVel, 10, 'moving');
+rotVel = movmean(rotVel, 10);
 end
