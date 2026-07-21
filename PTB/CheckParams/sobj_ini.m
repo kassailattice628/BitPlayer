@@ -123,7 +123,7 @@ sobj.Bar_heigth_pix = ...
     round(Deg2Pix(sobj.Bar_height, sobj.MonitorDist, sobj.Pixelpitch));
 
 %Grating contras (cannot change from GUI)
-sobj.GratingContrast = 100;
+sobj.GratingContrast = 1; %100;
 %Grating speed
 sobj.TemporalFreq = 2; %2Hz
 sobj.TemporalFreq_i = 3;
@@ -158,6 +158,7 @@ sobj.ConcentricDirection_i = 1;
 
 %%
 sobj.CheckerPatch = false;
+sobj.FlashButton = false;
 
 %% 2 points
 % sobj.stimsz2 = sobj.stimsz; %1 deg

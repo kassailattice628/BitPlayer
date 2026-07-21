@@ -248,8 +248,9 @@ if n_blankloop > app.Blankloop.Value
             [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
 
             %1st frame, phase=0
+            lumi = sobj.stimlumi;
             Screen('DrawTexture', sobj.wPtr, gratingtex, [], stimRect, angle,...
-                [], [], [], [], [], [0, cycles_per_pix, sobj.GratingContrast, 0]);
+                [], [], [lumi, lumi, lumi], [], [], [0, cycles_per_pix, sobj.GratingContrast, 0]);
 
             [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
                 Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
@@ -261,7 +262,7 @@ if n_blankloop > app.Blankloop.Value
             for count = 2:sobj.FlipNum
                 phase = count * 360/sobj.FrameRate * sobj.TemporalFreq;
                 Screen('DrawTexture', sobj.wPtr, gratingtex, [], stimRect, angle,...
-                    [], [], [], [], [], [phase, cycles_per_pix, sobj.GratingContrast, 0]);
+                    [], [], [lumi, lumi, lumi], [], [], [phase, cycles_per_pix, sobj.GratingContrast, 0]);
 
                 %Add Photo Sensor (Left, Bottom)
                 Screen('FillRect', sobj.wPtr, 255, [0 sobj.RECT(4)-30, 30, sobj.RECT(4)]);
@@ -701,7 +702,7 @@ if n_blankloop > app.Blankloop.Value
                 [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
 
                 % Make texture
-                Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect);
+                Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect, [], [], [], [sobj.stimlumi, sobj.stimlumi, sobj.stimlumi]);
 
                 %Flip (Stim ON)
                 [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
