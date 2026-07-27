@@ -1,6 +1,6 @@
 # BitPlayer
 
-Last Update 2024/1/18
+Last Update 2024/9/19
 
 ***
 BitPlayer is the Matlab app for
@@ -48,23 +48,30 @@ PTB & DAQ are synchronized by serial communication by monitoring trigger conditi
     - pandas, numpy, scipy
 ___
 ## Visual Stimulation using PTB3
-1. Simple spot (full screen)
-1. Fine mapping (spot in smaller area)
-1. Random size spot
-1. Moving bar (fixed bar height: 65deg)
-1. Static bar (fixed bar height: 65deg)
-1. Moving Spot
+1. Uni:Simple spot (full screen)
+1. Fine mapping (spot on grid within a limitted area)
+1. Fine mapping Free (spot random position within a limitted area)
+1. Size Random 
+1. Looming
 1. Sinusoidal, Shifting Grating, Gabor
-1. Image Presentation (tested)
-1. V1 serach (Coarse & Fine)
-1. Decode SC_v1 (RandomCheckerPattern + some figures)
+1. Random dot motion
+1. Moving bar (fixed bar height)
+1. Static bar (fixed bar height)
+1. Moving Spot
+1. Image Presentation (under development)
+1. Decode SC_v2 (RandomCheckerPattern + some figures)
+1. Decode Test_V2 (Simple figure + alphabet)
+1. ImageNet train
+1. ImageNet test
+1. Search V1_Coarse
+1. Search V1_Fine
 1. 2points, black/white (under development)
 
 ### How to add new stimulation
 1. Add name of new stimulation @./PTB/CheckParams/gui_ini.m
-1. Add GUI setting
+1. Add GUI setting in appdesigner
     1. Add position info in GUI function PatternDropDownValueChanged
-    1. Add other GUI settings @./PTB/GUI/Set_StimPattern.m
+1. Add other GUI settings @./PTB/GUI/Set_StimPattern.m
 1. Add procedure of the new stim @./PTB/Stim/VisStimON.m
 1. Add text info during stimu presentation ./PTB/GUI/ShowStimInfo.m
 1. Save stimulus-specific parameters ./PTB/CheckParams/Get_ParamsSave.m
@@ -81,6 +88,25 @@ ___
 
 ***
 ## Change history
+2024/09/19
+* Modify RandomChecer for Decoding project.
+* Reduce the number of pixels (ex., 5x5)
+* Remove version info from stim name of Decode SC(test)"_v2"; but the older code are kept.
+
+2024/04/18
+* Add ImageNet stim.
+* Keep a order of training image across sessions.
+* Subset of test images are selected because of the limited number of stim presentation. 
+
+2024/03/13
+* Update Decode SC/test v2. Each patch of Random checker is generate as white/black/2x2 small cecker
+* Update stim/bg luminace setting, double to uint8 (0-255).
+
+
+2024/03/04
+* Add MovingBar stim(rand8) before DecodeSC/Test stimulus.
+* Keep previouse setting for MoivingBar, DecodeSC/Test
+
 2024/01/18
 * Merge update PTB. Add stimuli for Decording SC.
 

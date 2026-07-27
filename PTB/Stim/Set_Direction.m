@@ -58,6 +58,7 @@ switch direction
         sobj.MoveDirection = str2double(direction);
 
 end
+
 end
 
 %% Get Direction List

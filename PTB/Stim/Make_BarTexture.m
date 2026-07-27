@@ -12,7 +12,6 @@ bar_w = sobj.Bar_width_pix;
 im_matrix = ones(bar_h, bar_w) * sobj.stimlumi;
 
 %Make textue
-%im_tex = Screen('MakeTexture', sobj.wPtr, im_matrix, ang, 4);
 im_tex = Screen('MakeTexture', sobj.wPtr, im_matrix);
 
 %Stim position in each frame

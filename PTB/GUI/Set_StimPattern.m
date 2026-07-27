@@ -36,8 +36,7 @@ switch value
         app.MoveSpd.Enable = 'on';
         app.MoveSpd_Label.Enable = 'on';
         app.DurationMoveStim_Label.Enable = 'on';
-        app.MoveSpd.Items = {'5', '10', '20', '40'};
-        app.MoveSpd.Value = app.MoveSpd.Items(2);
+
         app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
         app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
         Check_Stim_Duration(app);
@@ -59,7 +58,7 @@ switch value
     case 'Mosaic'
         app.DotDensity.Enable = 'on';
         app.DotDensity_Label.Enable = 'on';
-
+%{
     case 'Decode SC_v1'
         app.Size.Enable = 'off';
         app.Distance.Enable = 'on';
@@ -85,6 +84,99 @@ switch value
         %Set_RandChecker(app);
         Load_test_images(app);
 
+    case 'Decode SC_v2'
+        app.Size.Enable = 'on';
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 40;
+        app.sobj.Distance = app.Distance.Value;
+        app.Divide.Enable = 'on';
+        app.Divide.Value = 32; %or 16?
+        app.sobj.Div_grid = app.Divide.Value;
+
+        app.DurationMoveStim_Label.Enable = 'on';
+        app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
+        app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
+        Check_Stim_Duration(app);
+
+
+        app.Direction.Value = app.Direction.Items(9);
+
+        app.Direction.Enable = 'on';
+        app.Direction_Label.Enable = 'on';
+        app.MoveSpd.Enable = 'on';
+        app.MoveSpd_Label.Enable = 'on';
+        app.DurationMoveStim_Label.Enable = 'on';
+
+        app.CheckerboardButton.Enable = 'on';
+
+        Check_StimeArea_Distance(app);
+        Set_RandChecker(app); %update 20240313
+
+    case 'Decode test_v2'
+        app.Size.Enable = 'on';
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 40;
+        app.sobj.Distance = app.Distance.Value;
+        app.Divide.Enable = 'on';
+        app.Divide.Value = 32; %or 16?
+        app.sobj.Div_grid = app.Divide.Value;
+
+        app.DurationMoveStim_Label.Enable = 'on';
+        app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
+        app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
+        Check_Stim_Duration(app);
+
+        app.Direction.Value = app.Direction.Items(9);
+        app.Direction.Enable = 'on';
+        app.Direction_Label.Enable = 'on';
+        app.MoveSpd.Enable = 'on';
+        app.MoveSpd_Label.Enable = 'on';
+        app.DurationMoveStim_Label.Enable = 'on';
+
+
+        Check_StimeArea_Distance(app);
+        Load_test_images(app);
+        %}
+    case 'Decode SC' %20240918
+        SetChecker(app);
+        
+        app.CheckerboardButton.Enable = 'on';
+
+        Check_StimeArea_Distance(app);
+        Set_RandChecker(app); %update 20240313
+
+    case 'Decode test' %20240918
+        SetChecker(app);
+        
+        Check_StimeArea_Distance(app);
+        Load_test_images(app);
+
+    case {'ImageNet train', 'ImageNet test'}
+        app.Size.Enable = 'on';
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 50;
+        app.sobj.Distance = app.Distance.Value;
+
+        app.DurationMoveStim_Label.Enable = 'on';
+        app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
+        app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
+        Check_Stim_Duration(app);
+
+        app.Direction.Value = app.Direction.Items(9);
+        app.Direction.Enable = 'on';
+        app.Direction_Label.Enable = 'on';
+        app.MoveSpd.Enable = 'on';
+        app.MoveSpd_Label.Enable = 'on';
+        app.DurationMoveStim_Label.Enable = 'on';
+
+
+        app.FlashButton.Visible = 'on';
+        app.FlashButton.Enable = 'on';
+
+
+        Check_StimeArea_Distance(app);
+        app.sobj = Load_ImageNet(app.sobj, value);
+
     case {'Sinusoidal', 'Shifting Grating', 'Gabor'}
         app.SpatialFreq.Enable = 'on';
         app.SpatialFreq_Label.Enable = 'on';
@@ -92,7 +184,6 @@ switch value
         app.TemporalFreq_Label.Enable = 'on';
         app.Direction.Enable = 'on';
         app.Direction_Label.Enable = 'on';
-        %app.PositionOrderDropDown.Value = 'Fix Repeat';
         
     case {'Looming'}
         app.LoomingMax.Enable = 'on';
@@ -241,6 +332,13 @@ app.FixedPos.Enable = 'on';
 
 app.Distance.Enable = 'off';
 app.Divide.Enable = 'off';
+app.Divide.Visible = 'on';
+app.DivideLabel.Visible = 'on';
+app.CheckerDivLabel.Visible ='off';
+app.CheckerDivDropDown.Enable = 'off';
+app.CheckerDivDropDown.Visible = 'off';
+%app.FlashButton.Visible = 'off';
+app.FlashButton.Enable = 'off';
 
 app.DotDensity.Enable = 'off';
 app.DotDensity_Label.Enable = 'off';
@@ -278,8 +376,52 @@ app.Direction.Items =...
     'Rand8', 'Ord12', 'Rand12', 'Rand16',...
     'Free', 'Ord12+jump', 'Ord16+jump', '0 vs 90'};
 
-app.Direction.Value = app.Direction.Items(10);
+app.Direction.Value = app.Direction.Items(11);
+
+app.MoveSpd.Items = {'5', '10', '20', '40'};
+app.MoveSpd.Value = app.MoveSpd.Items(2);
 
 app.ShapeDropDown.Value = 'Circle';
 app.sobj.Shape = 'FillOval';
+
+app.CheckerboardButton.Enable = 'off';
+end
+
+%%
+function SetChecker(app)
+
+app.Size.Enable = 'on';
+app.Size.Value = 3; %for moving bar
+SizeChange(app, app.Size.Value);
+
+app.Size.Enable = 'on';
+app.Distance.Enable = 'on';
+app.Distance.Value = 40;
+app.sobj.Distance = app.Distance.Value;
+
+app.Divide.Enable = 'off';
+app.Divide.Visible = 'off';
+app.DivideLabel.Visible = 'off';
+
+app.CheckerDivLabel.Visible ='on';
+app.CheckerDivDropDown.Visible = 'on';
+app.CheckerDivDropDown.Enable = 'on';
+app.CheckerDivDropDown.Items = {'5', '8', '16', '32'};
+app.CheckerDivDropDown.Value =  app.CheckerDivDropDown.Items(1);
+app.sobj.Div_grid = str2double(app.CheckerDivDropDown.Value);
+%app.FlashButton.Visible = 'on';
+app.FlashButton.Enable = 'on';
+
+
+app.DurationMoveStim_Label.Enable = 'on';
+app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
+app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
+Check_Stim_Duration(app);
+
+app.Direction.Value = app.Direction.Items(9);
+app.Direction.Enable = 'on';
+app.Direction_Label.Enable = 'on';
+app.MoveSpd.Enable = 'on';
+app.MoveSpd_Label.Enable = 'on';
+app.DurationMoveStim_Label.Enable = 'on';
 end

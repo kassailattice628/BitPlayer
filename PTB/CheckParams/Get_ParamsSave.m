@@ -15,7 +15,9 @@ if ~Blank
 
     %%% Center Position %%%
     switch sobj.Pattern
-        case {'Moving Bar', 'Decode SC_v1', 'Decode test_v1'}
+        case {'Moving Bar',...
+                'Decode SC', 'Decode test',...
+                'ImageNet train', 'ImageNet test'}
 
         case 'Fine Mapping Free'
             p.stim1.CenterX_pix = sobj.StimCenterPos(1);
@@ -99,6 +101,7 @@ if ~Blank
             p.stim1.PatchSize_deg = sobj.Distance;
             p.stim1.DotSize_deg = sobj.dot_RDM_deg;
 
+        %{
         case 'Decode SC_v1'
             % Random Checkker pattern for "Decoding"
             p.stim1.Size_deg = sobj.Distance; % Fixed size
@@ -110,7 +113,58 @@ if ~Blank
             p.stim1.Size_deg = sobj.Distance; % Fixed size
             p.stim1.Image_i = sobj.img_i;
             p.stim1.Image_fname = sobj.img_shape;
+        %}
 
+        case {'Decode SC'}
+            p.stim1.subPattern = sobj.subPattern;
+            p.stim1.FlashON = sobj.FlashButton;
+
+            switch sobj.subPattern
+                case 'Checker'
+                    % Random Checker pattern for "Decoding"
+                    p.stim1.Size_deg = sobj.Distance; % Fixed size
+                    p.stim1.Checker_pattern = sobj.checker_pattern;
+
+                case 'MovingBar'
+                    p.stim1.Movebar_Direction_angle_deg = sobj.MoveDirection;
+            end
+
+
+        case {'Decode test'}
+            p.stim1.subPattern = sobj.subPattern;
+            p.stim1.FlashON = sobj.FlashButton;
+            
+            switch sobj.subPattern
+                case 'Checker'
+                    % 5 figures, and 5 characters
+                    p.stim1.Size_deg = sobj.Distance; % Fixed size
+                    p.stim1.Image_i = sobj.img_i;
+                    p.stim1.Image_fname = sobj.img_shape;
+
+                case 'MovingBar'
+                    p.stim1.Movebar_Direction_angle_deg = sobj.MoveDirection;
+            end
+
+        case {'ImageNet train'}
+            p.stim1.subPattern = sobj.subPattern;
+            switch sobj.subPattern
+                case 'MovingBar'
+                    p.stim1.Movebar_Direction_angle_deg = sobj.MoveDirection;
+                case 'Image'
+                    p.stim1.Size_deg = sobj.Distance;
+                    p.stim1.ImageNet_name = sobj.ImageNet_f;
+                    p.stim1.Image_i = sobj.RandOrderImages(sobj.i_presented - 1);
+            end
+        case {'ImageNet test'}
+            p.stim1.subPattern = sobj.subPattern;
+            switch sobj.subPattern
+                case 'MovingBar'
+                    p.stim1.Movebar_Direction_angle_deg = sobj.MoveDirection;
+                case 'Image'
+                    p.stim1.Size_deg = sobj.Distance;
+                    p.stim1.ImageNet_name = sobj.ImageNet_f;
+                    p.stim1.Image_i = sobj.img_i;
+            end
     end
 end
 end

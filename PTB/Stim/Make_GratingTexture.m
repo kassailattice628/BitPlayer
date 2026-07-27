@@ -23,7 +23,8 @@ if flag_gabor == 0
         %shifting grating
         contrastPreMultiplicator = 1;
     else
-        contrastPreMultiplicator = 2.55/s.stimlumi;
+        stimlumi = double(s.stimlumi);
+        contrastPreMultiplicator = 2.55/stimlumi;
     end
 
     switch s.Shape
@@ -40,7 +41,7 @@ if flag_gabor == 0
 
 elseif flag_gabor == 1
     %bgcol = s.bgcol/s.stimlumi;
-    bgcol = s.bgcol;
+    bgcol = double(s.bgcol)/255;
     
     gratingtex = CreateProceduralGabor(...
         s.wPtr, s.StimSize_pix(1), s.StimSize_pix(2),...
