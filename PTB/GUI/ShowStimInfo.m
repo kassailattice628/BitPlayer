@@ -214,6 +214,15 @@ switch sobj.Pattern
             fprintf('Image-i: %u; File: %s \n', sobj.img_i, sobj.ImageNet_f);
         end
 
+    case 'ImageNet NoiseCorr'
+        text_stim_info{3} = [...
+        'Position: ', num2str(num2str(sobj.FixPos)),...
+            '/(',num2str(sobj.DivNum), 'x',num2str(sobj.DivNum) ')'];
+        text_stim_info{4} = sobj.Pattern;
+        text_stim_info{5} = sobj.ImageNet_f;
+
+        fprintf('Image-i: %u; File: %s \n', sobj.img_i, sobj.ImageNet_f);
+        
     case 'Mouse Cursor'
         %********
 

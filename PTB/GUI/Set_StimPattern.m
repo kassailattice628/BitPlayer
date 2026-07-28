@@ -151,7 +151,7 @@ switch value
         Check_StimeArea_Distance(app);
         Load_test_images(app);
 
-    case {'ImageNet train', 'ImageNet test'}
+    case {'ImageNet train', 'ImageNet test', 'ImageNet NoiseCorr'}
         app.Size.Enable = 'on';
         app.Distance.Enable = 'on';
         app.Distance.Value = 50;
@@ -175,6 +175,7 @@ switch value
 
 
         Check_StimeArea_Distance(app);
+        %Select Image containing folder
         app.sobj = Load_ImageNet(app.sobj, value);
 
     case {'Sinusoidal', 'Shifting Grating', 'Gabor'}

@@ -30,12 +30,20 @@ switch s.Pattern
         s.i_presented = s.i_presented + 1;
 
     case "ImageNet test"
-        %%
+        %
         i = s.n_in_loop - s.Blankloop_times - 8;
 
         % Get randamized index. sobj.n_Images = 20 image?
         s.img_i = Get_Randomized_Order(i, s.n_Images);
         s.ImageNet_f = s.ImageNet_list{s.img_i};
+
+    case "ImageNet NoiseCorr"
+        %
+        i = s.n_in_loop - s.Blankloop_times;
+        
+        s.img_i = Get_Randomized_Order(i, s.n_Images);
+        s.ImageNet_f = s.ImageNet_list{s.img_i};
+
 
 end
 s.ImageNet_f = s.ImageNet_list{s.img_i};

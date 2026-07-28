@@ -683,7 +683,7 @@ if n_blankloop > app.Blankloop.Value
 
                 sobj.subPattern = 'Image';
 
-                % Select one image from ImageNet_train or _trest
+                % Select one image from ImageNet_train or _test
                 sobj = Set_ImageNet_images(sobj);
 
                 % Load image
@@ -734,9 +734,68 @@ if n_blankloop > app.Blankloop.Value
                 
                 ResetStimInfo(app.StiminfoTextArea);
             end
+        
+        case  {'ImageNet NoiseCorr'}
+            %Stim position
+            sobj.CenterPos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+            sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
 
+
+            % Image Presentation
+
+            sobj.subPattern = 'Image';
+
+            % Select one image from ImageNet_train or _test
+            sobj = Set_ImageNet_images(sobj);
+
+            % Load image
+            img = imread(fullfile(sobj.ImageNet_dir, sobj.ImageNet_f));
+            imgtex = Screen('MakeTexture', sobj.wPtr, img);
+
+            % Set image size
+            Area_deg = [0, 0, sobj.Distance, sobj.Distance];
+            Area_pix = Deg2Pix(Area_deg, sobj.MonitorDist, sobj.Pixelpitch);
+            stimRect = CenterRectOnPointd(Area_pix,...
+                sobj.StimCenterPos(1), sobj.StimCenterPos(2));
+
+
+            % Stim Presentation
+            % Blank %%%%%%%%%%%%%%%%%
+            [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
+
+            % Make texture
+            Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect, [], [], [], [sobj.stimlumi, sobj.stimlumi, sobj.stimlumi]);
+
+            %Flip (Stim ON)
+            [sobj.vbl_2, ~, ~, ~, sobj.BeamposON] = ...
+                Screen('Flip', sobj.wPtr, sobj.vbl_1 + sobj.Delay_sec);
+            vbl = sobj.vbl_2;
+            ShowStimInfo(sobj, app.StiminfoTextArea, app.Blankloop.Value);
+
+            %Flashing ON/OFF
+            if app.FlashButton.Value
+                for n = 1:2
+                    %blank screen
+                    Screen('FillRect', sobj.wPtr, sobj.bgcol);
+                    Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
+                    vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
+
+                    %Prepare next stim + photosensor
+                    Screen('FillRect', sobj.wPtr, 255, [0, sobj.RECT(4)-30, 30, sobj.RECT(4)]);
+                    Screen('DrawTexture', sobj.wPtr, imgtex, [], stimRect);
+                    vbl = Screen('Flip', sobj.wPtr, vbl + 0.2);
+                end
+            end
+
+            %Prepare blank full screen
+            Screen('FillRect', sobj.wPtr, sobj.bgcol);
+
+            %Flip (Stim OFF)
+            [sobj.vbl_3, ~, ~, ~, sobj.BeamposOFF] = ...
+                Screen('Flip', sobj.wPtr, sobj.vbl_2 + sobj.Duration_sec);
+
+            ResetStimInfo(app.StiminfoTextArea);
     end
-
 
 else
     % blank loop
