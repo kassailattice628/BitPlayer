@@ -151,9 +151,9 @@ switch value
         Check_StimeArea_Distance(app);
         Load_test_images(app);
 
-    case {'ImageNet train', 'ImageNet test', 'ImageNet NoiseCorr'}
-        app.Size.Enable = 'on';
-        app.Distance.Enable = 'on';
+    case {'ImageNet train', 'ImageNet test'}
+        app.Size.Enable = 'on'; %width of moving bar
+        app.Distance.Enable = 'on'; %image size
         app.Distance.Value = 50;
         app.sobj.Distance = app.Distance.Value;
 
@@ -167,6 +167,33 @@ switch value
         app.Direction_Label.Enable = 'on';
         app.MoveSpd.Enable = 'on';
         app.MoveSpd_Label.Enable = 'on';
+        app.DurationMoveStim_Label.Enable = 'on';
+
+
+        app.FlashButton.Visible = 'on';
+        app.FlashButton.Enable = 'on';
+
+
+        Check_StimeArea_Distance(app);
+        %Select Image containing folder
+        app.sobj = Load_ImageNet(app.sobj, value);
+
+    case 'ImageNet NoiseCorr'
+        app.Size.Enable = 'off';
+        app.Distance.Enable = 'on';
+        app.Distance.Value = 50;
+        app.sobj.Distance = app.Distance.Value;
+
+        app.DurationMoveStim_Label.Enable = 'off';
+        app.sobj.MoveSpd = str2double(app.MoveSpd.Value);
+        app.sobj.MoveSpd_i = find(strcmp(app.MoveSpd.Items, app.MoveSpd.Value));
+        Check_Stim_Duration(app);
+
+        app.Direction.Value = app.Direction.Items(9);
+        app.Direction.Enable = 'off';
+        app.Direction_Label.Enable = 'off';
+        app.MoveSpd.Enable = 'off';
+        app.MoveSpd_Label.Enable = 'off';
         app.DurationMoveStim_Label.Enable = 'on';
 
 
