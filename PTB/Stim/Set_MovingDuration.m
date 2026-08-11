@@ -10,7 +10,7 @@ switch sobj.Pattern
         %distance = sobj.RECT(4) + sobj.StimSize_pix(1); %pix
         distance = ...
             Deg2Pix(sobj.Bar_height, sobj.MonitorDist, sobj.Pixelpitch) + ...
-            sobj.Bar_width;
+            sobj.Bar_width_pix;
         duration = distance / MoveSpd_pix; %sec
     
     case {'Moving Spot'}
