@@ -10,6 +10,22 @@ function sobj = Set_StimPos_Spot(mode, sobj)
 % ImageNet train/test all hit this previously).
 list_size = size(sobj.CenterPos_list, 1);
 
+% sobj.FixPos is defined (and set from the GUI) as an index into the
+% DivNum x DivNum coarse matrix. That's a valid index into
+% CenterPos_list only when CenterPos_list *is* that coarse matrix.
+% For sub-area patterns such as 'Fine Mapping', CenterPos_list is
+% instead built from a Div_grid x Div_grid sub-area (see VisStimON.m),
+% so FixPos does not correspond to any particular cell in it -- using it
+% directly there can index past the end of CenterPos_list (crash) or
+% silently land on the wrong cell. Detect that case from the list size
+% itself (no extra GUI control needed) and fall back to the middle
+% element of CenterPos_list, i.e. the center of the mapped sub-area.
+if list_size == sobj.DivNum^2
+    ref_pos = sobj.FixPos;
+else
+    ref_pos = ceil(list_size / 2);
+end
+
 i = sobj.n_in_loop - sobj.Blankloop_times;
 %%%%%%
 switch mode
@@ -20,18 +36,19 @@ switch mode
             sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
 
     case 'Ordered Matrix'
-        %Present stim in order (start from FixPos in GUI)
-        %Start from sobj.FixPos
+        %Present stim in order (start from FixPos in GUI, or from the
+        %center of the sub-area for Fine-Mapping-style patterns)
         i_center = Get_RandomCenterPosition(i, list_size, 0);
-        sobj.index_center_in_mat = Sfhit_position(i_center, sobj.FixPos, list_size);
+        sobj.index_center_in_mat = Sfhit_position(i_center, ref_pos, list_size);
 
         sobj.StimCenterPos =...
             sobj.CenterPos_list(sobj.index_center_in_mat, :); %[X, Y] on pixel
 
     case 'Fix Repeat'
-        %Center pos is fixed i in n x n matrix.
-        sobj.index_center_in_mat = sobj.FixPos;
-        sobj.StimCenterPos = sobj.CenterPos_list(sobj.FixPos,:);
+        %Center pos is fixed at ref_pos (FixPos, or the center of the
+        %sub-area for Fine-Mapping-style patterns)
+        sobj.index_center_in_mat = ref_pos;
+        sobj.StimCenterPos = sobj.CenterPos_list(ref_pos,:);
 
     case 'Concentric'
         sobj.index_center_in_mat = sobj.FixPos;
