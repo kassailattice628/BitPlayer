@@ -20,6 +20,8 @@ stateMonitor(app)
 
 app.recobj.DAQt = [];
 
+mfile = []; %matfile handle for per-trial (incremental) save
+
 %% Loop start %%%%%%%%
 while app.loopON
 
@@ -81,7 +83,36 @@ while app.loopON
         end
         pause(0.1)
     end
-    
+
+    %% Save this trial to disk immediately (per-trial save) %%%%%
+    %  Runs only after analog capture AND (if CameraSave is ON) the
+    %  per-trial video file are both finished, i.e. after 'Loop.End' is
+    %  reached -- so this write never runs concurrently with, or delays,
+    %  the ScansAvailableFcn callback or the IMAQ disk logger.
+    %  Even if the DAQ/serial link or main_loop is aborted before the
+    %  session finishes normally, trials saved up to this point are not
+    %  lost.
+    if app.saveON && strcmp(app.CurrentState, 'Loop.End')
+        try
+            is_new_file = isempty(mfile) || ...
+                ~strcmp(mfile.Properties.Source, app.recobj.FileName);
+            if is_new_file
+                mfile = matfile(app.recobj.FileName, 'Writable', true);
+                mfile.SaveData = app.CaptureData;
+                mfile.SaveTimestamps = app.CaptureTimestamps;
+            else
+                mfile.SaveData(:, :, app.recobj.n_in_loop) = app.CaptureData;
+                mfile.SaveTimestamps(:, app.recobj.n_in_loop) = app.CaptureTimestamps;
+            end
+            mfile.recobj = app.recobj;
+            fprintf('Saved trial #%d to disk.\n', app.recobj.n_in_loop);
+        catch ME
+            warning('main_loop:SaveFailed', ...
+                'Trial #%d could not be saved to disk (%s). Will retry next trial.', ...
+                app.recobj.n_in_loop, ME.message);
+        end
+    end
+
     %% Finishing loop
     if app.StandAloneModeButton.Value
         disp('Wait for ITI')
@@ -123,18 +154,24 @@ end %% Loop end %%%%%%%%
 
 
 if app.saveON
-    % Save DAQ data to the file
+    % SaveData/SaveTimestamps were already written to disk trial-by-trial
+    % above; here we just finalize recobj (with the corrected n_in_loop)
+    % in the same file.
     app.recobj.n_in_loop = app.recobj.n_in_loop - 1;
     recobj = app.recobj;
 
-    SaveData = app.SaveData;
-    SaveTimestamps = app.SaveTimestamps;
-
     disp('Saving MAT >>>')
-    save(app.recobj.FileName, 'recobj', 'SaveData', 'SaveTimestamps');
-    fprintf('Saved: %s\n', app.recobj.FileName);
-
-    clear SaveData SaveTimestamps
+    try
+        if isempty(mfile) || ~strcmp(mfile.Properties.Source, app.recobj.FileName)
+            mfile = matfile(app.recobj.FileName, 'Writable', true);
+        end
+        mfile.recobj = recobj;
+        fprintf('Saved: %s\n', app.recobj.FileName);
+    catch ME
+        warning('main_loop:SaveFailed', ...
+            'Final save failed (%s). Trials already written per-trial should still be on disk at: %s', ...
+            ME.message, app.recobj.FileName);
+    end
 
     app.SaveData = [];
     app.SaveTimestamps = [];
@@ -157,5 +194,7 @@ if app.saveON
     app.CaptureTimestamps = [];
     stateMonitor(app)
 end
+
+clear mfile %release the file handle
 
 end
