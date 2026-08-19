@@ -155,7 +155,7 @@ if ~Blank
                     p.stim1.ImageNet_name = sobj.ImageNet_f;
                     p.stim1.Image_i = sobj.RandOrderImages(sobj.i_presented - 1);
             end
-        case {'ImageNet test'}
+        case {'ImageNet test', 'ImageNet NoiseCorr'}
             p.stim1.subPattern = sobj.subPattern;
             switch sobj.subPattern
                 case 'MovingBar'
