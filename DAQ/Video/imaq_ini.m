@@ -14,7 +14,7 @@ imaq = app.imaq;
 % Mode 0 is the standard imaging mode with full resolution readout.
 % Mode 1 is 2x2 binning. Effetive resolution is reduced by half and image
 % brightness is increased all cases.
-% Mode 5 is 4x4binning. Effective resollution is reduced by a factor of four.
+% Mode 5 is 4x4 binning. Effective resollution is reduced by a factor of four.
 % Mode 7 optimize highe well depth, SNR, quantum efficiency at the expense of
 % frame rate 
 

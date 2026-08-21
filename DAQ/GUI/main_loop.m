@@ -96,27 +96,39 @@ while app.loopON
         try
             is_new_file = isempty(mfile) || ...
                 ~strcmp(mfile.Properties.Source, app.recobj.FileName);
+
             if is_new_file
                 mfile = matfile(app.recobj.FileName, 'Writable', true);
-                mfile.SaveData = app.CaptureData;
-                mfile.SaveTimestamps = app.CaptureTimestamps;
-            else
-                mfile.SaveData(:, :, app.recobj.n_in_loop) = app.CaptureData;
-                mfile.SaveTimestamps(:, app.recobj.n_in_loop) = app.CaptureTimestamps;
             end
+
+            [M, N] = size(app.CaptureData);
+            T = numel(app.CaptureTimestamps);
+            n = app.recobj.n_in_loop;
+
+            if is_new_file
+                % 新規ファイル作成時：trial#1の実データ + ダミー2枚目を同時書き込み
+                % (末尾次元が1にならないようにして3次元を確定させる)
+                mfile.SaveData(1:M, 1:N, 1:2) = cat(3, app.CaptureData, nan(M, N));
+                mfile.SaveTimestamps(1:T, 1:2) = cat(2, app.CaptureTimestamps(:), nan(T, 1));
+            else
+                % 2回目以降：通常の添字代入（ダミーページがあれば上書きされる）
+                mfile.SaveData(:, :, n) = app.CaptureData;
+                mfile.SaveTimestamps(:, n) = app.CaptureTimestamps(:);
+            end
+
             mfile.recobj = app.recobj;
-            fprintf('Saved trial #%d to disk.\n', app.recobj.n_in_loop);
+            fprintf('Saved trial #%d to disk.\n', n);
         catch ME
             warning('main_loop:SaveFailed', ...
                 'Trial #%d could not be saved to disk (%s). Will retry next trial.', ...
-                app.recobj.n_in_loop, ME.message);
+                n, ME.message);
         end
     end
 
     %% Finishing loop
     if app.StandAloneModeButton.Value
         disp('Wait for ITI')
-        
+
         t_ITI = tic;
         t0 = toc(t_ITI);
         n_check = 1;
