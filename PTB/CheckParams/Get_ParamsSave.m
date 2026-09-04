@@ -62,7 +62,7 @@ if ~Blank
             p.stim1.Bar_Orientation_angle_deg = sobj.BarOrientation;
             % Bar legnth => sobj.stim_length
 
-        case {'Sinusoidal', 'Shifting Grating', 'Gabor', 'V1 search_Coarse'}
+        case {'Sinusoidal', 'Shifting Grating', 'Gabor', 'Search V1_Coarse'}
             % Stim angle
             p.stim1.Grating_Angle_deg = sobj.MoveDirection;
 
@@ -72,7 +72,7 @@ if ~Blank
             p.stim1.Image_fname = sobj.img_fname;
             % List of images: sobj.list_iomages
 
-        case {'V1 search_Fine'}
+        case {'Search V1_Fine'}
             % Stim angle
             p.stim1.Grating_Angle_deg = sobj.MoveDirection;
             
