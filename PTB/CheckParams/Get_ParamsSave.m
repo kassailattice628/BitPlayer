@@ -24,9 +24,13 @@ if ~Blank
             p.stim1.CenterY_pix = sobj.StimCenterPos(2);
 
         otherwise
+            % index_center_in_mat/StimCenterPosは通常スカラー/[1x2]だが、
+            % 複数点同時提示(sobj.UseMultiDot)のときはそれぞれベクトル/
+            % [k x 2]になる。(:,1)/(:,2)にしておけばk=1のときも従来と
+            % 同じ値になり後方互換。
             p.stim1.Center_position = sobj.index_center_in_mat;
-            p.stim1.CenterX_pix = sobj.StimCenterPos(1);
-            p.stim1.CenterY_pix = sobj.StimCenterPos(2);
+            p.stim1.CenterX_pix = sobj.StimCenterPos(:, 1);
+            p.stim1.CenterY_pix = sobj.StimCenterPos(:, 2);
     end
 
     %%% Size %%%

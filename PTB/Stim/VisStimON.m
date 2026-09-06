@@ -829,7 +829,14 @@ app.sobj = sobj;
     function Prepare_stim_spot(Size)
         flag = 1;
 
-        sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
+        if isfield(sobj, 'UseMultiDot') && sobj.UseMultiDot
+            % 複数点同時提示(ランダム化)。GUIのPositionOrderDropDownは
+            % 経由しない。sobj.UseMultiDot はスクリプト側で明示的にセット
+            % する想定(詳細: Set_StimPos_MultiDot.m のヘッダコメント参照)。
+            sobj = Set_StimPos_MultiDot(sobj);
+        else
+            sobj = Set_StimPos_Spot(app.PositionOrderDropDown.Value, sobj);
+        end
 
         maxDiameter = round(max(Size) * 1.5);
 
@@ -851,12 +858,16 @@ app.sobj = sobj;
             % dot_type:2 high quality anti-aliasing
             %
 
-            X = sobj.StimCenterPos(1);
-            Y = sobj.StimCenterPos(2);
+            % StimCenterPosは通常[1 x 2]だが、複数点同時提示(UseMultiDot)
+            % のときは[k x 2](k点)になる。DrawDotsは2行N列のxy行列で
+            % 複数点を一度に描画できるので、転置して渡すだけでk=1のときと
+            % 同じコードパスで両対応できる。
+            X = sobj.StimCenterPos(:, 1)';
+            Y = sobj.StimCenterPos(:, 2)';
             %stimColor does not work?
             %Screen('DrawDots', sobj.wPtr, [X, Y], Size(1), sobj.stimlumi,...
             %    [], dot_type);
-            Screen('DrawDots', sobj.wPtr, [X, Y], Size(1), sobj.stimColor,...
+            Screen('DrawDots', sobj.wPtr, [X; Y], Size(1), sobj.stimColor,...
                 [], dot_type);
         end
 
