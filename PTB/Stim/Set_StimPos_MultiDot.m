@@ -41,10 +41,31 @@ if isempty(schedule_cache) || i == 1 || ~isequal(thisKey, scheduleKey)
         sobj.CenterPos_list, M_pix, sobj.NTrialsFineMap, ...
         'TargetCap', sobj.MultiDotTargetCap);
     scheduleKey = thisKey;
+
+    % --- 診断出力(一時的、原因切り分け用。2026-09-07) -----------------------
+    ks_all = cellfun(@numel, schedule_cache);
+    % CenterPos_listの隣接点間隔の目安(グリッドがほぼ等間隔である前提)
+    xs = sort(unique(sobj.CenterPos_list(:,1)));
+    ys = sort(unique(sobj.CenterPos_list(:,2)));
+    dx_step = NaN; dy_step = NaN;
+    if numel(xs) > 1, dx_step = median(diff(xs)); end
+    if numel(ys) > 1, dy_step = median(diff(ys)); end
+    fprintf(['[MultiDot診断] N=%d, M_pix=%.1f (Margin=%.1fdeg, MonitorDist=%.1f, Pixelpitch=%.4f), ' ...
+        'grid_step_pix=[%.1f, %.1f]\n'], ...
+        size(sobj.CenterPos_list,1), M_pix, sobj.MultiDotMargin_deg, sobj.MonitorDist, sobj.Pixelpitch, ...
+        dx_step, dy_step);
+    fprintf('[MultiDot診断] スケジュールのk分布: min=%d median=%.1f max=%d (全%d試行分)\n', ...
+        min(ks_all), median(ks_all), max(ks_all), numel(ks_all));
+    % ---------------------------------------------------------------------
 end
 
 idx = mod(i - 1, numel(schedule_cache)) + 1;
 sobj.index_center_in_mat = schedule_cache{idx};                        % [1 x k]
 sobj.StimCenterPos = sobj.CenterPos_list(sobj.index_center_in_mat, :);  % [k x 2]
+
+% --- 診断出力(一時的、原因切り分け用。2026-09-07) -------------------------
+fprintf('[MultiDot診断] trial i=%d -> schedule idx=%d -> k=%d\n', ...
+    i, idx, numel(sobj.index_center_in_mat));
+% ---------------------------------------------------------------------
 
 end
