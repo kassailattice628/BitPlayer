@@ -74,9 +74,9 @@ for t = 1:T
 end
 
 ks = cellfun(@length, trials);
-fprintf('generate_multidot_mapping_trials: N=%d位置, T=%d試行, 安全マージンM=%.1f\n', N, T, M);
-fprintf('  同時点数k: min=%d median=%.1f max=%d 平均=%.2f\n', min(ks), median(ks), max(ks), mean(ks));
-fprintf('  反復数(位置ごと): min=%d median=%.1f max=%d (変動係数=%.3f)\n', ...
+fprintf('generate_multidot_mapping_trials: N=%d positions, T=%d trials, safety margin M=%.1f\n', N, T, M);
+fprintf('  simultaneous points k: min=%d median=%.1f max=%d mean=%.2f\n', min(ks), median(ks), max(ks), mean(ks));
+fprintf('  repeats per position: min=%d median=%.1f max=%d (CV=%.3f)\n', ...
     min(usage), median(usage), max(usage), std(usage) / mean(usage));
 
 end
