@@ -7,8 +7,18 @@ sobj = app.sobj;
 
 % update stim area.
 sobj.Distance = app.Distance.Value;
-% update stim number of grid 
-sobj.Div_grid = app.Divide.Value;
+% update stim number of grid (Divide) -- 'Decode SC'/'Decode test'は
+% Div_gridを別のGUI部品(CheckerDivDropDown、SetChecker.m/
+% CheckerDivDropDownValueChanged参照)が担当しているので、ここで
+% app.Divide.Value(非表示・無関係な値)で上書きしない
+% (既存バグ、2026-09-08発見: 上書きされた誤ったDiv_gridが
+% Set_RandCheckerに渡ってChecker_RECTが壊れる)。
+switch sobj.Pattern
+    case {'Decode SC', 'Decode test'}
+        % sobj.Div_gridはCheckerDivDropDown側が既に正しく設定済み
+    otherwise
+        sobj.Div_grid = app.Divide.Value;
+end
 
 
 %%
@@ -41,6 +51,16 @@ end
 %% Return
 
 app.sobj = sobj;
+
+% Checker_RECT(実際に描画するチェッカーパターンの画面上の座標)は
+% sobj.Distance/Div_gridから計算されるが、これまでDistance変更時に
+% 再計算するトリガーが無く、パターン選択時・CheckerDivDropDown変更時
+% にしか更新されなかった(既存バグ、2026-09-08発見)。Checker_RECTを
+% 使うパターンでのみ、ここでSet_RandCheckerを呼んで揃える。
+switch app.sobj.Pattern
+    case {'Decode SC', 'Decode test'}
+        Set_RandChecker(app);
+end
 
 
 %%
