@@ -1,10 +1,16 @@
 function enable_multidot(app, varargin)
 % ENABLE_MULTIDOT Fine Mapping / Fine Mapping Freeで複数点同時提示(MultiDot)を有効化する
 %
-%   enable_multidot(app)
-%   enable_multidot(app, 'Margin', 22)
-%   enable_multidot(app, 'Margin', 22, 'TargetCap', 25, 'NTrials', 470)
-%   enable_multidot(app, 'Margin', 22, 'Pad', 11, 'MaxK', 20)
+%   enable_multidot()
+%   enable_multidot('Margin', 22)
+%   enable_multidot('Margin', 22, 'TargetCap', 25, 'NTrials', 470)
+%   enable_multidot('Margin', 22, 'Pad', 11, 'MaxK', 20)
+%   enable_multidot(app, ...)   % appを明示的に渡すことも可能
+%
+% appを省略した場合、実行中のBitPlayer_ptbアプリを自動検出する
+% (get_running_app.m参照。`app = BitPlayer_ptb;`のようにコマンド
+% ウィンドウから明示的に起動していなくても、実行ボタン等で起動した
+% インスタンスをそのまま使える)。
 %
 % 名前-値ペアで指定した項目だけをsobjに反映する(省略した項目は既存値の
 % ままなので、変えたいものだけ書けばよい)。対応するsobjフィールド:
@@ -28,6 +34,15 @@ function enable_multidot(app, varargin)
 % フィールドを立てるだけの薄いヘルパー(詳細はSet_StimPos_MultiDot.m/
 % Set_StimPos_MultiDot_Free.mのヘッダコメント参照)。コマンドウィンドウで
 % 直接フィールド名を打つより打ち間違いが減る。
+
+% appが省略された場合(名前-値ペアの最初の文字列/文字が先頭引数に来た
+% 場合、または引数無しの場合)は実行中のアプリを自動検出する。
+if nargin == 0 || ischar(app) || isstring(app)
+    if nargin > 0
+        varargin = [{app}, varargin];
+    end
+    app = get_running_app('BitPlayer_ptb');
+end
 
 p = inputParser;
 addParameter(p, 'Margin', []);
