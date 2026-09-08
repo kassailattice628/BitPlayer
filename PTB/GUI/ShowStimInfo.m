@@ -38,8 +38,22 @@ switch sobj.Pattern
             numel(sobj.index_center_in_mat));
 
     case 'Fine Mapping Free'
-        fprintf('StimPos: %u x %u = %u \n\n',...
-            sobj.Div_grid, sobj.Div_grid, sobj.index_center_in_mat);
+        % 単一点/複数点(MultiDot)どちらでもStimCenterPosは[k x 2]
+        % (k=1のときも1行)なので、index_center_in_mat(グリッド版でのみ
+        % 定義されるフィールド)には依存せずここから直接組み立てる。
+        text_stim_info{3} = [...
+            'Center: ', num2str(sobj.FixPos),...
+            '/(',num2str(sobj.DivNum), 'x',num2str(sobj.DivNum) ')'];
+        text_stim_info{4} = ['Size: ', num2str(sobj.StimSize_deg),' deg'];
+        if isfield(sobj, 'UseMultiDot') && sobj.UseMultiDot
+            text_stim_info{5} = ['Points: k=', num2str(size(sobj.StimCenterPos,1))];
+        end
+
+        % コマンドウィンドウにも、実際にParamsSaveへ保存する値
+        % (StimCenterPos: モニター上の絶対ピクセル座標)と同じものを
+        % 表示する(保存データとの対応を追いやすくするため)。
+        fprintf('StimPos (free): k=%d, pos_pix=[%s]\n\n', ...
+            size(sobj.StimCenterPos,1), mat2str(sobj.StimCenterPos));
 
     case {'Static Bar'}
         %n x n matrix, position in matrix, size(width), bar angle

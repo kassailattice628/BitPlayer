@@ -58,23 +58,40 @@ if n_blankloop > app.Blankloop.Value
                 Stim_spot2(sobj, app.StiminfoTextArea);
 
         case 'Fine Mapping Free'
-            %%% Stim position (Circular Area: Diameter of sobj.Distance)
-            % Randomley sample from the circular area
-            d = Deg2Pix(sobj.Distance, sobj.MonitorDist, sobj.Pixelpitch);
-            xy = rand(1,2)*d;
+            if isfield(sobj, 'UseMultiDot') && sobj.UseMultiDot
+                % 複数点同時提示(連続配置、ランダム化)。詳細は
+                % Set_StimPos_MultiDot_Free.mのヘッダコメント参照。
+                sobj = Set_StimPos_MultiDot_Free(sobj);
+            else
+                %%% Stim position (square area, side = sobj.Distance)
+                % Randomley sample from the subarea
+                d = Deg2Pix(sobj.Distance, sobj.MonitorDist, sobj.Pixelpitch);
+                xy = rand(1,2)*d;
 
-            %Define center of the subarea (fix pos in DivNum^2 matrix)
-            Pos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
-            C = Pos_list(sobj.FixPos, :);
+                %Define center of the subarea (fix pos in DivNum^2 matrix)
+                Pos_list = Get_StimCenter_in_matrix(sobj.RECT, sobj.DivNum);
+                C = Pos_list(sobj.FixPos, :);
 
-            sobj.StimCenterPos(1) = C(1) + round(xy(1) - d/2);
-            sobj.StimCenterPos(2) = C(2) + round(xy(2) - d/2);
+                % 丸ごと再代入(部分代入だと、直前にMultiDotでk>1だった場合
+                % 余分な行が残ってしまうため)。保存(Get_ParamsSave.m)も
+                % 表示(ShowStimInfo.m)もこの絶対ピクセル値をそのまま使う
+                % (deg換算は解析側でPix2Deg.mと同じ式を使って行う。理由:
+                % 生のピクセル値さえ残っていれば、将来変換式に問題が
+                % 見つかっても記録し直さずに解析側だけ直せる)。
+                sobj.StimCenterPos = C + round(xy - d/2);
+            end
 
             % Blank -> Stim ON -> Stim OFF %%%%%%%%%%%%%%%%%
             [sobj.vbl_1, sobj.onset, sobj.flipend] = Prep_delay(sobj);
 
+            % StimCenterPosは通常[1 x 2]だが、複数点同時提示(UseMultiDot)
+            % のときは[k x 2](k点)になる。DrawDotsは2行N列のxy行列で
+            % 複数点を一度に描画できるので、転置して渡すだけでk=1のときと
+            % 同じコードパスで両対応できる(Prepare_stim_spotと同じ流儀)。
+            X = sobj.StimCenterPos(:, 1)';
+            Y = sobj.StimCenterPos(:, 2)';
             Screen('DrawDots', sobj.wPtr,...
-                [sobj.StimCenterPos(1), sobj.StimCenterPos(2)],...
+                [X; Y],...
                 sobj.StimSize_pix(1), sobj.stimColor,...
                 [], dot_type);
 

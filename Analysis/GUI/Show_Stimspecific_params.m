@@ -23,11 +23,17 @@ if ~p.stim1.Blank
             t2 = ['Size: ' , num2str(s.StimSize_deg), 'deg'];
 
         case 'Fine Mapping Free'
-            pos = s.FixPos;
+            % 複数点同時提示(MultiDot)のときはCenterX_pix/Yがベクトルに
+            % なるので、個数と1点目の値のみ簡潔に表示する。
             xpix = p.stim1.CenterX_pix;
             ypix = p.stim1.CenterY_pix;
-            t1 = ['Center: ',pos, ' pos(pix): (',...
-                num2str(xpix), ',', num2str(ypix), ')'];
+            if numel(xpix) > 1
+                t1 = ['Center: ', num2str(s.FixPos), ' k=', num2str(numel(xpix)), ...
+                    ' pos(pix): (', num2str(xpix(1)), ',', num2str(ypix(1)), ')+'];
+            else
+                t1 = ['Center: ', num2str(s.FixPos), ' pos(pix): (',...
+                    num2str(xpix), ',', num2str(ypix), ')'];
+            end
             t2 = ['Size: ' , num2str(s.StimSize_deg), 'deg'];
 
         case 'Size Random'
@@ -105,6 +111,9 @@ if ~p.stim1.Blank
                 t1 = ['Image file:', p.stim1.ImageNet_name];
                 t2 = ['Size: ', num2str(p.stim1.Size_deg), 'deg'];
             end
+        case 'ImageNet NoiseCorr'
+            t1 = ['Image file:', p.stim1.ImageNet_name];
+            t2 = ['Size: ', num2str(p.stim1.Size_deg), 'deg'];
 
     end
 

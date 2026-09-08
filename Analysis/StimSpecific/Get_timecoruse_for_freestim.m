@@ -84,9 +84,11 @@ for i = 1:n_stimON
             stim(i) = p{i_p}.stim1.Movebar_Direction_angle_deg;
 
         case 'Fine Mapping Free'
-            %stim_(i) = 
-            stim_pos(1, i) = p{i_p}.stim1.CenterX_pix;
-            stim_pos(2, i) = p{i_p}.stim1.CenterY_pix;
+            %stim_(i) =
+            % k>1(複数点同時提示)のときはCenterX_pix/Yがベクトルになる
+            % ので1点目のみ使用。
+            stim_pos(1, i) = p{i_p}.stim1.CenterX_pix(1);
+            stim_pos(2, i) = p{i_p}.stim1.CenterY_pix(1);
 
         case 'Image Presentation'
             stim(i) = p{i_p}.stim1.Image_i;

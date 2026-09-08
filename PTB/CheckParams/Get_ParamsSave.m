@@ -20,8 +20,14 @@ if ~Blank
                 'ImageNet train', 'ImageNet test'}
 
         case 'Fine Mapping Free'
-            p.stim1.CenterX_pix = sobj.StimCenterPos(1);
-            p.stim1.CenterY_pix = sobj.StimCenterPos(2);
+            % モニター上の絶対ピクセル座標をそのまま保存する(deg換算は
+            % 解析側でPix2Deg.mと同じ式を使って行う想定)。StimCenterPos
+            % は通常[1x2]だが、複数点同時提示(UseMultiDot)のときは
+            % [k x 2]になるので、(:,1)/(:,2)で列ごとに取り出す(線形
+            % インデックス(1)/(2)だとk>1のとき別の点の値を拾ってしまう
+            % ため使わない)。
+            p.stim1.CenterX_pix = sobj.StimCenterPos(:, 1);
+            p.stim1.CenterY_pix = sobj.StimCenterPos(:, 2);
 
         otherwise
             % index_center_in_mat/StimCenterPosは通常スカラー/[1x2]だが、
