@@ -26,7 +26,7 @@ persistent schedule_cache scheduleKey
 if ~isfield(sobj, 'MultiDotMargin_deg'), sobj.MultiDotMargin_deg = 17; end
 if ~isfield(sobj, 'MultiDotPad_deg'),    sobj.MultiDotPad_deg = 0.5*sobj.MultiDotMargin_deg; end
 if ~isfield(sobj, 'MultiDotMaxK'),       sobj.MultiDotMaxK = 20; end
-if ~isfield(sobj, 'NTrialsFineMap'),     sobj.NTrialsFineMap = 470; end
+if ~isfield(sobj, 'NTrialsFineMap'),     sobj.NTrialsFineMap = 500; end
 
 i = sobj.n_in_loop - sobj.Blankloop_times;
 
