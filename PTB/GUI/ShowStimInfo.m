@@ -30,8 +30,12 @@ switch sobj.Pattern
 
         text_stim_info{5} = ['Size: ', num2str(sobj.StimSize_deg),' deg'];
 
-        fprintf('StimPos: %u x %u = %u \n\n',...
-            sobj.Div_grid, sobj.Div_grid, sobj.index_center_in_mat);
+        % index_center_in_mat is [1 x k] when MultiDot is active (k>1), so
+        % print it as a list rather than feeding it straight into %u slots
+        % (which would cycle the format string across all k values).
+        fprintf('StimPos: %ux%u, idx=[%s] (k=%d)\n\n',...
+            sobj.Div_grid, sobj.Div_grid, num2str(sobj.index_center_in_mat), ...
+            numel(sobj.index_center_in_mat));
 
     case 'Fine Mapping Free'
         fprintf('StimPos: %u x %u = %u \n\n',...
