@@ -351,6 +351,13 @@ app.ISI.Enable = 'on';
 app.DurationMoveStim_Label.Enable = 'off';
 
 app.PositionOrderDropDown.Enable = 'on';
+% Fine Mapping Free等、一部パターンはItemsを{'Random'}等に絞り込むが、
+% 元に戻す処理が無かったため、そこから別パターン(ImageNet train等、
+% Value='Fix Repeat'をセットする)に切り替えると「'Value' must be an
+% element defined in the 'Items' property」でクラッシュしていた
+% (2026-09-10発見。パターン固有の絞り込みより前に、常にフルリストへ
+% 戻しておく)。
+app.PositionOrderDropDown.Items = {'Random Matrix', 'Ordered Matrix', 'Fix Repeat', 'Concentric'};
 app.ShapeDropDown.Enable = 'on';
 
 app.Size.Enable = 'on';
