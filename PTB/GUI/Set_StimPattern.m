@@ -24,7 +24,15 @@ switch value
         app.Distance.Enable = 'on';
         app.Divide.Enable = 'off';
         app.sobj.Stim_valiation_type = 'Free';
-        
+        % k=1・層別+距離制約つき配置(generate_singledot_free_trials.m)を
+        % 既定で有効にする(MultiDot(同時多点提示)はRFの形の精度が出ない
+        % ことが判明したため、2026-09-14にこちらを既定へ変更)。従来の
+        % 単純一様ランダム配置に戻したい場合はPTB START前に
+        % disable_singledot_free()を呼ぶ。MultiDotを使いたい場合は
+        % enable_multidot()を呼べば、そちらが優先される(VisStimON.m参照)。
+        app.sobj.UseSingleDotFree = true;
+        app.sobj.UseMultiDot = false;
+
     case 'Size Random'
         app.Size.Enable = 'off';
         
