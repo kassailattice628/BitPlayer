@@ -62,6 +62,12 @@ if n_blankloop > app.Blankloop.Value
                 % 複数点同時提示(連続配置、ランダム化)。詳細は
                 % Set_StimPos_MultiDot_Free.mのヘッダコメント参照。
                 sobj = Set_StimPos_MultiDot_Free(sobj);
+            elseif isfield(sobj, 'UseSingleDotFree') && sobj.UseSingleDotFree
+                % 1試行1点(k=1)、層別配置+距離制約つき提示順。詳細は
+                % Set_StimPos_SingleDot_Free.m / generate_singledot_free_trials.m
+                % のヘッダコメント参照(UseMultiDotはRFの位置は良く求まるが
+                % 形の推定が正則化ノイズに埋もれるため、k=1に戻した版)。
+                sobj = Set_StimPos_SingleDot_Free(sobj);
             else
                 %%% Stim position (square area, side = sobj.Distance)
                 % Randomley sample from the subarea
