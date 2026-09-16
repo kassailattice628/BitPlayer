@@ -8,13 +8,13 @@ function s = Load_ImageNet(s, pattern)
 
 switch pattern
     case 'ImageNet train'
-        s.ImageNet_dir = '/home/lattice/Research/BitPlayer/PTB/Images/ImageNetTraining/';
+        s.ImageNet_dir = '/home/lattice/Research/BitPlayer/PTB/Images/ImageNetTraining_gray/';
 
     case 'ImageNet test'
-        s.ImageNet_dir = '/home/lattice/Research/BitPlayer/PTB/Images/ImageNetTest20/';
+        s.ImageNet_dir = '/home/lattice/Research/BitPlayer/PTB/Images/ImageNetTest20_gray/';
         
     case 'ImageNet NoiseCorr'
-        s.ImageNet_dir = '/home/lattice/Research/BitPlayer/PTB/Images/ImageNetNoiseCorr/';
+        s.ImageNet_dir = '/home/lattice/Research/BitPlayer/PTB/Images/ImageNetNoiseCorr_gray/';
         % このフォルダの5枚のテスト画像(noise.png=グレー単色を除く)は、
         % 実体をコピーせずImageNetTest20/内の同名ファイルへの
         % シンボリックリンクにしてある（二重管理を避けるため）。
